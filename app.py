@@ -35,6 +35,14 @@ hide_st_style = """
             background-position: 0% 50%;
         }
     }
+    @keyframes shine {
+        0% {
+            background-position: -100% 50%;
+        }
+        100% {
+            background-position: 200% 50%;
+        }
+    }
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -50,72 +58,156 @@ st.markdown("""
     }
     
     body {
-        background: linear-gradient(-45deg, #ff7e5f, #feb47b, #00f5a0, #00d9f5);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
+        background: linear-gradient(45deg, 
+            #00092a,
+            #000829,
+            #010a2b,
+            #000b2b,
+            #00082c,
+            #02082a,
+            #010a29,
+            #000928,
+            #01092d,
+            #020b2c
+        );
+        background-size: 500% 500%;
+        animation: gradientBG 20s ease infinite;
     }
     
     .app-header {
         text-align: center;
         margin-bottom: 2rem;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 9, 42, 0.7);
         padding: 2rem;
         border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 9, 42, 0.5);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .app-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.1) 40%,
+            rgba(255, 255, 255, 0.1) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
     }
     
     .app-title {
         font-size: 3.5rem;
         font-weight: 900;
-        background: linear-gradient(45deg, #00f5a0, #00d9f5);
+        background: linear-gradient(45deg, #fff 10%, #7fdbff 50%, #fff 90%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin: 0;
         padding: 0;
-        text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+        text-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
         letter-spacing: 2px;
+        position: relative;
     }
     
     .app-subtitle {
         font-size: 1.5rem;
-        color: #fff;
+        color: #7fdbff;
         margin-top: 1rem;
-        opacity: 0.9;
         font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
     }
     
     .stButton>button {
         width: 100%;
-        background: linear-gradient(45deg, #00f5a0 0%, #00d9f5 100%);
-        color: #1a1a2e;
+        background: linear-gradient(45deg, #00092a, #020b2c);
+        color: #fff;
         border: none;
         padding: 1rem 2rem;
         border-radius: 12px;
         font-weight: bold;
         font-size: 1.2rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 245, 160, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 9, 42, 0.5);
+        position: relative;
+        overflow: hidden;
     }
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 245, 160, 0.3);
+        box-shadow: 0 8px 25px rgba(0, 9, 42, 0.7);
+    }
+    
+    .stButton>button::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(127, 219, 255, 0.1) 40%,
+            rgba(127, 219, 255, 0.1) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
     }
     
     .stNumberInput>div>div>input {
-        background: rgba(0, 0, 0, 0.5);
-        border: none;
+        background: rgba(0, 9, 42, 0.7);
+        border: 1px solid rgba(127, 219, 255, 0.2);
         color: white;
         border-radius: 10px;
         padding: 0.8rem 1rem;
         font-size: 1.1rem;
         text-align: center;
+        transition: all 0.3s ease;
     }
     
     .stNumberInput>div>div>input:focus {
-        box-shadow: 0 0 0 2px rgba(0, 245, 160, 0.3);
-        border: none;
+        box-shadow: 0 0 0 2px rgba(127, 219, 255, 0.3);
+        border-color: rgba(127, 219, 255, 0.5);
+    }
+    
+    .subject-name {
+        color: #7fdbff;
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 1rem 0;
+        text-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
+        background: rgba(0, 9, 42, 0.7);
+        padding: 1rem;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .subject-name::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(127, 219, 255, 0.1) 40%,
+            rgba(127, 219, 255, 0.1) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
     }
     
     .grade-label {
@@ -124,16 +216,7 @@ st.markdown("""
         margin-bottom: 0.5rem;
         text-align: center;
         font-size: 1.2rem;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-    }
-    
-    .subject-name {
-        color: #00f5a0;
-        font-weight: bold;
-        font-size: 1.3rem;
-        text-align: center;
-        margin: 1rem 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 0 0 5px rgba(127, 219, 255, 0.5);
     }
     
     .results-table {
