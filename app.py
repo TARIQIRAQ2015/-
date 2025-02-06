@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
+import base64
 
 # إخفاء عناصر Streamlit الافتراضية
 st.set_page_config(
-    page_title="المساعد الوزاري",
+    page_title="شبكة المساعد",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -20,6 +22,8 @@ hide_st_style = """
     .css-1wrcr25 {display: none;}
     .css-6qob1r {display: none;}
     .css-zt5igj {display: none;}
+    .stDeployButton {display:none;}
+    div[data-testid="stDecoration"] {display:none;}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -37,149 +41,139 @@ st.markdown("""
     .main {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         padding: 2rem;
-        border-radius: 20px;
         color: #e2e8f0;
     }
     
-    .app-title {
+    .app-header {
         text-align: center;
-        color: #38bdf8;
-        font-size: 2.5rem;
-        font-weight: bold;
         margin-bottom: 2rem;
-        text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
-        background: linear-gradient(45deg, #38bdf8, #818cf8);
+        background: linear-gradient(45deg, #00f5a0 0%, #00d9f5 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 245, 160, 0.2);
+    }
+    
+    .app-title {
+        font-size: 3rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #1a1a2e 0%, #16213e 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        padding: 1rem;
+        margin: 0;
+        padding: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .sponsor {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #1a1a2e;
     }
     
     .stButton>button {
         width: 100%;
-        background: linear-gradient(45deg, #38bdf8 0%, #818cf8 100%);
-        color: white;
+        background: linear-gradient(45deg, #00f5a0 0%, #00d9f5 100%);
+        color: #1a1a2e;
         border: none;
         padding: 1rem 2rem;
         border-radius: 12px;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 245, 160, 0.2);
     }
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
+        box-shadow: 0 8px 25px rgba(0, 245, 160, 0.3);
     }
     
-    div[data-testid="stVerticalBlock"] > div {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-        padding: 2rem;
-        border-radius: 16px;
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    }
-    
-    .stTextInput>div>div>input, .stNumberInput>div>div>input {
+    .stNumberInput>div>div>input {
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: none;
         color: white;
         border-radius: 10px;
         padding: 0.8rem 1rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
         text-align: center;
+    }
+    
+    .stNumberInput>div>div>input:focus {
+        box-shadow: 0 0 0 2px rgba(0, 245, 160, 0.3);
+        border: none;
     }
     
     h1, h2, h3 {
-        color: #38bdf8;
+        color: #00f5a0;
         text-align: center;
-        margin-bottom: 1.5rem;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    .grade-input {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 1.5rem;
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .grade-input label {
-        color: #38bdf8;
+        margin: 2rem 0;
         font-weight: bold;
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
     }
     
     .results-table {
         width: 100%;
         margin: 2rem 0;
-        border-collapse: collapse;
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    
-    .results-table th, .results-table td {
-        padding: 1rem;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-collapse: separate;
+        border-spacing: 0 8px;
     }
     
     .results-table th {
-        background: rgba(56, 189, 248, 0.1);
-        color: #38bdf8;
+        background: rgba(0, 245, 160, 0.1);
+        color: #00f5a0;
         font-weight: bold;
+        padding: 1rem;
+        text-align: center;
     }
     
-    .results-table tr:nth-child(even) {
-        background: rgba(255, 255, 255, 0.02);
+    .results-table td {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1rem;
+        text-align: center;
     }
     
     .conclusion {
-        background: rgba(56, 189, 248, 0.05);
+        background: rgba(0, 245, 160, 0.05);
         padding: 2rem;
         border-radius: 12px;
         margin-top: 2rem;
-        border: 1px solid rgba(56, 189, 248, 0.1);
     }
     
-    .conclusion h3 {
-        color: #38bdf8;
-        margin-bottom: 1rem;
+    .grades-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
     }
     
-    .conclusion ul {
-        list-style-type: none;
-        padding: 0;
+    .grade-input {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1.5rem;
+        border-radius: 12px;
     }
     
-    .conclusion li {
-        margin-bottom: 0.8rem;
-        padding-right: 1.5rem;
-        position: relative;
-    }
-    
-    .conclusion li:before {
-        content: "•";
-        color: #38bdf8;
-        position: absolute;
-        right: 0;
+    .grade-label {
+        color: #00f5a0;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        text-align: center;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# عنوان التطبيق
-st.markdown('<h1 class="app-title">المساعد الوزاري</h1>', unsafe_allow_html=True)
+# إضافة الشعار والعنوان
+st.markdown("""
+    <div class="app-header">
+        <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png" width="150">
+        <h1 class="app-title">نظام المستقبل للحسابات الذكية</h1>
+        <div class="sponsor">برعاية شبكة المساعد @SadsHelp</div>
+    </div>
+""", unsafe_allow_html=True)
 
 # بيانات الطالب
 st.markdown("### معلومات الطالب")
 student_name = st.text_input("اسم الطالب")
 
-# تعريف المواد وحدود النجاح
+# تعريف المواد
 subjects = {
     "الإسلامية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "اللغة العربية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
@@ -192,28 +186,43 @@ subjects = {
 
 # إدخال الدرجات
 st.markdown("### إدخال الدرجات")
-col1, col2 = st.columns(2)
-
 for subject in subjects:
+    st.markdown(f'<div class="grades-container">', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
     with col1:
+        st.markdown(f'<div class="grade-label">الفصل الأول</div>', unsafe_allow_html=True)
         subjects[subject]["الفصل الأول"] = st.number_input(
-            f"الفصل الأول - {subject}",
-            value=float(subjects[subject]["الفصل الأول"]),
-            min_value=0.0,
-            max_value=100.0,
-            step=1.0
+            "",
+            value=int(subjects[subject]["الفصل الأول"]),
+            min_value=0,
+            max_value=100,
+            key=f"first_{subject}"
         )
+    
     with col2:
+        st.markdown(f'<div class="grade-label">نصف السنة</div>', unsafe_allow_html=True)
         subjects[subject]["نصف السنة"] = st.number_input(
-            f"نصف السنة - {subject}",
-            value=float(subjects[subject]["نصف السنة"]),
-            min_value=0.0,
-            max_value=100.0,
-            step=1.0
+            "",
+            value=int(subjects[subject]["نصف السنة"]),
+            min_value=0,
+            max_value=100,
+            key=f"mid_{subject}"
         )
+    
+    with col3:
+        st.markdown(f'<div class="grade-label">الفصل الثاني</div>', unsafe_allow_html=True)
+        subjects[subject]["الفصل الثاني"] = st.number_input(
+            "",
+            value=int(subjects[subject]["الفصل الثاني"]),
+            min_value=0,
+            max_value=100,
+            key=f"second_{subject}"
+        )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def calculate_minimum_required(first_term, mid_term):
-    # الدرجة المطلوبة = (50 × 3) - (الفصل الأول + نصف السنة)
     required_total = 50 * 3
     current_total = first_term + mid_term
     minimum_required = required_total - current_total
@@ -223,7 +232,6 @@ if st.button("تحليل النتائج", key="calculate_btn"):
     if not student_name:
         st.error("الرجاء إدخال اسم الطالب")
     else:
-        # إنشاء جدول النتائج
         results = []
         passing_subjects = []
         possible_subjects = []
@@ -250,15 +258,14 @@ if st.button("تحليل النتائج", key="calculate_btn"):
                 "المادة": subject,
                 "الفصل الأول": scores["الفصل الأول"],
                 "نصف السنة": scores["نصف السنة"],
+                "الفصل الثاني": scores["الفصل الثاني"],
                 "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
             })
         
-        # عرض النتائج في جدول
         st.markdown("### نتائج التحليل")
         df = pd.DataFrame(results)
         st.table(df)
         
-        # عرض الاستنتاج
         st.markdown('<div class="conclusion">', unsafe_allow_html=True)
         st.markdown("### الاستنتاج")
         
