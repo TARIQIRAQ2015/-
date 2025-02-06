@@ -24,35 +24,53 @@ hide_st_style = """
     div[data-testid="stDecoration"] {display:none;}
     div[data-testid="stMarkdownContainer"] > p {margin: 0;}
     
-    @keyframes gradientBG {
+    @keyframes gradientFlow {
         0% {
             background-position: 0% 50%;
+            background-color: #00092a;
         }
-        25% {
-            background-position: 50% 100%;
+        10% {
+            background-color: #000829;
+        }
+        20% {
+            background-color: #010a2b;
+        }
+        30% {
+            background-color: #000b2b;
+        }
+        40% {
+            background-color: #00082c;
         }
         50% {
             background-position: 100% 50%;
+            background-color: #02082a;
         }
-        75% {
-            background-position: 50% 0%;
+        60% {
+            background-color: #010a29;
+        }
+        70% {
+            background-color: #000928;
+        }
+        80% {
+            background-color: #01092d;
+        }
+        90% {
+            background-color: #020b2c;
         }
         100% {
             background-position: 0% 50%;
+            background-color: #00092a;
         }
     }
 
     @keyframes shine {
         0% {
             background-position: -100% 50%;
-            opacity: 0.5;
-        }
-        50% {
-            opacity: 1;
+            opacity: 0.3;
         }
         100% {
             background-position: 200% 50%;
-            opacity: 0.5;
+            opacity: 0.6;
         }
     }
 
@@ -67,35 +85,10 @@ hide_st_style = """
             transform: translateY(0px);
         }
     }
-    </style>
-"""
-st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# CSS للتصميم
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-    
-    * {
-        font-family: 'Tajawal', sans-serif !important;
-        direction: rtl;
-    }
-    
     body {
-        background: linear-gradient(45deg, 
-            #00092a,
-            #000829,
-            #010a2b,
-            #000b2b,
-            #00082c,
-            #02082a,
-            #00ff9d,
-            #000928,
-            #01092d,
-            #020b2c
-        );
-        background-size: 300% 300%;
-        animation: gradientBG 15s ease infinite;
+        animation: gradientFlow 15s ease infinite;
+        background-size: 200% 200%;
     }
     
     .app-header {
@@ -282,7 +275,8 @@ st.markdown("""
         animation: float 6s ease-in-out infinite;
     }
     </style>
-""", unsafe_allow_html=True)
+"""
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # إضافة الشعار والعنوان
 st.markdown("""
