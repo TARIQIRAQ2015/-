@@ -1,5 +1,4 @@
 import streamlit as st
-import plotly.graph_objects as go
 import pandas as pd
 
 # إخفاء عناصر Streamlit الافتراضية
@@ -115,28 +114,63 @@ st.markdown("""
         margin-bottom: 0.5rem;
     }
     
-    .result-box {
-        background: rgba(56, 189, 248, 0.1);
-        border: 1px solid rgba(56, 189, 248, 0.2);
-        padding: 1.5rem;
+    .results-table {
+        width: 100%;
+        margin: 2rem 0;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.03);
         border-radius: 12px;
-        margin: 1rem 0;
-        text-align: center;
+        overflow: hidden;
     }
     
-    .result-box h3 {
+    .results-table th, .results-table td {
+        padding: 1rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .results-table th {
+        background: rgba(56, 189, 248, 0.1);
+        color: #38bdf8;
+        font-weight: bold;
+    }
+    
+    .results-table tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .conclusion {
+        background: rgba(56, 189, 248, 0.05);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+        border: 1px solid rgba(56, 189, 248, 0.1);
+    }
+    
+    .conclusion h3 {
         color: #38bdf8;
         margin-bottom: 1rem;
     }
     
-    .result-value {
-        font-size: 2rem;
-        font-weight: bold;
+    .conclusion ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .conclusion li {
+        margin-bottom: 0.8rem;
+        padding-right: 1.5rem;
+        position: relative;
+    }
+    
+    .conclusion li:before {
+        content: "•";
         color: #38bdf8;
-        margin: 1rem 0;
+        position: absolute;
+        right: 0;
     }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # عنوان التطبيق
 st.markdown('<h1 class="app-title">المساعد الوزاري</h1>', unsafe_allow_html=True)
@@ -147,66 +181,97 @@ student_name = st.text_input("اسم الطالب")
 
 # تعريف المواد وحدود النجاح
 subjects = {
-    "الإسلامية": {"الفصل الأول": 75, "نصف السنة": 77, "الفصل الثاني": 0, "حد النجاح": 50},
-    "اللغة العربية": {"الفصل الأول": 30, "نصف السنة": 40, "الفصل الثاني": 0, "حد النجاح": 80},
-    "اللغة الإنجليزية": {"الفصل الأول": 30, "نصف السنة": 48, "الفصل الثاني": 0, "حد النجاح": 72},
-    "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50},
-    "الرياضيات": {"الفصل الأول": 50, "نصف السنة": 32, "الفصل الثاني": 0, "حد النجاح": 68},
-    "الفيزياء": {"الفصل الأول": 30, "نصف السنة": 8, "الفصل الثاني": 0, "حد النجاح": 112},
-    "الكيمياء": {"الفصل الأول": 14, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 136},
-    "الأحياء": {"الفصل الأول": 30, "نصف السنة": 14, "الفصل الثاني": 0, "حد النجاح": 106}
+    "الإسلامية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "اللغة العربية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "اللغة الإنجليزية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الرياضيات": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الفيزياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الكيمياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الأحياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0}
 }
 
-# إدخال درجات الفصل الثاني
-st.markdown("### درجات الفصل الثاني")
-for subject, scores in subjects.items():
-    with st.container():
-        st.markdown(f'<div class="grade-input">', unsafe_allow_html=True)
-        scores["الفصل الثاني"] = st.number_input(
-            f"📚 {subject}",
-            value=float(scores["الفصل الثاني"]),
+# إدخال الدرجات
+st.markdown("### إدخال الدرجات")
+col1, col2 = st.columns(2)
+
+for subject in subjects:
+    with col1:
+        subjects[subject]["الفصل الأول"] = st.number_input(
+            f"الفصل الأول - {subject}",
+            value=float(subjects[subject]["الفصل الأول"]),
             min_value=0.0,
             max_value=100.0,
             step=1.0
         )
-        st.markdown('</div>', unsafe_allow_html=True)
+    with col2:
+        subjects[subject]["نصف السنة"] = st.number_input(
+            f"نصف السنة - {subject}",
+            value=float(subjects[subject]["نصف السنة"]),
+            min_value=0.0,
+            max_value=100.0,
+            step=1.0
+        )
 
-def calculate_possibility(current_score, required_score, max_possible):
-    remaining_score_needed = required_score - current_score
-    if remaining_score_needed <= max_possible:
-        return True, remaining_score_needed
-    return False, remaining_score_needed
+def calculate_minimum_required(first_term, mid_term):
+    # الدرجة المطلوبة = (50 × 3) - (الفصل الأول + نصف السنة)
+    required_total = 50 * 3
+    current_total = first_term + mid_term
+    minimum_required = required_total - current_total
+    return minimum_required
 
-# زر الحساب
 if st.button("تحليل النتائج", key="calculate_btn"):
     if not student_name:
         st.error("الرجاء إدخال اسم الطالب")
     else:
-        st.markdown("### نتائج التحليل")
+        # إنشاء جدول النتائج
+        results = []
+        passing_subjects = []
+        possible_subjects = []
+        impossible_subjects = []
         
         for subject, scores in subjects.items():
-            current_score = (scores["الفصل الأول"] + scores["نصف السنة"]) / 2
-            is_possible, needed_score = calculate_possibility(
-                current_score,
-                scores["حد النجاح"],
-                100
+            minimum_required = calculate_minimum_required(
+                scores["الفصل الأول"],
+                scores["نصف السنة"]
             )
             
-            with st.container():
-                st.markdown('<div class="result-box">', unsafe_allow_html=True)
-                st.markdown(f"#### {subject}")
-                st.markdown(f'<div class="result-value">{current_score:.1f}</div>', unsafe_allow_html=True)
-                
-                if not is_possible:
-                    st.error("❌ يستحيل النجاح في هذه المادة")
-                elif needed_score <= 0:
-                    st.success("✅ ناجح بغض النظر عن الفصل الثاني")
-                else:
-                    if needed_score > 90:
-                        st.error(f"⚠️ تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني")
-                    elif needed_score > 70:
-                        st.warning(f"⚠️ تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني")
-                    else:
-                        st.info(f"ℹ️ تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني")
-                
-                st.markdown('</div>', unsafe_allow_html=True)
+            status = ""
+            if minimum_required <= 0:
+                status = "✅ (ناجح بغض النظر عن الفصل الثاني)"
+                passing_subjects.append(subject)
+            elif minimum_required > 100:
+                status = "❌ (يستحيل النجاح)"
+                impossible_subjects.append(subject)
+            else:
+                status = f"❌ (يجب الحصول على {minimum_required:.0f} أو أكثر للنجاح)"
+                possible_subjects.append(subject)
+            
+            results.append({
+                "المادة": subject,
+                "الفصل الأول": scores["الفصل الأول"],
+                "نصف السنة": scores["نصف السنة"],
+                "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
+            })
+        
+        # عرض النتائج في جدول
+        st.markdown("### نتائج التحليل")
+        df = pd.DataFrame(results)
+        st.table(df)
+        
+        # عرض الاستنتاج
+        st.markdown('<div class="conclusion">', unsafe_allow_html=True)
+        st.markdown("### الاستنتاج")
+        
+        if passing_subjects:
+            st.write(f"المواد التي ضمنت النجاح هي: {', '.join(passing_subjects)}، حتى لو حصلت على 0 في الفصل الثاني.")
+        
+        if possible_subjects:
+            st.write(f"المواد التالية لديك فرصة للنجاح فيها إذا حصلت على الدرجة المطلوبة في الفصل الثاني: {', '.join(possible_subjects)}")
+        
+        if impossible_subjects:
+            st.write(f"المواد التالية لا يمكن النجاح فيها حتى لو حصلت على 100 في الفصل الثاني: {', '.join(impossible_subjects)}")
+        
+        if possible_subjects:
+            st.write("بالتالي، تحتاج إلى التركيز بشكل كبير على المواد التي لديك فرصة للنجاح فيها. 🚀")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
