@@ -1,11 +1,9 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image
-import base64
 
 # إخفاء عناصر Streamlit الافتراضية
 st.set_page_config(
-    page_title="شبكة المساعد",
+    page_title="المساعد لحساب الوزاري",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -24,6 +22,7 @@ hide_st_style = """
     .css-zt5igj {display: none;}
     .stDeployButton {display:none;}
     div[data-testid="stDecoration"] {display:none;}
+    div[data-testid="stMarkdownContainer"] > p {margin: 0;}
     
     @keyframes gradientBG {
         0% {
@@ -72,6 +71,13 @@ st.markdown("""
         margin: 0;
         padding: 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .app-subtitle {
+        font-size: 1.3rem;
+        color: #fff;
+        margin-top: 1rem;
+        opacity: 0.9;
     }
     
     .sponsor {
@@ -162,8 +168,9 @@ st.markdown("""
     }
     
     .copyright {
-        color: #888;
-        font-size: 0.9rem;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -172,28 +179,28 @@ st.markdown("""
 st.markdown("""
     <div class="app-header">
         <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png" width="100">
-        <h1 class="app-title">نظام المستقبل للحسابات الذكية</h1>
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+        <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
         <div class="sponsor">برعاية شبكة المساعد @SadsHelp</div>
     </div>
 """, unsafe_allow_html=True)
-
-# بيانات الطالب
-st.markdown("### معلومات الطالب")
-student_name = st.text_input("اسم الطالب")
 
 # تعريف المواد
 subjects = {
     "الإسلامية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "اللغة العربية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "اللغة الإنجليزية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "الرياضيات": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "الفيزياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "الكيمياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
     "الأحياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0}
 }
 
+# إدخال اسم الطالب
+student_name = st.text_input("")
+
 # إدخال الدرجات
-st.markdown("### إدخال الدرجات")
 for subject in subjects:
     cols = st.columns(3)
     with cols[0]:
