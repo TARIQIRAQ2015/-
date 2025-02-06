@@ -1,72 +1,155 @@
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 import pandas as pd
-import sqlite3
 from datetime import datetime
-from fpdf import FPDF
-import os
-
-# إعداد قاعدة البيانات
-def init_db():
-    conn = sqlite3.connect('grades.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS grades
-                 (student_name TEXT, subject TEXT, first_term REAL, 
-                  mid_term REAL, second_term REAL, final_grade REAL, 
-                  date TEXT)''')
-    conn.commit()
-    conn.close()
-
-# تهيئة قاعدة البيانات
-init_db()
+import json
 
 # تكوين الصفحة
-st.set_page_config(page_title="نظام إدارة الدرجات المتقدم", layout="wide")
+st.set_page_config(
+    page_title="نظام إدارة الدرجات المتطور",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 # CSS للتصميم
 st.markdown("""
     <style>
-    .main {
-        padding: 2rem;
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+    
+    * {
+        font-family: 'Tajawal', sans-serif !important;
     }
+    
+    .main {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+    
     .stButton>button {
         width: 100%;
+        background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        font-weight: bold;
         margin-top: 1rem;
+        transition: all 0.3s ease;
     }
+    
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
     .success-text {
-        color: green;
+        color: #10b981;
         font-weight: bold;
     }
+    
     .failure-text {
-        color: red;
+        color: #ef4444;
         font-weight: bold;
+    }
+    
+    [data-testid="stMetricValue"] {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #1e3c72;
+    }
+    
+    .css-1d391kg {
+        padding: 3rem 1rem;
+    }
+    
+    div[data-testid="stVerticalBlock"] > div {
+        padding: 0.5rem;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    h1, h2, h3 {
+        color: #1e3c72;
+        text-align: right;
+    }
+    
+    .english-mode h1, .english-mode h2, .english-mode h3 {
+        text-align: left;
     }
     </style>
     """, unsafe_allow_html=True)
 
+# اختيار اللغة
+language = st.selectbox("🌐 Language / اللغة", ["العربية", "English"])
+
+# تحديد النصوص حسب اللغة
+texts = {
+    "العربية": {
+        "title": "🎓 النظام المتطور لإدارة وتحليل الدرجات",
+        "student_name": "اسم الطالب",
+        "academic_year": "السنة الدراسية",
+        "calculate": "حساب النتيجة",
+        "print": "طباعة النتيجة",
+        "final_results": "النتيجة النهائية",
+        "analysis": "التحليل",
+        "advanced_analytics": "التحليلات المتقدمة",
+        "recommendations": "التوصيات",
+        "helping_marks": "إضافة 10 درجات مساعدة",
+        "passed": "ناجح",
+        "failed": "راسب"
+    },
+    "English": {
+        "title": "🎓 Advanced Grade Management System",
+        "student_name": "Student Name",
+        "academic_year": "Academic Year",
+        "calculate": "Calculate Results",
+        "print": "Print Results",
+        "final_results": "Final Results",
+        "analysis": "Analysis",
+        "advanced_analytics": "Advanced Analytics",
+        "recommendations": "Recommendations",
+        "helping_marks": "Add 10 Helping Marks",
+        "passed": "Passed",
+        "failed": "Failed"
+    }
+}
+
+# تعيين اللغة الحالية
+current_texts = texts[language]
+
+# إضافة class للتحكم في المحاذاة
+if language == "English":
+    st.markdown('<div class="english-mode">', unsafe_allow_html=True)
+
 # عنوان التطبيق
-st.title("🎓 النظام المتقدم لإدارة وتحليل الدرجات")
+st.title(current_texts["title"])
 
 # بيانات الطالب
-student_name = st.text_input("📝 اسم الطالب")
-academic_year = st.selectbox("السنة الدراسية", ["2024-2025", "2025-2026", "2026-2027"])
+col1, col2 = st.columns(2)
+with col1:
+    student_name = st.text_input(current_texts["student_name"])
+with col2:
+    academic_year = st.selectbox(current_texts["academic_year"], ["2024-2025", "2025-2026", "2026-2027"])
 
 # تعريف المواد وحدود النجاح
 subjects = {
-    "الإسلامية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 1},
-    "اللغة العربية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 2},
-    "اللغة الإنجليزية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 2},
-    "الرياضيات": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 3},
-    "الفيزياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 2},
-    "الكيمياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 2},
-    "الأحياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 2},
+    "الإسلامية": {"الفصل الأول": 75, "نصف السنة": 77, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 1},
+    "اللغة العربية": {"الفصل الأول": 30, "نصف السنة": 40, "الفصل الثاني": 0, "حد النجاح": 80, "المعامل": 2},
+    "اللغة الإنجليزية": {"الفصل الأول": 30, "نصف السنة": 48, "الفصل الثاني": 0, "حد النجاح": 72, "المعامل": 2},
+    "الرياضيات": {"الفصل الأول": 50, "نصف السنة": 32, "الفصل الثاني": 0, "حد النجاح": 68, "المعامل": 3},
+    "الفيزياء": {"الفصل الأول": 30, "نصف السنة": 8, "الفصل الثاني": 0, "حد النجاح": 112, "المعامل": 2},
+    "الكيمياء": {"الفصل الأول": 14, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 136, "المعامل": 2},
+    "الأحياء": {"الفصل الأول": 30, "نصف السنة": 14, "الفصل الثاني": 0, "حد النجاح": 106, "المعامل": 2},
+    "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 1}
 }
 
-# الإعدادات المتقدمة
-with st.expander("⚙️ الإعدادات المتقدمة"):
-    add_helping_marks = st.checkbox("إضافة 10 درجات مساعدة")
-    show_analytics = st.checkbox("عرض التحليلات المتقدمة", value=True)
-    enable_recommendations = st.checkbox("تفعيل نظام التوصيات", value=True)
+# الإعدادات
+add_helping_marks = st.checkbox(current_texts["helping_marks"])
 
 # إدخال الدرجات
 col1, col2 = st.columns(2)
@@ -76,49 +159,24 @@ all_scores = []
 for subject, scores in subjects.items():
     with col1:
         st.subheader(f"📌 {subject}")
-        scores["الفصل الأول"] = st.number_input(f"درجة الفصل الأول - {subject}", 0, 100, step=1)
-        scores["نصف السنة"] = st.number_input(f"درجة نصف السنة - {subject}", 0, 100, step=1)
-        scores["الفصل الثاني"] = st.number_input(f"درجة الفصل الثاني - {subject}", 0, 100, step=1)
+        scores["الفصل الثاني"] = st.number_input(
+            f"درجة الفصل الثاني - {subject}",
+            value=float(scores["الفصل الثاني"]),
+            min_value=0.0,
+            max_value=100.0,
+            step=1.0
+        )
 
-def generate_pdf(student_name, details, final_result):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.add_font('DejaVu', '', 'DejaVuSansCondensed.ttf', uni=True)
-    pdf.set_font('DejaVu', '', 14)
-    
-    # إضافة العنوان
-    pdf.cell(200, 10, txt=f"تقرير درجات الطالب: {student_name}", ln=True, align='C')
-    pdf.ln(10)
-    
-    # إضافة التفاصيل
-    for detail in details:
-        pdf.cell(200, 10, txt=detail, ln=True)
-    
-    # إضافة النتيجة النهائية
-    pdf.ln(10)
-    pdf.cell(200, 10, txt=final_result, ln=True)
-    
-    # حفظ الملف
-    filename = f"نتائج_{student_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-    pdf.output(filename)
-    return filename
-
-def calculate_gpa(total_scores):
-    if total_scores >= 90:
-        return "ممتاز", 4.0
-    elif total_scores >= 80:
-        return "جيد جداً", 3.5
-    elif total_scores >= 70:
-        return "جيد", 3.0
-    elif total_scores >= 60:
-        return "مقبول", 2.5
-    else:
-        return "ضعيف", 2.0
+def calculate_possibility(current_score, required_score, max_possible):
+    remaining_score_needed = required_score - current_score
+    if remaining_score_needed <= max_possible:
+        return True, remaining_score_needed
+    return False, remaining_score_needed
 
 # زر الحساب
-if st.button("🔍 حساب النتيجة"):
+if st.button(current_texts["calculate"]):
     if not student_name:
-        st.error("الرجاء إدخال اسم الطالب")
+        st.error("الرجاء إدخال اسم الطالب" if language == "العربية" else "Please enter student name")
     else:
         passed_subjects = 0
         failed_subjects = 0
@@ -126,107 +184,115 @@ if st.button("🔍 حساب النتيجة"):
         total_weights = 0
         
         for subject, scores in subjects.items():
-            total_score = (scores["الفصل الأول"] + scores["نصف السنة"] + scores["الفصل الثاني"]) / 3
-            if add_helping_marks:
-                total_score = min(100, total_score + 10)
+            current_score = (scores["الفصل الأول"] + scores["نصف السنة"]) / 2
+            max_possible_final = 100  # أقصى درجة ممكنة في الفصل الثاني
             
-            weighted_score = total_score * scores["المعامل"]
-            total_weighted_score += weighted_score
-            total_weights += scores["المعامل"]
+            is_possible, needed_score = calculate_possibility(
+                current_score,
+                scores["حد النجاح"],
+                max_possible_final
+            )
             
-            result = "✅ ناجح" if total_score >= scores["حد النجاح"] else "❌ راسب"
-            details.append(f"**{subject}**: {total_score:.2f} - {result}")
-            all_scores.append({"المادة": subject, "الدرجة": total_score})
-            
-            # حفظ في قاعدة البيانات
-            conn = sqlite3.connect('grades.db')
-            c = conn.cursor()
-            c.execute("""INSERT INTO grades VALUES (?, ?, ?, ?, ?, ?, ?)""",
-                     (student_name, subject, scores["الفصل الأول"], 
-                      scores["نصف السنة"], scores["الفصل الثاني"], 
-                      total_score, datetime.now().strftime("%Y-%m-%d")))
-            conn.commit()
-            conn.close()
-            
-            if total_score >= scores["حد النجاح"]:
-                passed_subjects += 1
+            status_text = ""
+            if is_possible:
+                if needed_score <= 0:
+                    status_text = "(ناجح بغض النظر عن الفصل الثاني)"
+                else:
+                    status_text = f"(يجب الحصول على {needed_score:.1f} أو أكثر للنجاح)"
             else:
-                failed_subjects += 1
-        
-        # حساب المعدل التراكمي
-        final_average = total_weighted_score / total_weights
-        grade_letter, gpa = calculate_gpa(final_average)
-        
+                status_text = "(يستحيل النجاح)"
+            
+            details.append(f"**{subject}**: {current_score:.1f} {status_text}")
+            all_scores.append({
+                "المادة": subject,
+                "الدرجة الحالية": current_score,
+                "حد النجاح": scores["حد النجاح"],
+                "الحالة": status_text
+            })
+
         # عرض النتائج
-        st.subheader("📊 النتيجة النهائية")
+        st.subheader(current_texts["final_results"])
         st.write("\n".join(details))
         
-        # تحليل النجاح والرسوب
-        st.subheader("📢 التحليل")
-        if passed_subjects >= 4:
-            result_text = f"🎉 مبروك! لقد نجحت، حيث نجحت في {passed_subjects} مواد ورسبت في {failed_subjects} مواد."
-            st.success(result_text)
-        else:
-            result_text = f"⚠️ للأسف، أنت راسب لأنك نجحت فقط في {passed_subjects} مواد."
-            st.error(result_text)
-        
-        st.write(f"المعدل التراكمي: {final_average:.2f}")
-        st.write(f"التقدير: {grade_letter}")
-        st.write(f"المعدل النقطي: {gpa}")
-        
         # التحليلات المتقدمة
-        if show_analytics:
-            st.subheader("📈 التحليلات المتقدمة")
-            df = pd.DataFrame(all_scores)
+        st.subheader(current_texts["advanced_analytics"])
+        
+        # الرسم البياني الأول
+        df = pd.DataFrame(all_scores)
+        fig1 = go.Figure()
+        
+        fig1.add_trace(go.Bar(
+            name='الدرجة الحالية',
+            x=df['المادة'],
+            y=df['الدرجة الحالية'],
+            marker_color='rgb(26, 118, 255)'
+        ))
+        
+        fig1.add_trace(go.Bar(
+            name='حد النجاح',
+            x=df['المادة'],
+            y=df['حد النجاح'],
+            marker_color='rgb(55, 83, 109)'
+        ))
+        
+        fig1.update_layout(
+            title='مقارنة الدرجات الحالية مع حد النجاح',
+            barmode='group',
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(size=12)
+        )
+        
+        st.plotly_chart(fig1, use_container_width=True)
+        
+        # الرسم البياني الثاني (مخطط راداري)
+        fig2 = go.Figure()
+        
+        fig2.add_trace(go.Scatterpolar(
+            r=df['الدرجة الحالية'],
+            theta=df['المادة'],
+            fill='toself',
+            name='الدرجات الحالية'
+        ))
+        
+        fig2.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                    visible=True,
+                    range=[0, 100]
+                )),
+            showlegend=True,
+            title='التوزيع الشعاعي للدرجات'
+        )
+        
+        st.plotly_chart(fig2, use_container_width=True)
+        
+        # التوصيات
+        st.subheader(current_texts["recommendations"])
+        for subject, scores in subjects.items():
+            current_score = (scores["الفصل الأول"] + scores["نصف السنة"]) / 2
+            is_possible, needed_score = calculate_possibility(
+                current_score,
+                scores["حد النجاح"],
+                100
+            )
             
-            # رسم بياني للدرجات
-            fig = px.bar(df, x="المادة", y="الدرجة",
-                        title="تحليل الدرجات حسب المواد",
-                        labels={"المادة": "المادة الدراسية", "الدرجة": "الدرجة النهائية"})
-            st.plotly_chart(fig)
-        
-        # نظام التوصيات
-        if enable_recommendations:
-            st.subheader("💡 التوصيات")
-            for subject, scores in subjects.items():
-                total_score = (scores["الفصل الأول"] + scores["نصف السنة"] + scores["الفصل الثاني"]) / 3
-                if total_score < scores["حد النجاح"]:
-                    st.warning(f"توصية لمادة {subject}: يجب التركيز على تحسين الأداء في هذه المادة.")
-                elif total_score < 70:
-                    st.info(f"توصية لمادة {subject}: هناك مجال للتحسين للوصول إلى مستوى أفضل.")
-        
-        # تصدير النتائج
-        if st.button("📤 تصدير النتائج كملف PDF"):
-            try:
-                filename = generate_pdf(student_name, details, result_text)
-                st.success(f"تم تصدير النتائج إلى الملف: {filename}")
-            except Exception as e:
-                st.error(f"حدث خطأ أثناء إنشاء ملف PDF: {str(e)}")
+            if not is_possible:
+                st.error(f"🚫 {subject}: يستحيل النجاح في هذه المادة. نقترح التركيز على المواد الأخرى.")
+            elif needed_score > 0:
+                if needed_score > 90:
+                    st.error(f"⚠️ {subject}: تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني. هذا تحدٍ صعب جداً.")
+                elif needed_score > 70:
+                    st.warning(f"⚠️ {subject}: تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني. يتطلب جهداً كبيراً.")
+                else:
+                    st.info(f"ℹ️ {subject}: تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني. هدف قابل للتحقيق.")
+            else:
+                st.success(f"✅ {subject}: أنت ناجح بالفعل! حافظ على مستواك.")
 
-# إضافة قسم لإدخال مواد جديدة
-with st.sidebar:
-    st.subheader("➕ إضافة مادة جديدة")
-    new_subject = st.text_input("اسم المادة الجديدة")
-    new_pass_mark = st.number_input("حد النجاح للمادة الجديدة", 0, 100, step=1, value=50)
-    new_weight = st.number_input("معامل المادة", 1, 5, step=1, value=1)
-    
-    if st.button("إضافة المادة"):
-        if new_subject:
-            subjects[new_subject] = {
-                "الفصل الأول": 0,
-                "نصف السنة": 0,
-                "الفصل الثاني": 0,
-                "حد النجاح": new_pass_mark,
-                "المعامل": new_weight
-            }
-            st.success(f"تمت إضافة المادة: {new_subject}")
-        else:
-            st.error("يرجى إدخال اسم المادة.")
-    
-    # حذف المواد
-    st.subheader("🗑️ حذف مادة")
-    subject_to_delete = st.selectbox("اختر المادة للحذف", list(subjects.keys()))
-    
-    if st.button("حذف المادة"):
-        del subjects[subject_to_delete]
-        st.success(f"تم حذف المادة: {subject_to_delete}")
+        # زر الطباعة
+        if st.button(current_texts["print"]):
+            st.balloons()
+            st.success("تم إرسال النتائج للطباعة" if language == "العربية" else "Results sent to printer")
+
+if language == "English":
+    st.markdown('</div>', unsafe_allow_html=True)
