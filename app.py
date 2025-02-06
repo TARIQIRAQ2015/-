@@ -3,11 +3,10 @@ import pandas as pd
 from PIL import Image
 import base64
 
-# تحميل وتحويل الأيقونة
-icon = Image.open('logo.png')
+# إعداد الصفحة
 st.set_page_config(
     page_title="المساعد لحساب الوزاري",
-    page_icon=icon,
+    page_icon="📚",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
