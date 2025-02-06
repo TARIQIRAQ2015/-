@@ -1,14 +1,21 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
+import base64
 
-# إعداد الصفحة
+# تحميل وتحويل الأيقونة
+icon = Image.open('logo.png')
 st.set_page_config(
     page_title="المساعد لحساب الوزاري",
+    page_icon=icon,
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# إخفاء عناصر Streamlit الافتراضية
+# إضافة الأيقونة كصورة متحركة في CSS
+icon_base64 = base64.b64encode(open('logo.png', 'rb').read()).decode()
+
+# إخفاء جميع العناصر الافتراضية
 hide_st_style = """
     <style>
     #MainMenu {visibility: hidden;}
@@ -23,7 +30,7 @@ hide_st_style = """
     .stDeployButton {display:none;}
     div[data-testid="stDecoration"] {display:none;}
     div[data-testid="stMarkdownContainer"] > p {margin: 0;}
-
+    
     @keyframes gradientFlow {
         0% {
             background-position: 0% 50%;
@@ -90,31 +97,6 @@ hide_st_style = """
         animation: gradientFlow 15s ease infinite;
         background-size: 200% 200%;
     }
-
-    .language-selector {
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-
-    .language-btn {
-        background: rgba(0, 9, 42, 0.8);
-        color: #fff;
-        padding: 0.5rem 1.5rem;
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        border-radius: 8px;
-        cursor: pointer;
-        margin: 0 0.5rem;
-        transition: all 0.3s ease;
-    }
-
-    .language-btn:hover {
-        background: rgba(0, 255, 157, 0.2);
-    }
-
-    .language-btn.active {
-        background: rgba(0, 255, 157, 0.2);
-        border-color: rgba(0, 255, 157, 0.5);
-    }
     
     .app-header {
         text-align: center;
@@ -168,6 +150,61 @@ hide_st_style = """
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
     }
     
+    .stButton>button {
+        width: 100%;
+        background: linear-gradient(45deg, #00092a, #00ff9d);
+        color: #fff;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 255, 157, 0.4);
+    }
+    
+    .stButton>button::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(0, 255, 157, 0.2) 40%,
+            rgba(0, 255, 157, 0.2) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
+    }
+    
+    .stNumberInput>div>div>input {
+        background: rgba(0, 9, 42, 0.9);
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        color: white;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        font-size: 1.1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }
+    
+    .stNumberInput>div>div>input:focus {
+        box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.3);
+        border-color: rgba(0, 255, 157, 0.5);
+    }
+    
     .subject-name {
         color: #00ff9d;
         font-weight: bold;
@@ -184,7 +221,25 @@ hide_st_style = """
         border: 1px solid rgba(0, 255, 157, 0.1);
         animation: float 6s ease-in-out infinite;
     }
-
+    
+    .subject-name::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(0, 255, 157, 0.1) 40%,
+            rgba(0, 255, 157, 0.1) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
+    }
+    
     .grade-label {
         color: #fff;
         font-weight: bold;
@@ -193,24 +248,7 @@ hide_st_style = """
         font-size: 1.2rem;
         text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
     }
-
-    .stNumberInput>div>div>input {
-        background: rgba(0, 9, 42, 0.9);
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        color: white;
-        border-radius: 10px;
-        padding: 0.8rem 1rem;
-        font-size: 1.1rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
-    }
-
-    .stNumberInput>div>div>input:focus {
-        box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.3);
-        border-color: rgba(0, 255, 157, 0.5);
-    }
-
+    
     .results-table {
         background: rgba(0, 9, 42, 0.9);
         border-radius: 15px;
@@ -220,7 +258,7 @@ hide_st_style = """
         border: 1px solid rgba(0, 255, 157, 0.1);
         animation: float 6s ease-in-out infinite;
     }
-
+    
     .conclusion {
         background: rgba(0, 9, 42, 0.9);
         padding: 2rem;
@@ -231,29 +269,7 @@ hide_st_style = """
         border: 1px solid rgba(0, 255, 157, 0.1);
         animation: float 6s ease-in-out infinite;
     }
-
-    .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin: 2rem 0;
-    }
-
-    .social-links a {
-        color: #00ff9d;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        background: rgba(0, 9, 42, 0.8);
-        border-radius: 8px;
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-        background: rgba(0, 255, 157, 0.1);
-        transform: translateY(-2px);
-    }
-
+    
     .footer {
         text-align: center;
         padding: 2rem;
@@ -265,162 +281,173 @@ hide_st_style = """
         border: 1px solid rgba(0, 255, 157, 0.1);
         animation: float 6s ease-in-out infinite;
     }
+    
+    .social-links {
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+    
+    .social-links a {
+        color: #00ff9d;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: rgba(0, 255, 157, 0.1);
+    }
+    
+    .social-links a:hover {
+        background: rgba(0, 255, 157, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    [dir="rtl"] .grade-columns {
+        flex-direction: row-reverse;
+    }
+    
+    [dir="ltr"] .grade-columns {
+        flex-direction: row;
+    }
     </style>
-"""
+""", unsafe_allow_html=True)
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# إضافة محدد اللغة
-lang = st.radio("", ["العربية", "English"], horizontal=True, label_visibility="collapsed")
+# إضافة الشعار والعنوان
+st.markdown(f"""
+    <div class="app-header">
+        <img src="data:image/png;base64,{icon_base64}" width="100">
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+        <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
+    </div>
+""", unsafe_allow_html=True)
 
-# إضافة العنوان
-if lang == "العربية":
-    st.markdown("""
-        <div class="app-header">
-            <h1 class="app-title">المساعد لحساب الوزاري</h1>
-            <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
-        </div>
-    """, unsafe_allow_html=True)
-else:
-    st.markdown("""
-        <div class="app-header">
-            <h1 class="app-title">Ministry Calculator</h1>
-            <div class="app-subtitle">Calculate your grades accurately and easily</div>
-        </div>
-    """, unsafe_allow_html=True)
+# اختيار اللغة
+language = st.selectbox("", ["العربية", "English"], index=0)
 
-# تعريف المواد باللغتين
-subjects = {
+# تحديد اتجاه النص بناءً على اللغة
+direction = "rtl" if language == "العربية" else "ltr"
+st.markdown(f"<style>body {{ direction: {direction}; }}</style>", unsafe_allow_html=True)
+
+# تعريف النصوص حسب اللغة
+texts = {
     "العربية": {
-        "الإسلامية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "اللغة العربية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "اللغة الإنجليزية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "الرياضيات": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "الفيزياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "الكيمياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
-        "الأحياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0}
+        "first_term": "الفصل الأول",
+        "mid_term": "نصف السنة",
+        "second_term": "الفصل الثاني",
+        "analyze": "تحليل النتائج",
+        "subjects": {
+            "الإسلامية": "الإسلامية",
+            "اللغة العربية": "اللغة العربية",
+            "اللغة الإنجليزية": "اللغة الإنجليزية",
+            "اللغة الفرنسية": "اللغة الفرنسية",
+            "الرياضيات": "الرياضيات",
+            "الفيزياء": "الفيزياء",
+            "الكيمياء": "الكيمياء",
+            "الأحياء": "الأحياء"
+        }
     },
     "English": {
-        "Islamic Studies": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "Arabic": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "English": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "French": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "Mathematics": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "Physics": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "Chemistry": {"First Term": 0, "Mid-Term": 0, "Second Term": 0},
-        "Biology": {"First Term": 0, "Mid-Term": 0, "Second Term": 0}
+        "first_term": "First Term",
+        "mid_term": "Mid Term",
+        "second_term": "Second Term",
+        "analyze": "Analyze Results",
+        "subjects": {
+            "الإسلامية": "Islamic Studies",
+            "اللغة العربية": "Arabic",
+            "اللغة الإنجليزية": "English",
+            "اللغة الفرنسية": "French",
+            "الرياضيات": "Mathematics",
+            "الفيزياء": "Physics",
+            "الكيمياء": "Chemistry",
+            "الأحياء": "Biology"
+        }
     }
 }
 
-# القيم الافتراضية
-current_lang = lang
-current_subjects = subjects[current_lang]
+current_texts = texts[language]
+
+# تعريف المواد
+subjects = {
+    "الإسلامية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "اللغة العربية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "اللغة الإنجليزية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الرياضيات": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الفيزياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الكيمياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0},
+    "الأحياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0}
+}
 
 # إدخال الدرجات
-for subject in current_subjects:
-    st.markdown(f'<div class="subject-name">{subject}</div>', unsafe_allow_html=True)
-    cols = st.columns(3)
+for subject in subjects:
+    st.markdown(f'<div class="subject-name">{current_texts["subjects"][subject]}</div>', unsafe_allow_html=True)
+    cols = st.columns(3, gap="large")
     
-    if current_lang == "العربية":
-        # ترتيب من اليمين لليسار للغة العربية
-        with cols[0]:
-            st.markdown(f'<div class="grade-label">الفصل الأول</div>', unsafe_allow_html=True)
-            current_subjects[subject]["الفصل الأول"] = st.number_input(
-                "",
-                value=int(current_subjects[subject]["الفصل الأول"]),
-                min_value=0,
-                max_value=100,
-                key=f"first_{subject}"
-            )
-        
-        with cols[1]:
-            st.markdown(f'<div class="grade-label">نصف السنة</div>', unsafe_allow_html=True)
-            current_subjects[subject]["نصف السنة"] = st.number_input(
-                "",
-                value=int(current_subjects[subject]["نصف السنة"]),
-                min_value=0,
-                max_value=100,
-                key=f"mid_{subject}"
-            )
-        
-        with cols[2]:
-            st.markdown(f'<div class="grade-label">الفصل الثاني</div>', unsafe_allow_html=True)
-            current_subjects[subject]["الفصل الثاني"] = st.number_input(
-                "",
-                value=int(current_subjects[subject]["الفصل الثاني"]),
-                min_value=0,
-                max_value=100,
-                key=f"second_{subject}"
-            )
-    else:
-        # ترتيب من اليسار لليمين للغة الإنجليزية
-        with cols[0]:
-            st.markdown(f'<div class="grade-label">First Term</div>', unsafe_allow_html=True)
-            current_subjects[subject]["First Term"] = st.number_input(
-                "",
-                value=int(current_subjects[subject]["First Term"]),
-                min_value=0,
-                max_value=100,
-                key=f"first_{subject}"
-            )
-        
-        with cols[1]:
-            st.markdown(f'<div class="grade-label">Mid-Term</div>', unsafe_allow_html=True)
-            current_subjects[subject]["Mid-Term"] = st.number_input(
-                "",
-                value=int(current_subjects[subject]["Mid-Term"]),
-                min_value=0,
-                max_value=100,
-                key=f"mid_{subject}"
-            )
-        
-        with cols[2]:
-            st.markdown(f'<div class="grade-label">Second Term</div>', unsafe_allow_html=True)
-            current_subjects[subject]["Second Term"] = st.number_input(
-                "",
-                value=int(current_subjects[subject]["Second Term"]),
-                min_value=0,
-                max_value=100,
-                key=f"second_{subject}"
-            )
+    if language == "العربية":
+        cols = cols[::-1]  # عكس ترتيب الأعمدة للغة العربية
+    
+    with cols[0]:
+        st.markdown(f'<div class="grade-label">{current_texts["first_term"]}</div>', unsafe_allow_html=True)
+        subjects[subject]["الفصل الأول"] = st.number_input(
+            "",
+            value=int(subjects[subject]["الفصل الأول"]),
+            min_value=0,
+            max_value=100,
+            key=f"first_{subject}"
+        )
+    
+    with cols[1]:
+        st.markdown(f'<div class="grade-label">{current_texts["mid_term"]}</div>', unsafe_allow_html=True)
+        subjects[subject]["نصف السنة"] = st.number_input(
+            "",
+            value=int(subjects[subject]["نصف السنة"]),
+            min_value=0,
+            max_value=100,
+            key=f"mid_{subject}"
+        )
+    
+    with cols[2]:
+        st.markdown(f'<div class="grade-label">{current_texts["second_term"]}</div>', unsafe_allow_html=True)
+        subjects[subject]["الفصل الثاني"] = st.number_input(
+            "",
+            value=int(subjects[subject]["الفصل الثاني"]),
+            min_value=0,
+            max_value=100,
+            key=f"second_{subject}"
+        )
 
-# دالة حساب الحد الأدنى المطلوب
 def calculate_minimum_required(first_term, mid_term):
     required_total = 50 * 3
     current_total = first_term + mid_term
     minimum_required = required_total - current_total
     return minimum_required
 
-# عرض النتائج
-results = []
-passing_subjects = []
-possible_subjects = []
-impossible_subjects = []
-
-for subject, scores in current_subjects.items():
-    if current_lang == "العربية":
+if st.button(current_texts["analyze"], key="calculate_btn"):
+    results = []
+    passing_subjects = []
+    possible_subjects = []
+    impossible_subjects = []
+    
+    for subject, scores in subjects.items():
         minimum_required = calculate_minimum_required(
             scores["الفصل الأول"],
             scores["نصف السنة"]
         )
-    else:
-        minimum_required = calculate_minimum_required(
-            scores["First Term"],
-            scores["Mid-Term"]
-        )
-    
-    status = ""
-    if minimum_required <= 0:
-        status = "✅ (نجاح مضمون)"
-        passing_subjects.append(subject)
-    elif minimum_required > 100:
-        status = "❌ (لا يمكن النجاح)"
-        impossible_subjects.append(subject)
-    else:
-        status = f"❌ (يجب الحصول على {minimum_required:.0f} أو أكثر للنجاح)"
-        possible_subjects.append(subject)
-    
-    if current_lang == "العربية":
+        
+        status = ""
+        if minimum_required <= 0:
+            status = "✅ (ناجح بغض النظر عن الفصل الثاني)"
+            passing_subjects.append(subject)
+        elif minimum_required > 100:
+            status = "❌ (يستحيل النجاح)"
+            impossible_subjects.append(subject)
+        else:
+            status = f"❌ (يجب الحصول على {minimum_required:.0f} أو أكثر للنجاح)"
+            possible_subjects.append(subject)
+        
         results.append({
             "المادة": subject,
             "الفصل الأول": scores["الفصل الأول"],
@@ -428,22 +455,13 @@ for subject, scores in current_subjects.items():
             "الفصل الثاني": scores["الفصل الثاني"],
             "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
         })
-    else:
-        results.append({
-            "Subject": subject,
-            "First Term": scores["First Term"],
-            "Mid-Term": scores["Mid-Term"],
-            "Second Term": scores["Second Term"],
-            "Minimum Required in Second Term": f"{minimum_required:.0f} {status}"
-        })
-
-st.markdown('<div class="results-table">', unsafe_allow_html=True)
-df = pd.DataFrame(results)
-st.table(df)
-st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('<div class="conclusion">', unsafe_allow_html=True)
-if current_lang == "العربية":
+    
+    st.markdown('<div class="results-table">', unsafe_allow_html=True)
+    df = pd.DataFrame(results)
+    st.table(df)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="conclusion">', unsafe_allow_html=True)
     if passing_subjects:
         st.write(f"المواد التي ضمنت النجاح هي: {', '.join(passing_subjects)}، حتى لو حصلت على 0 في الفصل الثاني.")
     
@@ -455,19 +473,7 @@ if current_lang == "العربية":
     
     if possible_subjects:
         st.write("بالتالي، تحتاج إلى التركيز بشكل كبير على المواد التي لديك فرصة للنجاح فيها. 🚀")
-else:
-    if passing_subjects:
-        st.write(f"Subjects that guaranteed success: {', '.join(passing_subjects)}, even if you get 0 in the second term.")
-    
-    if possible_subjects:
-        st.write(f"Subjects with a chance of success if you get the required grade in the second term: {', '.join(possible_subjects)}")
-    
-    if impossible_subjects:
-        st.write(f"Subjects that cannot be passed even if you get 100 in the second term: {', '.join(impossible_subjects)}")
-    
-    if possible_subjects:
-        st.write("Therefore, you need to focus heavily on the subjects that have a chance of success. 🚀")
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # إضافة معلومات التواصل وحقوق النشر
 st.markdown("""
