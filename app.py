@@ -24,6 +24,18 @@ hide_st_style = """
     .css-zt5igj {display: none;}
     .stDeployButton {display:none;}
     div[data-testid="stDecoration"] {display:none;}
+    
+    @keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -38,36 +50,34 @@ st.markdown("""
         direction: rtl;
     }
     
-    .main {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        padding: 2rem;
-        color: #e2e8f0;
+    body {
+        background: linear-gradient(-45deg, #ff7e5f, #feb47b, #00f5a0, #00d9f5);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
     }
     
     .app-header {
         text-align: center;
         margin-bottom: 2rem;
-        background: linear-gradient(45deg, #00f5a0 0%, #00d9f5 100%);
+        background: rgba(0, 0, 0, 0.7);
         padding: 2rem;
         border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 245, 160, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
     
     .app-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: bold;
-        background: linear-gradient(45deg, #1a1a2e 0%, #16213e 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #00f5a0;
         margin: 0;
         padding: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     
     .sponsor {
         margin-top: 1rem;
         font-size: 1.2rem;
-        color: #1a1a2e;
+        color: #fff;
     }
     
     .stButton>button {
@@ -89,7 +99,7 @@ st.markdown("""
     }
     
     .stNumberInput>div>div>input {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(0, 0, 0, 0.5);
         border: none;
         color: white;
         border-radius: 10px;
@@ -103,59 +113,57 @@ st.markdown("""
         border: none;
     }
     
-    h1, h2, h3 {
-        color: #00f5a0;
-        text-align: center;
-        margin: 2rem 0;
-        font-weight: bold;
-    }
-    
-    .results-table {
-        width: 100%;
-        margin: 2rem 0;
-        border-collapse: separate;
-        border-spacing: 0 8px;
-    }
-    
-    .results-table th {
-        background: rgba(0, 245, 160, 0.1);
-        color: #00f5a0;
-        font-weight: bold;
-        padding: 1rem;
-        text-align: center;
-    }
-    
-    .results-table td {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 1rem;
-        text-align: center;
-    }
-    
-    .conclusion {
-        background: rgba(0, 245, 160, 0.05);
-        padding: 2rem;
-        border-radius: 12px;
-        margin-top: 2rem;
-    }
-    
-    .grades-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-        margin: 2rem 0;
-    }
-    
-    .grade-input {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 1.5rem;
-        border-radius: 12px;
-    }
-    
     .grade-label {
-        color: #00f5a0;
+        color: #fff;
         font-weight: bold;
         margin-bottom: 0.5rem;
         text-align: center;
+        font-size: 1.1rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .results-table {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .conclusion {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+        color: #fff;
+    }
+    
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 12px;
+        color: #fff;
+    }
+    
+    .social-links {
+        margin-bottom: 1rem;
+    }
+    
+    .social-links a {
+        color: #00f5a0;
+        text-decoration: none;
+        margin: 0 1rem;
+        font-weight: bold;
+    }
+    
+    .social-links a:hover {
+        color: #00d9f5;
+    }
+    
+    .copyright {
+        color: #888;
+        font-size: 0.9rem;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -163,7 +171,7 @@ st.markdown("""
 # إضافة الشعار والعنوان
 st.markdown("""
     <div class="app-header">
-        <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png" width="150">
+        <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png" width="100">
         <h1 class="app-title">نظام المستقبل للحسابات الذكية</h1>
         <div class="sponsor">برعاية شبكة المساعد @SadsHelp</div>
     </div>
@@ -187,10 +195,8 @@ subjects = {
 # إدخال الدرجات
 st.markdown("### إدخال الدرجات")
 for subject in subjects:
-    st.markdown(f'<div class="grades-container">', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
+    cols = st.columns(3)
+    with cols[0]:
         st.markdown(f'<div class="grade-label">الفصل الأول</div>', unsafe_allow_html=True)
         subjects[subject]["الفصل الأول"] = st.number_input(
             "",
@@ -200,7 +206,7 @@ for subject in subjects:
             key=f"first_{subject}"
         )
     
-    with col2:
+    with cols[1]:
         st.markdown(f'<div class="grade-label">نصف السنة</div>', unsafe_allow_html=True)
         subjects[subject]["نصف السنة"] = st.number_input(
             "",
@@ -210,7 +216,7 @@ for subject in subjects:
             key=f"mid_{subject}"
         )
     
-    with col3:
+    with cols[2]:
         st.markdown(f'<div class="grade-label">الفصل الثاني</div>', unsafe_allow_html=True)
         subjects[subject]["الفصل الثاني"] = st.number_input(
             "",
@@ -219,8 +225,6 @@ for subject in subjects:
             max_value=100,
             key=f"second_{subject}"
         )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def calculate_minimum_required(first_term, mid_term):
     required_total = 50 * 3
@@ -262,13 +266,12 @@ if st.button("تحليل النتائج", key="calculate_btn"):
                 "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
             })
         
-        st.markdown("### نتائج التحليل")
+        st.markdown('<div class="results-table">', unsafe_allow_html=True)
         df = pd.DataFrame(results)
         st.table(df)
+        st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('<div class="conclusion">', unsafe_allow_html=True)
-        st.markdown("### الاستنتاج")
-        
         if passing_subjects:
             st.write(f"المواد التي ضمنت النجاح هي: {', '.join(passing_subjects)}، حتى لو حصلت على 0 في الفصل الثاني.")
         
@@ -280,5 +283,17 @@ if st.button("تحليل النتائج", key="calculate_btn"):
         
         if possible_subjects:
             st.write("بالتالي، تحتاج إلى التركيز بشكل كبير على المواد التي لديك فرصة للنجاح فيها. 🚀")
-        
         st.markdown('</div>', unsafe_allow_html=True)
+
+# إضافة معلومات التواصل وحقوق النشر
+st.markdown("""
+    <div class="footer">
+        <div class="social-links">
+            <a href="https://t.me/SadsHelp" target="_blank">شبكة المساعد التعليمية 📖</a>
+            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي 📖</a>
+        </div>
+        <div class="copyright">
+            By Tariq Al-Yaseen © 2025-2026
+        </div>
+    </div>
+""", unsafe_allow_html=True)
