@@ -3,7 +3,7 @@ import pandas as pd
 
 # إخفاء عناصر Streamlit الافتراضية
 st.set_page_config(
-    page_title="المساعد لحساب الوزاري",
+    page_title="المساعد لحساب الدخول الوزاري",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
