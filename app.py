@@ -65,25 +65,24 @@ st.markdown("""
     }
     
     .app-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #00f5a0;
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #00f5a0, #00d9f5);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         margin: 0;
         padding: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+        letter-spacing: 2px;
     }
     
     .app-subtitle {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         color: #fff;
         margin-top: 1rem;
         opacity: 0.9;
-    }
-    
-    .sponsor {
-        margin-top: 1rem;
-        font-size: 1.2rem;
-        color: #fff;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     
     .stButton>button {
@@ -124,8 +123,17 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 0.5rem;
         text-align: center;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .subject-name {
+        color: #00f5a0;
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 1rem 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     
     .results-table {
@@ -178,10 +186,8 @@ st.markdown("""
 # إضافة الشعار والعنوان
 st.markdown("""
     <div class="app-header">
-        <img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png" width="100">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
         <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
-        <div class="sponsor">برعاية شبكة المساعد @SadsHelp</div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -197,11 +203,9 @@ subjects = {
     "الأحياء": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0}
 }
 
-# إدخال اسم الطالب
-student_name = st.text_input("")
-
 # إدخال الدرجات
 for subject in subjects:
+    st.markdown(f'<div class="subject-name">{subject}</div>', unsafe_allow_html=True)
     cols = st.columns(3)
     with cols[0]:
         st.markdown(f'<div class="grade-label">الفصل الأول</div>', unsafe_allow_html=True)
@@ -240,57 +244,54 @@ def calculate_minimum_required(first_term, mid_term):
     return minimum_required
 
 if st.button("تحليل النتائج", key="calculate_btn"):
-    if not student_name:
-        st.error("الرجاء إدخال اسم الطالب")
-    else:
-        results = []
-        passing_subjects = []
-        possible_subjects = []
-        impossible_subjects = []
+    results = []
+    passing_subjects = []
+    possible_subjects = []
+    impossible_subjects = []
+    
+    for subject, scores in subjects.items():
+        minimum_required = calculate_minimum_required(
+            scores["الفصل الأول"],
+            scores["نصف السنة"]
+        )
         
-        for subject, scores in subjects.items():
-            minimum_required = calculate_minimum_required(
-                scores["الفصل الأول"],
-                scores["نصف السنة"]
-            )
-            
-            status = ""
-            if minimum_required <= 0:
-                status = "✅ (ناجح بغض النظر عن الفصل الثاني)"
-                passing_subjects.append(subject)
-            elif minimum_required > 100:
-                status = "❌ (يستحيل النجاح)"
-                impossible_subjects.append(subject)
-            else:
-                status = f"❌ (يجب الحصول على {minimum_required:.0f} أو أكثر للنجاح)"
-                possible_subjects.append(subject)
-            
-            results.append({
-                "المادة": subject,
-                "الفصل الأول": scores["الفصل الأول"],
-                "نصف السنة": scores["نصف السنة"],
-                "الفصل الثاني": scores["الفصل الثاني"],
-                "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
-            })
+        status = ""
+        if minimum_required <= 0:
+            status = "✅ (ناجح بغض النظر عن الفصل الثاني)"
+            passing_subjects.append(subject)
+        elif minimum_required > 100:
+            status = "❌ (يستحيل النجاح)"
+            impossible_subjects.append(subject)
+        else:
+            status = f"❌ (يجب الحصول على {minimum_required:.0f} أو أكثر للنجاح)"
+            possible_subjects.append(subject)
         
-        st.markdown('<div class="results-table">', unsafe_allow_html=True)
-        df = pd.DataFrame(results)
-        st.table(df)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="conclusion">', unsafe_allow_html=True)
-        if passing_subjects:
-            st.write(f"المواد التي ضمنت النجاح هي: {', '.join(passing_subjects)}، حتى لو حصلت على 0 في الفصل الثاني.")
-        
-        if possible_subjects:
-            st.write(f"المواد التالية لديك فرصة للنجاح فيها إذا حصلت على الدرجة المطلوبة في الفصل الثاني: {', '.join(possible_subjects)}")
-        
-        if impossible_subjects:
-            st.write(f"المواد التالية لا يمكن النجاح فيها حتى لو حصلت على 100 في الفصل الثاني: {', '.join(impossible_subjects)}")
-        
-        if possible_subjects:
-            st.write("بالتالي، تحتاج إلى التركيز بشكل كبير على المواد التي لديك فرصة للنجاح فيها. 🚀")
-        st.markdown('</div>', unsafe_allow_html=True)
+        results.append({
+            "المادة": subject,
+            "الفصل الأول": scores["الفصل الأول"],
+            "نصف السنة": scores["نصف السنة"],
+            "الفصل الثاني": scores["الفصل الثاني"],
+            "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
+        })
+    
+    st.markdown('<div class="results-table">', unsafe_allow_html=True)
+    df = pd.DataFrame(results)
+    st.table(df)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="conclusion">', unsafe_allow_html=True)
+    if passing_subjects:
+        st.write(f"المواد التي ضمنت النجاح هي: {', '.join(passing_subjects)}، حتى لو حصلت على 0 في الفصل الثاني.")
+    
+    if possible_subjects:
+        st.write(f"المواد التالية لديك فرصة للنجاح فيها إذا حصلت على الدرجة المطلوبة في الفصل الثاني: {', '.join(possible_subjects)}")
+    
+    if impossible_subjects:
+        st.write(f"المواد التالية لا يمكن النجاح فيها حتى لو حصلت على 100 في الفصل الثاني: {', '.join(impossible_subjects)}")
+    
+    if possible_subjects:
+        st.write("بالتالي، تحتاج إلى التركيز بشكل كبير على المواد التي لديك فرصة للنجاح فيها. 🚀")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # إضافة معلومات التواصل وحقوق النشر
 st.markdown("""
