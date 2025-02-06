@@ -28,19 +28,43 @@ hide_st_style = """
         0% {
             background-position: 0% 50%;
         }
+        25% {
+            background-position: 50% 100%;
+        }
         50% {
             background-position: 100% 50%;
+        }
+        75% {
+            background-position: 50% 0%;
         }
         100% {
             background-position: 0% 50%;
         }
     }
+
     @keyframes shine {
         0% {
             background-position: -100% 50%;
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 1;
         }
         100% {
             background-position: 200% 50%;
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+        100% {
+            transform: translateY(0px);
         }
     }
     </style>
@@ -65,24 +89,26 @@ st.markdown("""
             #000b2b,
             #00082c,
             #02082a,
-            #010a29,
+            #00ff9d,
             #000928,
             #01092d,
             #020b2c
         );
-        background-size: 500% 500%;
-        animation: gradientBG 20s ease infinite;
+        background-size: 300% 300%;
+        animation: gradientBG 15s ease infinite;
     }
     
     .app-header {
         text-align: center;
         margin-bottom: 2rem;
-        background: rgba(0, 9, 42, 0.7);
+        background: rgba(0, 9, 42, 0.8);
         padding: 2rem;
         border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 9, 42, 0.5);
+        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2);
         position: relative;
         overflow: hidden;
+        animation: float 6s ease-in-out infinite;
+        border: 1px solid rgba(0, 255, 157, 0.1);
     }
     
     .app-header::before {
@@ -95,38 +121,38 @@ st.markdown("""
         background: linear-gradient(
             45deg,
             transparent 20%,
-            rgba(255, 255, 255, 0.1) 40%,
-            rgba(255, 255, 255, 0.1) 60%,
+            rgba(0, 255, 157, 0.1) 40%,
+            rgba(0, 255, 157, 0.1) 60%,
             transparent 80%
         );
-        animation: shine 3s infinite linear;
+        animation: shine 4s infinite linear;
         pointer-events: none;
     }
     
     .app-title {
         font-size: 3.5rem;
         font-weight: 900;
-        background: linear-gradient(45deg, #fff 10%, #7fdbff 50%, #fff 90%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #fff;
         margin: 0;
         padding: 0;
-        text-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
         letter-spacing: 2px;
         position: relative;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5),
+                     0 0 20px rgba(0, 255, 157, 0.3),
+                     0 0 30px rgba(0, 255, 157, 0.2);
     }
     
     .app-subtitle {
         font-size: 1.5rem;
-        color: #7fdbff;
+        color: #00ff9d;
         margin-top: 1rem;
         font-weight: bold;
-        text-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
     }
     
     .stButton>button {
         width: 100%;
-        background: linear-gradient(45deg, #00092a, #020b2c);
+        background: linear-gradient(45deg, #00092a, #00ff9d);
         color: #fff;
         border: none;
         padding: 1rem 2rem;
@@ -134,14 +160,14 @@ st.markdown("""
         font-weight: bold;
         font-size: 1.2rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 9, 42, 0.5);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.2);
         position: relative;
         overflow: hidden;
     }
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 9, 42, 0.7);
+        box-shadow: 0 8px 25px rgba(0, 255, 157, 0.4);
     }
     
     .stButton>button::before {
@@ -154,8 +180,8 @@ st.markdown("""
         background: linear-gradient(
             45deg,
             transparent 20%,
-            rgba(127, 219, 255, 0.1) 40%,
-            rgba(127, 219, 255, 0.1) 60%,
+            rgba(0, 255, 157, 0.2) 40%,
+            rgba(0, 255, 157, 0.2) 60%,
             transparent 80%
         );
         animation: shine 3s infinite linear;
@@ -163,33 +189,37 @@ st.markdown("""
     }
     
     .stNumberInput>div>div>input {
-        background: rgba(0, 9, 42, 0.7);
-        border: 1px solid rgba(127, 219, 255, 0.2);
+        background: rgba(0, 9, 42, 0.9);
+        border: 1px solid rgba(0, 255, 157, 0.2);
         color: white;
         border-radius: 10px;
         padding: 0.8rem 1rem;
         font-size: 1.1rem;
         text-align: center;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
     }
     
     .stNumberInput>div>div>input:focus {
-        box-shadow: 0 0 0 2px rgba(127, 219, 255, 0.3);
-        border-color: rgba(127, 219, 255, 0.5);
+        box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.3);
+        border-color: rgba(0, 255, 157, 0.5);
     }
     
     .subject-name {
-        color: #7fdbff;
+        color: #00ff9d;
         font-weight: bold;
         font-size: 1.3rem;
         text-align: center;
         margin: 1rem 0;
-        text-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
-        background: rgba(0, 9, 42, 0.7);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        background: rgba(0, 9, 42, 0.9);
         padding: 1rem;
         border-radius: 10px;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
     }
     
     .subject-name::before {
@@ -202,8 +232,8 @@ st.markdown("""
         background: linear-gradient(
             45deg,
             transparent 20%,
-            rgba(127, 219, 255, 0.1) 40%,
-            rgba(127, 219, 255, 0.1) 60%,
+            rgba(0, 255, 157, 0.1) 40%,
+            rgba(0, 255, 157, 0.1) 60%,
             transparent 80%
         );
         animation: shine 3s infinite linear;
@@ -216,52 +246,40 @@ st.markdown("""
         margin-bottom: 0.5rem;
         text-align: center;
         font-size: 1.2rem;
-        text-shadow: 0 0 5px rgba(127, 219, 255, 0.5);
+        text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
     }
     
     .results-table {
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 9, 42, 0.9);
         border-radius: 15px;
         padding: 1rem;
         margin: 2rem 0;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
     }
     
     .conclusion {
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 9, 42, 0.9);
         padding: 2rem;
         border-radius: 12px;
         margin-top: 2rem;
         color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
     }
     
     .footer {
         text-align: center;
         padding: 2rem;
         margin-top: 3rem;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 9, 42, 0.9);
         border-radius: 12px;
         color: #fff;
-    }
-    
-    .social-links {
-        margin-bottom: 1rem;
-    }
-    
-    .social-links a {
-        color: #00f5a0;
-        text-decoration: none;
-        margin: 0 1rem;
-        font-weight: bold;
-    }
-    
-    .social-links a:hover {
-        color: #00d9f5;
-    }
-    
-    .copyright {
-        color: #fff;
-        font-size: 1rem;
-        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
     }
     </style>
 """, unsafe_allow_html=True)
