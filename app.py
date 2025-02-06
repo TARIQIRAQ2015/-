@@ -1,23 +1,26 @@
 import streamlit as st
-import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
-from datetime import datetime
-import json
 
 # إخفاء عناصر Streamlit الافتراضية
 st.set_page_config(
-    page_title="نظام إدارة الدرجات المتطور",
+    page_title="المساعد الوزاري",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# إخفاء عناصر واجهة المستخدم الافتراضية
+# إخفاء جميع العناصر الافتراضية
 hide_st_style = """
     <style>
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
+    [data-testid="stToolbar"] {visibility: hidden;}
+    .css-eh5xgm {visibility: hidden;}
+    .css-1dp5vir {visibility: hidden;}
+    .css-1wrcr25 {display: none;}
+    .css-6qob1r {display: none;}
+    .css-zt5igj {display: none;}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -33,197 +36,140 @@ st.markdown("""
     }
     
     .main {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         padding: 2rem;
         border-radius: 20px;
-        color: #fff;
+        color: #e2e8f0;
+    }
+    
+    .app-title {
+        text-align: center;
+        color: #38bdf8;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
+        background: linear-gradient(45deg, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 1rem;
     }
     
     .stButton>button {
         width: 100%;
-        background: linear-gradient(45deg, #4a90e2 0%, #2b6cb0 100%);
+        background: linear-gradient(45deg, #38bdf8 0%, #818cf8 100%);
         color: white;
         border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 10px;
+        padding: 1rem 2rem;
+        border-radius: 12px;
         font-weight: bold;
-        margin-top: 1rem;
+        font-size: 1.1rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
     }
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+        box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
     }
     
     div[data-testid="stVerticalBlock"] > div {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: 15px;
+        padding: 2rem;
+        border-radius: 16px;
         margin-bottom: 1.5rem;
         border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     }
     
-    .stTextInput>div>div>input {
+    .stTextInput>div>div>input, .stNumberInput>div>div>input {
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: white;
-        border-radius: 8px;
-        padding: 0.5rem 1rem;
-        text-align: right;
-    }
-    
-    .stSelectbox>div>div>div {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        border-radius: 8px;
-        text-align: right;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        text-align: center;
     }
     
     h1, h2, h3 {
-        color: #4a90e2;
-        text-align: right;
+        color: #38bdf8;
+        text-align: center;
         margin-bottom: 1.5rem;
         text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     
-    .stNumberInput>div>div>input {
+    .grade-input {
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        border-radius: 8px;
-        text-align: right;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .success-box {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        padding: 1rem;
-        border-radius: 10px;
+    .grade-input label {
+        color: #38bdf8;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .result-box {
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        padding: 1.5rem;
+        border-radius: 12px;
         margin: 1rem 0;
+        text-align: center;
     }
     
-    .warning-box {
-        background: rgba(245, 158, 11, 0.1);
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        padding: 1rem;
-        border-radius: 10px;
+    .result-box h3 {
+        color: #38bdf8;
+        margin-bottom: 1rem;
+    }
+    
+    .result-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #38bdf8;
         margin: 1rem 0;
-    }
-    
-    .error-box {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-    }
-    
-    .info-box {
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-    }
-    
-    .english-mode * {
-        direction: ltr;
-        text-align: left;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# اختيار اللغة
-language = st.selectbox("🌐 Language / اللغة", ["العربية", "English"])
-
-# تحديد النصوص حسب اللغة
-texts = {
-    "العربية": {
-        "title": "🎓 النظام المتطور لإدارة وتحليل الدرجات",
-        "student_name": "اسم الطالب",
-        "academic_year": "السنة الدراسية",
-        "calculate": "حساب النتيجة",
-        "print": "طباعة النتيجة",
-        "final_results": "النتيجة النهائية",
-        "analysis": "التحليل",
-        "advanced_analytics": "التحليلات المتقدمة",
-        "recommendations": "التوصيات",
-        "helping_marks": "إضافة 10 درجات مساعدة",
-        "passed": "ناجح",
-        "failed": "راسب",
-        "enter_name": "الرجاء إدخال اسم الطالب",
-        "print_success": "تم إرسال النتائج للطباعة"
-    },
-    "English": {
-        "title": "🎓 Advanced Grade Management System",
-        "student_name": "Student Name",
-        "academic_year": "Academic Year",
-        "calculate": "Calculate Results",
-        "print": "Print Results",
-        "final_results": "Final Results",
-        "analysis": "Analysis",
-        "advanced_analytics": "Advanced Analytics",
-        "recommendations": "Recommendations",
-        "helping_marks": "Add 10 Helping Marks",
-        "passed": "Passed",
-        "failed": "Failed",
-        "enter_name": "Please enter student name",
-        "print_success": "Results sent to printer"
-    }
-}
-
-# تعيين اللغة الحالية
-current_texts = texts[language]
-
-# إضافة class للتحكم في المحاذاة
-if language == "English":
-    st.markdown('<div class="english-mode">', unsafe_allow_html=True)
-
 # عنوان التطبيق
-st.title(current_texts["title"])
+st.markdown('<h1 class="app-title">المساعد الوزاري</h1>', unsafe_allow_html=True)
 
 # بيانات الطالب
-col1, col2 = st.columns(2)
-with col1:
-    student_name = st.text_input(current_texts["student_name"])
-with col2:
-    academic_year = st.selectbox(current_texts["academic_year"], ["2024-2025", "2025-2026", "2026-2027"])
+st.markdown("### معلومات الطالب")
+student_name = st.text_input("اسم الطالب")
 
 # تعريف المواد وحدود النجاح
 subjects = {
-    "الإسلامية": {"الفصل الأول": 75, "نصف السنة": 77, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 1},
-    "اللغة العربية": {"الفصل الأول": 30, "نصف السنة": 40, "الفصل الثاني": 0, "حد النجاح": 80, "المعامل": 2},
-    "اللغة الإنجليزية": {"الفصل الأول": 30, "نصف السنة": 48, "الفصل الثاني": 0, "حد النجاح": 72, "المعامل": 2},
-    "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50, "المعامل": 1},
-    "الرياضيات": {"الفصل الأول": 50, "نصف السنة": 32, "الفصل الثاني": 0, "حد النجاح": 68, "المعامل": 3},
-    "الفيزياء": {"الفصل الأول": 30, "نصف السنة": 8, "الفصل الثاني": 0, "حد النجاح": 112, "المعامل": 2},
-    "الكيمياء": {"الفصل الأول": 14, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 136, "المعامل": 2},
-    "الأحياء": {"الفصل الأول": 30, "نصف السنة": 14, "الفصل الثاني": 0, "حد النجاح": 106, "المعامل": 2}
+    "الإسلامية": {"الفصل الأول": 75, "نصف السنة": 77, "الفصل الثاني": 0, "حد النجاح": 50},
+    "اللغة العربية": {"الفصل الأول": 30, "نصف السنة": 40, "الفصل الثاني": 0, "حد النجاح": 80},
+    "اللغة الإنجليزية": {"الفصل الأول": 30, "نصف السنة": 48, "الفصل الثاني": 0, "حد النجاح": 72},
+    "اللغة الفرنسية": {"الفصل الأول": 0, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 50},
+    "الرياضيات": {"الفصل الأول": 50, "نصف السنة": 32, "الفصل الثاني": 0, "حد النجاح": 68},
+    "الفيزياء": {"الفصل الأول": 30, "نصف السنة": 8, "الفصل الثاني": 0, "حد النجاح": 112},
+    "الكيمياء": {"الفصل الأول": 14, "نصف السنة": 0, "الفصل الثاني": 0, "حد النجاح": 136},
+    "الأحياء": {"الفصل الأول": 30, "نصف السنة": 14, "الفصل الثاني": 0, "حد النجاح": 106}
 }
 
-# الإعدادات
-add_helping_marks = st.checkbox(current_texts["helping_marks"])
-
-# إدخال الدرجات في جدول منظم
-st.subheader("📝 درجات المواد")
+# إدخال درجات الفصل الثاني
+st.markdown("### درجات الفصل الثاني")
 for subject, scores in subjects.items():
-    cols = st.columns([3, 1])
-    with cols[0]:
-        st.markdown(f"**{subject}**")
-    with cols[1]:
+    with st.container():
+        st.markdown(f'<div class="grade-input">', unsafe_allow_html=True)
         scores["الفصل الثاني"] = st.number_input(
-            f"درجة الفصل الثاني - {subject}",
+            f"📚 {subject}",
             value=float(scores["الفصل الثاني"]),
             min_value=0.0,
             max_value=100.0,
-            step=1.0,
-            key=f"grade_{subject}"
+            step=1.0
         )
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def calculate_possibility(current_score, required_score, max_possible):
     remaining_score_needed = required_score - current_score
@@ -232,13 +178,12 @@ def calculate_possibility(current_score, required_score, max_possible):
     return False, remaining_score_needed
 
 # زر الحساب
-if st.button(current_texts["calculate"], key="calculate_btn"):
+if st.button("تحليل النتائج", key="calculate_btn"):
     if not student_name:
-        st.error(current_texts["enter_name"])
+        st.error("الرجاء إدخال اسم الطالب")
     else:
-        all_scores = []
+        st.markdown("### نتائج التحليل")
         
-        # حساب النتائج
         for subject, scores in subjects.items():
             current_score = (scores["الفصل الأول"] + scores["نصف السنة"]) / 2
             is_possible, needed_score = calculate_possibility(
@@ -247,125 +192,21 @@ if st.button(current_texts["calculate"], key="calculate_btn"):
                 100
             )
             
-            status_text = ""
-            if is_possible:
-                if needed_score <= 0:
-                    status_text = "✅ (ناجح بغض النظر عن الفصل الثاني)"
+            with st.container():
+                st.markdown('<div class="result-box">', unsafe_allow_html=True)
+                st.markdown(f"#### {subject}")
+                st.markdown(f'<div class="result-value">{current_score:.1f}</div>', unsafe_allow_html=True)
+                
+                if not is_possible:
+                    st.error("❌ يستحيل النجاح في هذه المادة")
+                elif needed_score <= 0:
+                    st.success("✅ ناجح بغض النظر عن الفصل الثاني")
                 else:
-                    status_text = f"⚠️ (يجب الحصول على {needed_score:.1f} أو أكثر للنجاح)"
-            else:
-                status_text = "❌ (يستحيل النجاح)"
-            
-            all_scores.append({
-                "المادة": subject,
-                "الدرجة الحالية": current_score,
-                "حد النجاح": scores["حد النجاح"],
-                "الحالة": status_text
-            })
-        
-        # عرض النتائج في جدول منظم
-        df_results = pd.DataFrame(all_scores)
-        st.subheader(current_texts["final_results"])
-        st.table(df_results)
-        
-        # الرسوم البيانية
-        st.subheader(current_texts["advanced_analytics"])
-        
-        # مخطط شريطي مقارن
-        fig1 = go.Figure()
-        fig1.add_trace(go.Bar(
-            name='الدرجة الحالية',
-            x=df_results['المادة'],
-            y=df_results['الدرجة الحالية'],
-            marker_color='rgba(74, 144, 226, 0.8)'
-        ))
-        
-        fig1.add_trace(go.Bar(
-            name='حد النجاح',
-            x=df_results['المادة'],
-            y=df_results['حد النجاح'],
-            marker_color='rgba(255, 99, 132, 0.8)'
-        ))
-        
-        fig1.update_layout(
-            title='مقارنة الدرجات الحالية مع حد النجاح',
-            barmode='group',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
-            showlegend=True
-        )
-        
-        st.plotly_chart(fig1, use_container_width=True)
-        
-        # مخطط راداري
-        fig2 = go.Figure()
-        fig2.add_trace(go.Scatterpolar(
-            r=df_results['الدرجة الحالية'],
-            theta=df_results['المادة'],
-            fill='toself',
-            name='الدرجات الحالية',
-            line_color='rgba(74, 144, 226, 0.8)'
-        ))
-        
-        fig2.update_layout(
-            polar=dict(
-                radialaxis=dict(
-                    visible=True,
-                    range=[0, 100],
-                    color='white'
-                ),
-                bgcolor='rgba(0,0,0,0)'
-            ),
-            showlegend=True,
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
-            title='التوزيع الشعاعي للدرجات'
-        )
-        
-        st.plotly_chart(fig2, use_container_width=True)
-        
-        # التوصيات المحسنة
-        st.subheader(current_texts["recommendations"])
-        for subject, scores in subjects.items():
-            current_score = (scores["الفصل الأول"] + scores["نصف السنة"]) / 2
-            is_possible, needed_score = calculate_possibility(
-                current_score,
-                scores["حد النجاح"],
-                100
-            )
-            
-            if not is_possible:
-                with st.error(f"🚫 {subject}"):
-                    st.write("يستحيل النجاح في هذه المادة. نقترح التركيز على المواد الأخرى.")
-            elif needed_score > 0:
-                if needed_score > 90:
-                    with st.error(f"⚠️ {subject}"):
-                        st.write(f"تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني. هذا تحدٍ صعب جداً.")
-                        st.write("توصيات:")
-                        st.write("- التركيز المكثف على هذه المادة")
-                        st.write("- طلب مساعدة إضافية من المعلم")
-                        st.write("- تخصيص وقت دراسة إضافي")
-                elif needed_score > 70:
-                    with st.warning(f"⚠️ {subject}"):
-                        st.write(f"تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني. يتطلب جهداً كبيراً.")
-                        st.write("توصيات:")
-                        st.write("- مراجعة المواضيع السابقة")
-                        st.write("- حل تمارين إضافية")
-                else:
-                    with st.info(f"ℹ️ {subject}"):
-                        st.write(f"تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني. هدف قابل للتحقيق.")
-                        st.write("توصيات:")
-                        st.write("- المحافظة على مستوى الدراسة الحالي")
-                        st.write("- مراجعة دورية للمواد")
-            else:
-                with st.success(f"✅ {subject}"):
-                    st.write("أنت ناجح بالفعل! حافظ على مستواك الممتاز.")
-
-        # زر الطباعة
-        if st.button(current_texts["print"]):
-            st.balloons()
-            st.success(current_texts["print_success"])
-
-if language == "English":
-    st.markdown('</div>', unsafe_allow_html=True)
+                    if needed_score > 90:
+                        st.error(f"⚠️ تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني")
+                    elif needed_score > 70:
+                        st.warning(f"⚠️ تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني")
+                    else:
+                        st.info(f"ℹ️ تحتاج إلى {needed_score:.1f} درجة في الفصل الثاني")
+                
+                st.markdown('</div>', unsafe_allow_html=True)
