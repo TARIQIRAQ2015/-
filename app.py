@@ -488,10 +488,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# تحديث CSS للعنوان مع إضافة تأثيرات جديدة
-st.markdown("""
+# تحديث CSS للعنوان مع إضافة دعم الاتجاه
+st.markdown(f"""
     <style>
-    .app-header {
+    .app-header {{
         all: unset;
         display: flex;
         justify-content: center;
@@ -508,100 +508,82 @@ st.markdown("""
         cursor: default !important;
         pointer-events: none !important;
         animation: headerGlow 3s ease-in-out infinite alternate;
-    }
+        direction: {direction};  /* ضبط الاتجاه بناءً على اللغة */
+    }}
     
-    .header-content {
+    .header-content {{
         position: relative;
         z-index: 2;
-    }
+        text-align: center;  /* تأكيد التوسيط */
+    }}
     
-    .app-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            45deg,
-            transparent,
-            rgba(0, 255, 157, 0.1),
-            transparent
-        );
-        animation: shine 3s infinite linear;
-        pointer-events: none;
-    }
-    
-    .app-title {
+    .app-title {{
         all: unset;
         display: block;
         color: #00ff9d !important;
         font-size: 3.2rem !important;
         font-weight: 800 !important;
         margin-bottom: 1.5rem !important;
-        text-align: center !important;
         text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
                      0 0 30px rgba(0, 255, 157, 0.3) !important;
         letter-spacing: 2px !important;
         animation: titlePulse 3s ease-in-out infinite alternate;
-    }
+    }}
     
-    .app-subtitle {
+    .app-subtitle {{
         all: unset;
         display: block;
         color: rgba(255, 255, 255, 0.9) !important;
         font-size: 1.6rem !important;
-        text-align: center !important;
         margin-top: 1rem !important;
         font-weight: 500 !important;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
         letter-spacing: 1px !important;
-    }
+    }}
     
-    @keyframes headerGlow {
-        0% {
+    @keyframes headerGlow {{
+        0% {{
             box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
-        }
-        100% {
+        }}
+        100% {{
             box-shadow: 0 8px 32px rgba(0, 255, 157, 0.3);
-        }
-    }
+        }}
+    }}
     
-    @keyframes shine {
-        0% {
+    @keyframes shine {{
+        0% {{
             transform: translateX(-100%) rotate(45deg);
-        }
-        100% {
+        }}
+        100% {{
             transform: translateX(100%) rotate(45deg);
-        }
-    }
+        }}
+    }}
     
-    @keyframes titlePulse {
-        0% {
+    @keyframes titlePulse {{
+        0% {{
             text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
                          0 0 30px rgba(0, 255, 157, 0.3);
-        }
-        100% {
+        }}
+        100% {{
             text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
                          0 0 40px rgba(0, 255, 157, 0.4);
-        }
-    }
+        }}
+    }}
     
-    /* تحسين التجاوب مع الشاشات المختلفة */
-    @media (max-width: 768px) {
-        .app-title {
+    @media (max-width: 768px) {{
+        .app-title {{
             font-size: 2.5rem !important;
-        }
+        }}
         
-        .app-subtitle {
+        .app-subtitle {{
             font-size: 1.3rem !important;
-        }
+        }}
         
-        .app-header {
+        .app-header {{
             padding: 2rem 1rem !important;
             margin: 1rem auto !important;
-        }
-    }
+        }}
+    }}
     </style>
 """, unsafe_allow_html=True)
 
