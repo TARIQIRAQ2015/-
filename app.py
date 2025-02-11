@@ -319,6 +319,150 @@ hide_st_style = """
     [dir="ltr"] .grade-columns {
         flex-direction: row;
     }
+
+    /* تحسين شكل حقول الإدخال */
+    .stNumberInput > div > div > input {
+        background: rgba(0, 9, 42, 0.7) !important;
+        color: #00ff9d !important;
+        border: 2px solid rgba(0, 255, 157, 0.2) !important;
+        border-radius: 15px !important;
+        padding: 15px !important;
+        font-size: 1.2rem !important;
+        text-align: center !important;
+        transition: all 0.3s ease !important;
+        font-weight: bold !important;
+    }
+
+    .stNumberInput > div > div > input:focus {
+        border-color: #00ff9d !important;
+        box-shadow: 0 0 15px rgba(0, 255, 157, 0.3) !important;
+        transform: translateY(-2px);
+    }
+
+    /* تحسين شكل عناوين المواد */
+    .subject-name {
+        color: #00ff9d;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 1.5rem 0;
+        padding: 1.2rem;
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.1);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    }
+
+    /* تحسين شكل عناوين الفصول */
+    .grade-label {
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+    }
+
+    /* تحسين شكل زر التحليل */
+    .stButton > button {
+        width: 100%;
+        background: linear-gradient(45deg, #000d36, #001f5c) !important;
+        color: #00ff9d !important;
+        border: 2px solid rgba(0, 255, 157, 0.3) !important;
+        padding: 1.5rem !important;
+        border-radius: 15px !important;
+        font-weight: bold !important;
+        font-size: 1.4rem !important;
+        transition: all 0.3s ease !important;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        margin: 2rem 0;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2) !important;
+        border-color: #00ff9d !important;
+    }
+
+    /* تحسين شكل جدول النتائج */
+    .results-table {
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+    }
+
+    .dataframe {
+        font-size: 1.1rem !important;
+        text-align: center !important;
+    }
+
+    .dataframe th {
+        background: rgba(0, 255, 157, 0.1) !important;
+        color: #00ff9d !important;
+        padding: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .dataframe td {
+        color: white !important;
+        padding: 12px !important;
+    }
+
+    /* تحسين شكل قسم النتائج */
+    .conclusion {
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        padding: 2rem;
+        border-radius: 20px;
+        margin: 2rem 0;
+        color: white;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+        font-size: 1.2rem;
+        line-height: 1.8;
+    }
+
+    /* تحسين شكل التذييل */
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 20px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .social-links {
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .social-links a {
+        color: #00ff9d;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        background: rgba(0, 255, 157, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .social-links a:hover {
+        background: rgba(0, 255, 157, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.2);
+    }
+
+    .copyright {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+    }
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
