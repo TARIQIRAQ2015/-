@@ -679,19 +679,25 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             '</div>'
         )
 
-    # تحديث عرض النصائح مع إضافة التقييم النهائي
+    # تحديث عرض النصائح مع التفاصيل
     st.markdown(f"""
         <div class="advice-section">
             <div class="advice-item success">
-                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str}
             </div>
             <br>
             <div class="advice-item warning">
-                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+                ⚠️ المواد التي تحتاج إلى تحسين:
+                <div class="improvement-details">
+                    {"<br>".join([
+                        f"• {subject}: تحتاج إلى {results[i]['الحد الأدنى المطلوب في الفصل الثاني'].replace('❌ (', '').replace(')', '')} درجة في الفصل الثاني"
+                        for i, subject in enumerate(need_improvement_subjects)
+                    ])}
+                </div>
             </div>
             <br>
             <div class="advice-item danger">
-                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
+                ❌ المواد التي يستحيل النجاح فيها: {impossible_subjects_str}
             </div>
             <br>
             <div class="final-advice-separator"></div>
@@ -699,19 +705,14 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         </div>
     """, unsafe_allow_html=True)
 
-# إضافة CSS للتقييم النهائي
+# إضافة CSS للتفاصيل
 st.markdown("""
     <style>
-    .final-advice-separator {
-        border-top: 1px solid rgba(0, 255, 157, 0.2);
-        margin: 1rem 0;
-    }
-    
-    .final-advice {
-        font-size: 1.2rem !important;
-        padding: 1.2rem !important;
-        margin-top: 1rem !important;
-        border-width: 2px !important;
+    .improvement-details {
+        margin-top: 0.5rem;
+        padding-right: 1rem;
+        font-size: 1rem;
+        line-height: 1.8;
     }
     </style>
 """, unsafe_allow_html=True)
