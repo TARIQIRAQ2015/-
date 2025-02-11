@@ -26,18 +26,459 @@ st.set_page_config(
 # إخفاء جميع العناصر الافتراضية
 hide_st_style = """
     <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    [data-testid="stToolbar"] {visibility: hidden;}
+    .css-eh5xgm {visibility: hidden;}
+    .css-1dp5vir {visibility: hidden;}
+    .css-1wrcr25 {display: none;}
+    .css-6qob1r {display: none;}
+    .css-zt5igj {display: none;}
+    .stDeployButton {display:none;}
+    div[data-testid="stDecoration"] {display:none;}
+    div[data-testid="stMarkdownContainer"] > p {margin: 0;}
+    
+    @keyframes gradientFlow {
+        0% {
+            background-position: 0% 50%;
+            background-color: #00092a;
+        }
+        10% {
+            background-color: #000829;
+        }
+        20% {
+            background-color: #010a2b;
+        }
+        30% {
+            background-color: #000b2b;
+        }
+        40% {
+            background-color: #00082c;
+        }
+        50% {
+            background-position: 100% 50%;
+            background-color: #02082a;
+        }
+        60% {
+            background-color: #010a29;
+        }
+        70% {
+            background-color: #000928;
+        }
+        80% {
+            background-color: #01092d;
+        }
+        90% {
+            background-color: #020b2c;
+        }
+        100% {
+            background-position: 0% 50%;
+            background-color: #00092a;
+        }
+    }
+
+    @keyframes shine {
+        0% {
+            background-position: -100% 50%;
+            opacity: 0.3;
+        }
+        100% {
+            background-position: 200% 50%;
+            opacity: 0.6;
+        }
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    body {
+        animation: gradientFlow 15s ease infinite;
+        background-size: 200% 200%;
+    }
+    
+    .app-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        background: rgba(0, 9, 42, 0.8);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2);
+        position: relative;
+        overflow: hidden;
+        animation: float 6s ease-in-out infinite;
+        border: 1px solid rgba(0, 255, 157, 0.1);
+    }
+    
+    .app-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(0, 255, 157, 0.1) 40%,
+            rgba(0, 255, 157, 0.1) 60%,
+            transparent 80%
+        );
+        animation: shine 4s infinite linear;
+        pointer-events: none;
+    }
+    
+    .app-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        letter-spacing: 2px;
+        position: relative;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5),
+                     0 0 20px rgba(0, 255, 157, 0.3),
+                     0 0 30px rgba(0, 255, 157, 0.2);
+    }
+    
+    .app-subtitle {
+        font-size: 1.5rem;
+        color: #00ff9d;
+        margin-top: 1rem;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    }
+    
+    .stButton>button {
+        width: 100%;
+        background: linear-gradient(45deg, #00092a, #00ff9d);
+        color: #fff;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 255, 157, 0.4);
+    }
+    
+    .stButton>button::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(0, 255, 157, 0.2) 40%,
+            rgba(0, 255, 157, 0.2) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
+    }
+    
+    .stNumberInput>div>div>input {
+        background: rgba(0, 9, 42, 0.9);
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        color: white;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        font-size: 1.1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }
+    
+    .stNumberInput>div>div>input:focus {
+        box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.3);
+        border-color: rgba(0, 255, 157, 0.5);
+    }
+    
+    .subject-name {
+        color: #00ff9d;
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 1rem 0;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        background: rgba(0, 9, 42, 0.9);
+        padding: 1rem;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .subject-name::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(0, 255, 157, 0.1) 40%,
+            rgba(0, 255, 157, 0.1) 60%,
+            transparent 80%
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
+    }
+    
+    .grade-label {
+        color: #fff;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        font-size: 1.2rem;
+        text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+    }
+    
+    .results-table {
+        background: rgba(0, 9, 42, 0.9);
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .conclusion {
+        background: rgba(0, 9, 42, 0.9);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        background: rgba(0, 9, 42, 0.9);
+        border-radius: 12px;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        border: 1px solid rgba(0, 255, 157, 0.1);
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .social-links {
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+    
+    .social-links a {
+        color: #00ff9d;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: rgba(0, 255, 157, 0.1);
+    }
+    
+    .social-links a:hover {
+        background: rgba(0, 255, 157, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    [dir="rtl"] .grade-columns {
+        flex-direction: row-reverse;
+    }
+    
+    [dir="ltr"] .grade-columns {
+        flex-direction: row;
+    }
+
+    /* تحسين شكل حقول الإدخال */
+    .stNumberInput > div > div > input {
+        background: rgba(0, 9, 42, 0.7) !important;
+        color: #00ff9d !important;
+        border: 2px solid rgba(0, 255, 157, 0.2) !important;
+        border-radius: 15px !important;
+        padding: 15px !important;
+        font-size: 1.2rem !important;
+        text-align: center !important;
+        transition: all 0.3s ease !important;
+        font-weight: bold !important;
+    }
+
+    .stNumberInput > div > div > input:focus {
+        border-color: #00ff9d !important;
+        box-shadow: 0 0 15px rgba(0, 255, 157, 0.3) !important;
+        transform: translateY(-2px);
+    }
+
+    /* تحسين شكل عناوين المواد */
+    .subject-name {
+        color: #00ff9d;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 1.5rem 0;
+        padding: 1.2rem;
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.1);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    }
+
+    /* تحسين شكل عناوين الفصول */
+    .grade-label {
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+    }
+
+    /* تحسين شكل زر التحليل */
+    .stButton > button {
+        width: 100%;
+        background: linear-gradient(45deg, #000d36, #001f5c) !important;
+        color: #00ff9d !important;
+        border: 2px solid rgba(0, 255, 157, 0.3) !important;
+        padding: 1.5rem !important;
+        border-radius: 15px !important;
+        font-weight: bold !important;
+        font-size: 1.4rem !important;
+        transition: all 0.3s ease !important;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        margin: 2rem 0;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2) !important;
+        border-color: #00ff9d !important;
+    }
+
+    /* تحسين شكل جدول النتائج */
+    .results-table {
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+    }
+
+    .dataframe {
+        font-size: 1.1rem !important;
+        text-align: center !important;
+    }
+
+    .dataframe th {
+        background: rgba(0, 255, 157, 0.1) !important;
+        color: #00ff9d !important;
+        padding: 15px !important;
+        font-weight: bold !important;
+    }
+
+    .dataframe td {
+        color: white !important;
+        padding: 12px !important;
+    }
+
+    /* تحسين شكل قسم النتائج */
+    .conclusion {
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        padding: 2rem;
+        border-radius: 20px;
+        margin: 2rem 0;
+        color: white;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+        font-size: 1.2rem;
+        line-height: 1.8;
+    }
+
+    /* تحسين شكل التذييل */
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 20px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .social-links {
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .social-links a {
+        color: #00ff9d;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        background: rgba(0, 255, 157, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .social-links a:hover {
+        background: rgba(0, 255, 157, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.2);
+    }
+
+    .copyright {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+    }
+
+    /* تعديل ترتيب الأعمدة حسب اللغة */
+    .dataframe thead tr {{
+        display: flex;
+        flex-direction: {direction == 'rtl' and 'row' or 'row-reverse'};
+    }}
+    
+    .dataframe tbody tr {{
+        display: flex;
+        flex-direction: {direction == 'rtl' and 'row' or 'row-reverse'};
+    }}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# اختيار اللغة (نقل هذا الجزء إلى الأعلى)
-language = st.selectbox("", ["العربية", "English"], index=0)
-direction = 'rtl' if language == "العربية" else 'ltr'
-
-# تعديل العنوان الرئيسي مع تحسين المحاذاة
+# تعديل العنوان الرئيسي
 st.markdown("""
     <div class="app-header">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
@@ -45,40 +486,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # تحديث CSS للعنوان
-st.markdown("""
+st.markdown(f"""
     <style>
-    .app-header {
+    .app-header {{
         text-align: center;
         margin: 1rem 0 2rem 0;
         padding: 1rem;
-        width: 100%;
-    }
+    }}
     
-    .app-title {
+    .app-title {{
         color: #00ff9d;
         font-size: 2rem;
         font-weight: bold;
         margin: 0;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        text-align: center;
-        width: 100%;
-        display: block;
-    }
-
-    /* تحسين شكل قائمة اختيار اللغة */
-    .stSelectbox {
-        margin-bottom: 2rem;
-    }
-
-    .stSelectbox > div > div {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    /* إخفاء تسمية قائمة اختيار اللغة */
-    .stSelectbox label {
-        display: none;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -107,7 +529,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# اختيار اللغة
+language = st.selectbox("", ["العربية", "English"], index=0)
+
 # تحديد اتجاه النص بناءً على اللغة
+direction = "rtl" if language == "العربية" else "ltr"
 st.markdown(f"<style>body {{ direction: {direction}; }}</style>", unsafe_allow_html=True)
 
 # تعريف النصوص حسب اللغة
