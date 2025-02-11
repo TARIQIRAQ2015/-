@@ -924,38 +924,59 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     # تحديث CSS للجداول
     st.markdown(f"""
         <style>
-        /* تنسيق الجداول */
+        /* تنسيق أساسي للجدول */
         .dataframe {{
             direction: {direction};
             background: rgba(0, 9, 42, 0.8) !important;
-            border-radius: 10px !important;
+            border-radius: 15px !important;
             border: 1px solid rgba(0, 255, 157, 0.2) !important;
             color: #fff !important;
             width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            margin: 1rem 0 !important;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1) !important;
         }}
 
-        /* تنسيق رؤوس الأعمدة */
-        .dataframe thead tr th {{
+        /* تنسيق رأس الجدول */
+        .dataframe thead {{
+            background: rgba(0, 9, 42, 0.95) !important;
+        }}
+
+        .dataframe thead th {{
             background: rgba(0, 255, 157, 0.1) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
-            padding: 1rem !important;
+            padding: 1.2rem 1rem !important;
             text-align: center !important;
+            border-bottom: 2px solid rgba(0, 255, 157, 0.2) !important;
+            font-size: 1.1rem !important;
         }}
 
         /* تنسيق خلايا الجدول */
-        .dataframe tbody tr td {{
-            padding: 0.8rem !important;
+        .dataframe tbody td {{
+            padding: 1rem !important;
             text-align: center !important;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
+            transition: all 0.3s ease !important;
+        }}
+
+        /* تنسيق الصفوف */
+        .dataframe tbody tr {{
+            transition: all 0.3s ease !important;
+        }}
+
+        .dataframe tbody tr:hover {{
+            background: rgba(0, 255, 157, 0.05) !important;
         }}
 
         /* تنسيق عمود الفهرس */
         .dataframe .index {{
-            width: 50px !important;
-            text-align: center !important;
+            width: 60px !important;
             background: rgba(0, 255, 157, 0.05) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
+            border-right: 2px solid rgba(0, 255, 157, 0.2) !important;
         }}
 
         /* تنسيق خاص للغة العربية */
@@ -968,42 +989,63 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             display: flex !important;
             flex-direction: row !important;
         }}
-        
+
         [dir="rtl"] .dataframe th,
         [dir="rtl"] .dataframe td {{
             flex: 1 !important;
-            text-align: center !important;
-            justify-content: center !important;
-            align-items: center !important;
             display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            min-width: 0 !important;
+            word-wrap: break-word !important;
         }}
 
-        /* تنسيق خاص للفهرس في اللغة العربية */
-        [dir="rtl"] .dataframe .index {{
-            order: -1 !important;  /* يجعل الفهرس في آخر الصف (بجانب المادة) */
-            border-right: 2px solid rgba(0, 255, 157, 0.2) !important;
+        /* تنسيق عمود المادة */
+        [dir="rtl"] .dataframe td:last-child {{
+            font-weight: bold !important;
+            color: #00ff9d !important;
         }}
 
-        /* تنسيق عرض الأعمدة */
-        .dataframe th,
+        /* تنسيق عمود الحد الأدنى المطلوب */
+        [dir="rtl"] .dataframe td:first-child {{
+            color: #ff4848 !important;
+            font-weight: bold !important;
+        }}
+
+        /* تنسيق الأعمدة الوسطى */
+        [dir="rtl"] .dataframe td:not(:first-child):not(:last-child) {{
+            color: #ffffff !important;
+        }}
+
+        /* تحسين مظهر الأرقام */
+        .dataframe td:not(:first-child):not(:last-child) {{
+            font-family: monospace !important;
+            font-size: 1.1rem !important;
+        }}
+
+        /* إخفاء الحدود الزائدة */
+        .dataframe thead th:first-child {{
+            border-top-right-radius: 15px !important;
+        }}
+
+        .dataframe thead th:last-child {{
+            border-top-left-radius: 15px !important;
+        }}
+
+        .dataframe tbody tr:last-child td:first-child {{
+            border-bottom-right-radius: 15px !important;
+        }}
+
+        .dataframe tbody tr:last-child td:last-child {{
+            border-bottom-left-radius: 15px !important;
+        }}
+
+        /* تحسين المسافات بين الأعمدة */
+        .dataframe th, 
         .dataframe td {{
-            width: 20% !important;
-        }}
-
-        /* تنسيق الصفوف عند التحويم */
-        .dataframe tbody tr:hover {{
-            background: rgba(0, 255, 157, 0.05) !important;
-        }}
-
-        /* تنسيق الحدود بين الخلايا */
-        .dataframe td,
-        .dataframe th {{
-            border-left: 1px solid rgba(0, 255, 157, 0.1) !important;
-        }}
-
-        .dataframe td:last-child,
-        .dataframe th:last-child {{
-            border-left: none !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -1159,7 +1201,7 @@ st.markdown("""
     <div class="footer">
         <div class="social-links">
             <a href="https://t.me/SadsHelp" target="_blank">شبكة المساعد التعليمية 📖</a>
-            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي 📖</a>
+            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي ��</a>
         </div>
         <div class="copyright">
             By Tariq Al-Yaseen © 2025-2026
