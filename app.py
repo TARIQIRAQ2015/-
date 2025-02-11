@@ -852,23 +852,33 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             status = f"❌ ({minimum_required:.0f})"
             need_improvement_subjects.append(subject)
         
-        results.append({
-            "المادة": subject,
-            "الفصل الأول": scores["الفصل الأول"],
-            "نصف السنة": scores["نصف السنة"],
-            "الفصل الثاني": scores["الفصل الثاني"],
-            "الحد الأدنى المطلوب في الفصل الثاني": status
-        })
+        if language == "العربية":
+            results.append({
+                "المادة": subject,
+                "الفصل الأول": scores["الفصل الأول"],
+                "نصف السنة": scores["نصف السنة"],
+                "الفصل الثاني": scores["الفصل الثاني"],
+                "الحد الأدنى المطلوب في الفصل الثاني": status
+            })
+        else:
+            results.append({
+                "Subject": current_texts["subjects"][subject],
+                "First Term": scores["الفصل الأول"],
+                "Mid Term": scores["نصف السنة"],
+                "Second Term": scores["الفصل الثاني"],
+                "Minimum Required": status
+            })
     
     # عند إنشاء DataFrame وعرض النتائج
     if language == "العربية":
         # إعادة ترتيب الأعمدة للغة العربية
-        df = pd.DataFrame(results)
-        df = df[["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]]
+        columns = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
     else:
         # ترتيب الأعمدة للغة الإنجليزية
-        df = pd.DataFrame(results)
-        df = df[["Subject", "First Term", "Mid Term", "Second Term", "Minimum Required"]]
+        columns = ["Subject", "First Term", "Mid Term", "Second Term", "Minimum Required"]
+
+    df = pd.DataFrame(results)
+    df = df[columns]
 
     # تحديث CSS للجداول
     st.markdown(f"""
