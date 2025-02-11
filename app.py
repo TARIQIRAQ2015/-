@@ -601,13 +601,13 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         
         status = ""
         if minimum_required <= 0:
-            status = "✅ (ناجح بغض النظر عن الفصل الثاني)"
+            status = f"✅ ({minimum_required:.0f})"
             passing_subjects.append(subject)
         elif minimum_required > 100:
-            status = "❌ (يستحيل النجاح)"
+            status = f"❌ ({minimum_required:.0f})"
             impossible_subjects.append(subject)
         else:
-            status = f"❌ (يجب الحصول على {minimum_required:.0f} أو أكثر للنجاح)"
+            status = f"❌ ({minimum_required:.0f})"
             possible_subjects.append(subject)
         
         results.append({
@@ -615,7 +615,7 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             "الفصل الأول": scores["الفصل الأول"],
             "نصف السنة": scores["نصف السنة"],
             "الفصل الثاني": scores["الفصل الثاني"],
-            "الحد الأدنى المطلوب في الفصل الثاني": f"{minimum_required:.0f} {status}"
+            "الحد الأدنى المطلوب في الفصل الثاني": status
         })
     
     st.markdown('<div class="results-table">', unsafe_allow_html=True)
@@ -623,19 +623,36 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     st.table(df)
     st.markdown('</div>', unsafe_allow_html=True)
     
+    # تعديل طريقة عرض النصائح
     st.markdown('<div class="conclusion">', unsafe_allow_html=True)
-    if passing_subjects:
-        st.write(f"المواد التي ضمنت النجاح هي: {', '.join(passing_subjects)}، حتى لو حصلت على 0 في الفصل الثاني.")
-    
-    if possible_subjects:
-        st.write(f"المواد التالية لديك فرصة للنجاح فيها إذا حصلت على الدرجة المطلوبة في الفصل الثاني: {', '.join(possible_subjects)}")
-    
-    if impossible_subjects:
-        st.write(f"المواد التالية لا يمكن النجاح فيها حتى لو حصلت على 100 في الفصل الثاني: {', '.join(impossible_subjects)}")
-    
-    if possible_subjects:
-        st.write("بالتالي، تحتاج إلى التركيز بشكل كبير على المواد التي لديك فرصة للنجاح فيها. 🚀")
+    passed_subjects_str = "، ".join(passing_subjects)
+    st.write(f"المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.")
     st.markdown('</div>', unsafe_allow_html=True)
+
+# تحسين CSS للنصائح
+st.markdown("""
+    <style>
+    .conclusion {
+        background: rgba(0, 9, 42, 0.8);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 1rem 0;
+        color: white;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        text-align: right;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+    
+    .results-table {
+        margin-bottom: 0.5rem;
+    }
+    
+    .dataframe {
+        margin-bottom: 0 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # إضافة معلومات التواصل وحقوق النشر
 st.markdown("""
