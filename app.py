@@ -493,6 +493,31 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+# إضافة العنوان في بداية التطبيق
+st.markdown("""
+    <div class="main-title">
+        احسب دخولك للوزاري بدقة وسهولة
+    </div>
+""", unsafe_allow_html=True)
+
+# إضافة CSS للعنوان
+st.markdown("""
+    <style>
+    .main-title {
+        text-align: center;
+        color: #00ff9d;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # اختيار اللغة
 language = st.selectbox("", ["العربية", "English"], index=0)
 
