@@ -955,6 +955,7 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             text-align: center !important;
             background: rgba(0, 255, 157, 0.05) !important;
             color: #00ff9d !important;
+            font-weight: bold !important;
         }}
 
         /* تنسيق خاص للغة العربية */
@@ -971,17 +972,38 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         [dir="rtl"] .dataframe th,
         [dir="rtl"] .dataframe td {{
             flex: 1 !important;
+            text-align: center !important;
+            justify-content: center !important;
+            align-items: center !important;
+            display: flex !important;
         }}
 
         /* تنسيق خاص للفهرس في اللغة العربية */
         [dir="rtl"] .dataframe .index {{
             order: -1 !important;  /* يجعل الفهرس في آخر الصف (بجانب المادة) */
+            border-right: 2px solid rgba(0, 255, 157, 0.2) !important;
         }}
 
         /* تنسيق عرض الأعمدة */
         .dataframe th,
         .dataframe td {{
             width: 20% !important;
+        }}
+
+        /* تنسيق الصفوف عند التحويم */
+        .dataframe tbody tr:hover {{
+            background: rgba(0, 255, 157, 0.05) !important;
+        }}
+
+        /* تنسيق الحدود بين الخلايا */
+        .dataframe td,
+        .dataframe th {{
+            border-left: 1px solid rgba(0, 255, 157, 0.1) !important;
+        }}
+
+        .dataframe td:last-child,
+        .dataframe th:last-child {{
+            border-left: none !important;
         }}
         </style>
     """, unsafe_allow_html=True)
