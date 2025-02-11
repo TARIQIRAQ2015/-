@@ -688,3 +688,228 @@ st.markdown("""
 
 print("Current working directory:", os.getcwd())
 print("Logo file exists:", os.path.exists('logo.png'))
+
+# تحديث CSS للتصميم الكامل
+st.markdown("""
+    <style>
+    /* تحسين المظهر العام */
+    .stApp {
+        background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+    }
+    
+    /* تحسين شكل عناوين المواد */
+    .subject-name {
+        color: #00ff9d;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 1.5rem 0;
+        padding: 1.2rem;
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.1);
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .subject-name:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 255, 157, 0.2);
+    }
+    
+    /* تحسين حقول الإدخال */
+    .stNumberInput > div > div > input {
+        background: rgba(0, 9, 42, 0.7) !important;
+        color: #00ff9d !important;
+        border: 2px solid rgba(0, 255, 157, 0.2) !important;
+        border-radius: 15px !important;
+        padding: 15px !important;
+        font-size: 1.2rem !important;
+        text-align: center !important;
+        transition: all 0.3s ease !important;
+        font-weight: bold !important;
+        width: 100% !important;
+    }
+    
+    .stNumberInput > div > div > input:focus {
+        border-color: #00ff9d !important;
+        box-shadow: 0 0 15px rgba(0, 255, 157, 0.3) !important;
+        transform: translateY(-2px);
+    }
+    
+    /* تحسين جدول النتائج */
+    .results-table {
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    .dataframe {
+        font-size: 1.1rem !important;
+        width: 100% !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .dataframe th {
+        background: rgba(0, 255, 157, 0.1) !important;
+        color: #00ff9d !important;
+        padding: 15px !important;
+        font-weight: bold !important;
+        border-bottom: 2px solid rgba(0, 255, 157, 0.2) !important;
+    }
+    
+    .dataframe td {
+        color: white !important;
+        padding: 12px !important;
+        border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
+    }
+    
+    /* تحسين قسم النصائح */
+    .advice-section {
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: white;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+        animation: slideUp 0.5s ease-out;
+    }
+    
+    /* تحسين التذييل */
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        background: linear-gradient(45deg, rgba(0, 9, 42, 0.9), rgba(0, 20, 80, 0.9));
+        border-radius: 20px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .social-links a {
+        color: #00ff9d;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        background: rgba(0, 255, 157, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+    
+    .social-links a:hover {
+        background: rgba(0, 255, 157, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.2);
+    }
+    
+    .copyright {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+    
+    /* إضافة تأثيرات حركية */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* تحسين زر التحليل */
+    .stButton > button {
+        width: 100%;
+        background: linear-gradient(45deg, #000d36, #001f5c) !important;
+        color: #00ff9d !important;
+        border: 2px solid rgba(0, 255, 157, 0.3) !important;
+        padding: 1.5rem !important;
+        border-radius: 15px !important;
+        font-weight: bold !important;
+        font-size: 1.4rem !important;
+        transition: all 0.3s ease !important;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        margin: 2rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2) !important;
+        border-color: #00ff9d !important;
+    }
+    
+    .stButton > button::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(0, 255, 157, 0.1),
+            transparent
+        );
+        transform: rotate(45deg);
+        animation: buttonGlow 2s linear infinite;
+    }
+    
+    @keyframes buttonGlow {
+        0% {
+            transform: rotate(45deg) translateX(-100%);
+        }
+        100% {
+            transform: rotate(45deg) translateX(100%);
+        }
+    }
+    
+    /* تحسين قائمة اختيار اللغة */
+    .stSelectbox {
+        margin-bottom: 2rem;
+    }
+    
+    .stSelectbox > div > div {
+        background: rgba(0, 9, 42, 0.7) !important;
+        border: 2px solid rgba(0, 255, 157, 0.2) !important;
+        border-radius: 15px !important;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-color: #00ff9d !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
