@@ -489,7 +489,7 @@ else:
 
 st.markdown("""
     <h1 class="app-title">المساعد لحساب الوزاري</h1>
-    <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
+    <div class="app-subtitle"></div>
     </div>
 """, unsafe_allow_html=True)
 
