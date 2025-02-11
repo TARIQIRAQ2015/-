@@ -666,7 +666,7 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     elif passing_count == total_subjects:
         final_advice = (
             '<div class="advice-item success final-advice">'
-            '🎉 مبروك! يمكنك الدخول للوزاري بثقة حيث أنك ضامن النجاح في جميع المواد.'
+            '🎉 مبارك! يمكنك الدخول للوزاري بثقة حيث أنك ضامن النجاح في جميع المواد.'
             '</div>'
         )
     elif improvement_count <= 2:
