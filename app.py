@@ -494,10 +494,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# تحديث CSS للعنوان مع إضافة دعم الاتجاه
-st.markdown(f"""
+# تحديث CSS للعنوان
+st.markdown("""
     <style>
-    .app-header {{
+    .app-header {
         all: unset;
         display: flex;
         justify-content: center;
@@ -511,33 +511,29 @@ st.markdown(f"""
         max-width: 900px !important;
         position: relative;
         overflow: hidden;
-        cursor: default !important;
-        pointer-events: none !important;
-        animation: headerGlow 3s ease-in-out infinite alternate;
-        direction: {direction};
-    }}
+        text-align: center !important;
+    }
     
-    .header-content {{
-        position: relative;
-        z-index: 2;
-        text-align: center;
+    .header-content {
         width: 100%;
-    }}
+        text-align: center !important;
+    }
     
-    .app-title {{
+    .app-title {
         all: unset;
         display: block;
         color: #00ff9d !important;
         font-size: 3.2rem !important;
         font-weight: 800 !important;
         margin-bottom: 1.5rem !important;
+        text-align: center !important;
         text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
                      0 0 30px rgba(0, 255, 157, 0.3) !important;
         letter-spacing: 2px !important;
         animation: titlePulse 3s ease-in-out infinite alternate;
-    }}
+    }
     
-    .app-subtitle {{
+    .app-subtitle {
         all: unset;
         display: block;
         color: rgba(255, 255, 255, 0.9) !important;
@@ -546,42 +542,19 @@ st.markdown(f"""
         font-weight: 500 !important;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
         letter-spacing: 1px !important;
-    }}
+        text-align: center !important;
+    }
     
-    @keyframes headerGlow {{
-        0% {{
-            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
-        }}
-        100% {{
-            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.3);
-        }}
-    }}
-    
-    @keyframes titlePulse {{
-        0% {{
+    @keyframes titlePulse {
+        0% {
             text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
                          0 0 30px rgba(0, 255, 157, 0.3);
-        }}
-        100% {{
+        }
+        100% {
             text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
                          0 0 40px rgba(0, 255, 157, 0.4);
-        }}
-    }}
-    
-    @media (max-width: 768px) {{
-        .app-title {{
-            font-size: 2.5rem !important;
-        }}
-        
-        .app-subtitle {{
-            font-size: 1.3rem !important;
-        }}
-        
-        .app-header {{
-            padding: 2rem 1rem !important;
-            margin: 1rem auto !important;
-        }}
-    }}
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
