@@ -47,37 +47,46 @@ st.markdown("""
 # تحديث CSS للعنوان
 st.markdown("""
     <style>
+    /* تنسيق العنوان الرئيسي */
     .app-header {
         text-align: center;
-        margin: 1rem 0 2rem 0;
-        padding: 1rem;
         width: 100%;
+        position: relative;
+        padding: 1rem;
+        margin: 0;
     }
     
     .app-title {
         color: #00ff9d;
         font-size: 2rem;
         font-weight: bold;
-        margin: 0;
+        margin: 0 auto;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        text-align: center;
-        width: 100%;
-        display: block;
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
     }
 
     /* تحسين شكل قائمة اختيار اللغة */
     .stSelectbox {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
-    .stSelectbox > div > div {
-        display: flex;
-        justify-content: flex-end;
+    .stSelectbox > div {
+        width: fit-content;
+        margin-left: auto;
     }
 
     /* إخفاء تسمية قائمة اختيار اللغة */
     .stSelectbox label {
         display: none;
+    }
+
+    /* تصحيح المسافات */
+    .block-container {
+        padding-top: 0 !important;
     }
     </style>
 """, unsafe_allow_html=True)
