@@ -484,13 +484,21 @@ language = st.selectbox("", ["العربية", "English"], index=0)
 # تحديد اتجاه النص بناءً على اللغة
 direction = "rtl" if language == "العربية" else "ltr"
 
-# إضافة العنوان
-st.markdown("""
-    <div class="app-header">
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
-        <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
-    </div>
-""", unsafe_allow_html=True)
+# إضافة العنوان حسب اللغة
+if language == "العربية":
+    st.markdown("""
+        <div class="app-header-ar">
+            <h1 class="app-title-ar">المساعد لحساب الوزاري</h1>
+            <p class="app-subtitle-ar">احسب دخولك للوزاري بدقة وسهولة</p>
+        </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+        <div class="app-header-en">
+            <h1 class="app-title-en">Ministry Calculator Assistant</h1>
+            <p class="app-subtitle-en">Calculate your ministry entry accurately and easily</p>
+        </div>
+    """, unsafe_allow_html=True)
 
 # تحديث CSS للواجهة
 st.markdown("""
@@ -500,14 +508,14 @@ st.markdown("""
         background: linear-gradient(135deg, #000428 0%, #004e92 100%);
     }
     
-    /* تنسيق العنوان */
-    .app-header {
+    /* النمط العربي */
+    .app-header-ar {
         margin: 2rem auto;
         padding: 2rem;
         max-width: 1200px;
     }
     
-    .app-title {
+    .app-title-ar {
         color: #00ff9d;
         font-size: 3.5rem;
         font-weight: bold;
@@ -518,14 +526,44 @@ st.markdown("""
         animation: glow 2s ease-in-out infinite alternate;
     }
     
-    .app-subtitle {
+    .app-subtitle-ar {
         color: #ffffff;
         font-size: 1.8rem;
         text-align: center;
         margin-top: 1.5rem;
         font-weight: normal;
     }
+
+    /* النمط الإنجليزي */
+    .app-header-en {
+        margin: 2rem auto;
+        padding: 3rem 2rem;
+        max-width: 900px;
+        background: linear-gradient(135deg, rgba(0, 9, 42, 0.95), rgba(0, 20, 80, 0.95));
+        border-radius: 25px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
+    }
     
+    .app-title-en {
+        color: #00ff9d;
+        font-size: 3.2rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                     0 0 30px rgba(0, 255, 157, 0.3);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    .app-subtitle-en {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.6rem;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    /* تأثيرات مشتركة */
     @keyframes glow {
         from {
             text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
@@ -535,6 +573,38 @@ st.markdown("""
             text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
                          0 0 40px rgba(0, 255, 157, 0.5);
         }
+    }
+
+    /* تحسين النتائج */
+    .advice-section {
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }
+
+    .advice-item {
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        background: rgba(0, 9, 42, 0.7);
+    }
+
+    .advice-item.success {
+        border-right: 4px solid #00ff9d;
+        background: rgba(0, 255, 157, 0.1);
+    }
+
+    .advice-item.warning {
+        border-right: 4px solid #ffc107;
+        background: rgba(255, 193, 7, 0.1);
+    }
+
+    .advice-item.danger {
+        border-right: 4px solid #ff4848;
+        background: rgba(255, 72, 72, 0.1);
     }
 
     /* تحسين واجهة المستخدم */
@@ -549,41 +619,43 @@ st.markdown("""
         border: 1px solid rgba(0, 255, 157, 0.2) !important;
         color: #fff !important;
     }
-    
-    /* تحسين أقسام التطبيق */
-    .subject-name {
-        background: rgba(0, 9, 42, 0.8);
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
-    }
-    
+
     /* تحسين حقول الإدخال */
     .stNumberInput > div > div > input {
         background: rgba(0, 9, 42, 0.7) !important;
         border: 1px solid rgba(0, 255, 157, 0.2) !important;
         color: #fff !important;
         border-radius: 8px !important;
-        padding: 0.5rem !important;
+        padding: 0.8rem !important;
+        font-size: 1.1rem !important;
+        text-align: center !important;
     }
-    
+
+    .stNumberInput > div > div > input:focus {
+        border-color: #00ff9d !important;
+        box-shadow: 0 0 10px rgba(0, 255, 157, 0.3) !important;
+    }
+
     /* تحسين الأزرار */
     .stButton > button {
         background: linear-gradient(45deg, #000428, #004e92) !important;
         color: #00ff9d !important;
         border: 1px solid rgba(0, 255, 157, 0.3) !important;
         border-radius: 8px !important;
-        padding: 0.5rem 2rem !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.2rem !important;
+        font-weight: bold !important;
         transition: all 0.3s ease !important;
+        width: 100% !important;
+        margin-top: 2rem !important;
     }
-    
+
     .stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 255, 157, 0.2);
+        border-color: #00ff9d !important;
     }
-    
+
     /* تحسين التذييل */
     .footer {
         margin-top: 3rem;
@@ -591,47 +663,71 @@ st.markdown("""
         background: rgba(0, 9, 42, 0.8);
         border-radius: 10px;
         border: 1px solid rgba(0, 255, 157, 0.2);
+        text-align: center;
     }
-    
+
     .social-links {
         display: flex;
         justify-content: center;
         gap: 2rem;
         margin-bottom: 1rem;
+        flex-wrap: wrap;
     }
-    
+
     .social-links a {
         color: #00ff9d;
         text-decoration: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
         background: rgba(0, 255, 157, 0.1);
         transition: all 0.3s ease;
+        font-weight: bold;
     }
-    
+
     .social-links a:hover {
         background: rgba(0, 255, 157, 0.2);
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.2);
     }
-    
+
     .copyright {
-        text-align: center;
         color: rgba(255, 255, 255, 0.7);
+        margin-top: 1rem;
+        font-size: 0.9rem;
     }
-    
+
     /* تحسينات عامة */
     ::-webkit-scrollbar {
         display: none;
     }
-    
+
     body {
         overflow-x: hidden !important;
     }
-    
+
     .main .block-container {
-        padding: 1rem;
+        padding: 2rem;
         max-width: 1200px;
         margin: 0 auto;
+    }
+
+    /* تحسين الجداول */
+    .dataframe {
+        background: rgba(0, 9, 42, 0.8) !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(0, 255, 157, 0.2) !important;
+        color: #fff !important;
+    }
+
+    .dataframe th {
+        background: rgba(0, 255, 157, 0.1) !important;
+        color: #00ff9d !important;
+        font-weight: bold !important;
+        padding: 1rem !important;
+    }
+
+    .dataframe td {
+        padding: 0.8rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
