@@ -33,16 +33,66 @@ hide_st_style = """
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# اختيار اللغة (نقل هذا الجزء إلى بداية التطبيق)
+# اختيار اللغة (نقل هذا الجزء إلى الأعلى)
 language = st.selectbox(
     "",
-    ["العربية", "English"],
+    ("العربية", "English"),
     index=0
 )
 
-# تحديد اتجاه النص حسب اللغة
 direction = 'rtl' if language == "العربية" else 'ltr'
 st.markdown(f"<style>body {{ direction: {direction}; }}</style>", unsafe_allow_html=True)
+
+# تعديل العنوان الرئيسي
+st.markdown("""
+    <div class="app-header">
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+    </div>
+""", unsafe_allow_html=True)
+
+# إضافة العنوان الفرعي
+st.markdown("""
+    <div class="main-title">
+        احسب دخولك للوزاري بدقة وسهولة
+    </div>
+""", unsafe_allow_html=True)
+
+# إضافة CSS للعنوان
+st.markdown(f"""
+    <style>
+    .app-header {{
+        text-align: center;
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+    }}
+    
+    .app-title {{
+        color: #00ff9d;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+    }}
+    </style>
+""", unsafe_allow_html=True)
+
+# إضافة CSS للعنوان
+st.markdown("""
+    <style>
+    .main-title {
+        text-align: center;
+        color: #00ff9d;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # تعريف النصوص حسب اللغة
 texts = {
@@ -486,62 +536,199 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# العنوان الرئيسي
+# تحديث CSS للتصميم المتجاوب
 st.markdown("""
-    <div class="app-header">
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
-    </div>
-""", unsafe_allow_html=True)
-
-# إضافة العنوان الفرعي
-st.markdown("""
-    <div class="main-title">
-        احسب دخولك للوزاري بدقة وسهولة
-    </div>
-""", unsafe_allow_html=True)
-
-# تحديث CSS للعناوين وقائمة اختيار اللغة
-st.markdown(f"""
     <style>
-    /* تنسيق قائمة اختيار اللغة */
-    .stSelectbox {{
-        margin-bottom: 1rem;
+    /* تحسين المظهر العام */
+    .stApp {{
+        background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+        direction: {direction};
     }}
     
-    .stSelectbox > div > div {{
-        background: rgba(0, 9, 42, 0.7) !important;
-        border: 2px solid rgba(0, 255, 157, 0.2) !important;
-        border-radius: 10px !important;
-        color: #00ff9d !important;
-    }}
-    
-    /* تنسيق العنوان الرئيسي */
+    /* العنوان الرئيسي دائماً في الوسط */
     .app-header {{
-        text-align: center;
-        margin: 1rem 0;
-        padding: 1rem;
+        text-align: center !important;
     }}
     
     .app-title {{
-        color: #00ff9d;
-        font-size: 2rem;
-        font-weight: bold;
-        margin: 0;
-        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        text-align: center !important;
     }}
     
-    /* تنسيق العنوان الفرعي */
-    .main-title {{
-        text-align: center;
-        color: #00ff9d;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 1rem 0 2rem 0;
-        padding: 1rem;
+    /* عناوين المواد في الوسط */
+    .subject-name {{
+        text-align: center !important;
+    }}
+    
+    /* عناوين الفصول في الوسط */
+    .grade-label {{
+        text-align: center !important;
+    }}
+    
+    /* محاذاة النص حسب اللغة */
+    .advice-section {{
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
+    }}
+    
+    /* تنسيق الجدول */
+    .dataframe {{
+        direction: {direction};
+    }}
+    
+    .dataframe th {{
+        text-align: center !important;
+    }}
+    
+    /* المواد والفصول في وسط الجدول */
+    .dataframe td:nth-child(1),
+    .dataframe td:nth-child(2),
+    .dataframe td:nth-child(3),
+    .dataframe td:nth-child(4) {{
+        text-align: center !important;
+    }}
+    
+    /* الحد الأدنى المطلوب محاذاة حسب اللغة */
+    .dataframe td:nth-child(5) {{
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
+    }}
+    
+    /* تحسين قائمة اختيار اللغة */
+    .stSelectbox {{
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
+    }}
+    
+    /* روابط التذييل */
+    .social-links {{
+        text-align: center !important;
+    }}
+    
+    .copyright {{
+        text-align: center !important;
+    }}
+    
+    /* تنسيق قسم النصائح */
+    .advice-section {{
         background: rgba(0, 9, 42, 0.8);
         border-radius: 15px;
-        border: 2px solid rgba(0, 255, 157, 0.2);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        color: white;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        text-align: {direction == 'rtl' and 'right' or 'left'};
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        direction: {direction};
         box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
     }}
+
+    .advice-item {{
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 0.8rem 0;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }}
+
+    .advice-item.success {{
+        background: rgba(0, 255, 157, 0.1);
+        border-right: 4px solid #00ff9d;
+        border-left: 4px solid #00ff9d;
+    }}
+
+    .advice-item.warning {{
+        background: rgba(255, 193, 7, 0.1);
+        border-right: 4px solid #ffc107;
+        border-left: 4px solid #ffc107;
+    }}
+
+    .advice-item.danger {{
+        background: rgba(255, 72, 72, 0.1);
+        border-right: 4px solid #ff4848;
+        border-left: 4px solid #ff4848;
+    }}
+
+    .final-advice-separator {{
+        border-top: 2px solid rgba(0, 255, 157, 0.2);
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 10px rgba(0, 255, 157, 0.1);
+    }}
+
+    .final-advice {{
+        font-size: 1.3rem !important;
+        padding: 1.5rem !important;
+        margin-top: 1.5rem !important;
+        border-width: 4px !important;
+        text-align: center !important;
+        background: rgba(0, 9, 42, 0.9) !important;
+        box-shadow: 0 4px 20px rgba(0, 255, 157, 0.15);
+        animation: glow 2s infinite alternate;
+    }}
+
+    @keyframes glow {{
+        from {{
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+        }}
+        to {{
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+        }}
+    }}
+
+    /* تحسين الأيقونات */
+    .advice-item::before {{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }}
+
+    /* تحسين المسافات بين العناصر */
+    br {{
+        display: none;
+    }}
+
+    .advice-item + .advice-item {{
+        margin-top: 1rem;
+    }}
+    </style>
+""", unsafe_allow_html=True)
+
+# تحديث CSS للتصميم المتجاوب
+st.markdown("""
+    <style>
+    /* إزالة الهوامش والحواف الزائدة */
+    .main .block-container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    /* إزالة التمرير الأفقي */
+    .main {
+        overflow-x: hidden;
+    }
+    
+    /* تحسين عرض الأعمدة */
+    .stColumns {
+        gap: 1rem !important;
+    }
+    
+    /* تحسين عرض الجدول */
+    .results-table {
+        margin: 1rem 0;
+        width: 100%;
+    }
+    
+    /* تحسين عرض حقول الإدخال */
+    .stNumberInput {
+        width: 100% !important;
+    }
+    
+    /* إخفاء شريط التمرير */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* تعطيل التمرير الأفقي للصفحة بالكامل */
+    body {
+        overflow-x: hidden !important;
+    }
     </style>
 """, unsafe_allow_html=True)
