@@ -41,33 +41,47 @@ direction = 'rtl' if language == "العربية" else 'ltr'
 st.markdown("""
     <div class="app-header">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
+        <div class="main-title">
+            احسب دخولك للوزاري بدقة وسهولة
+        </div>
     </div>
 """, unsafe_allow_html=True)
 
-# تحديث CSS للعنوان
+# تحديث CSS للعناوين
 st.markdown("""
     <style>
-    /* تنسيق العنوان الرئيسي */
+    /* تنسيق العنوان الرئيسي والفرعي */
     .app-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        padding: 1rem;
-        z-index: 1000;
+        justify-content: center;
+        width: 100%;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
     }
     
     .app-title {
         color: #00ff9d;
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-weight: bold;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
         text-align: center;
-        margin: 0;
+        margin-bottom: 1rem;
+    }
+
+    .main-title {
+        color: #00ff9d;
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-align: center;
+        padding: 1rem;
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        width: 80%;
+        margin: 0 auto;
     }
 
     /* تحسين موضع قائمة اختيار اللغة */
@@ -79,38 +93,9 @@ st.markdown("""
         width: auto !important;
     }
 
-    .stSelectbox > div {
-        width: fit-content !important;
-    }
-
-    /* إضافة مسافة للمحتوى تحت العنوان */
+    /* إضافة مسافة للمحتوى تحت العناوين */
     .main .block-container {
-        margin-top: 5rem;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# إضافة العنوان في بداية التطبيق
-st.markdown("""
-    <div class="main-title">
-        احسب دخولك للوزاري بدقة وسهولة
-    </div>
-""", unsafe_allow_html=True)
-
-# إضافة CSS للعنوان
-st.markdown("""
-    <style>
-    .main-title {
-        text-align: center;
-        color: #00ff9d;
-        font-size: 1.8rem;
-        font-weight: bold;
-        margin: 1rem 0 2rem 0;
-        padding: 1rem;
-        background: rgba(0, 9, 42, 0.8);
-        border-radius: 15px;
-        border: 2px solid rgba(0, 255, 157, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        margin-top: 12rem;
     }
     </style>
 """, unsafe_allow_html=True)
