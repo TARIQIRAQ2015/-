@@ -487,18 +487,59 @@ direction = "rtl" if language == "العربية" else "ltr"
 # إضافة العنوان حسب اللغة
 if language == "العربية":
     st.markdown("""
-        <div class="app-header-ar">
-            <h1 class="app-title-ar">المساعد لحساب الوزاري</h1>
-            <p class="app-subtitle-ar">احسب دخولك للوزاري بدقة وسهولة</p>
+        <div class="app-header">
+            <h1 class="app-title">المساعد لحساب الوزاري</h1>
+            <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
         </div>
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
-        <div class="app-header-en">
-            <h1 class="app-title-en">Ministry Calculator Assistant</h1>
-            <p class="app-subtitle-en">Calculate your ministry entry accurately and easily</p>
+        <div class="app-header">
+            <h1 class="app-title">Ministry Calculator Assistant</h1>
+            <p class="app-subtitle">Calculate your ministry entry accurately and easily</p>
         </div>
     """, unsafe_allow_html=True)
+
+# تحديث CSS للعنوان
+st.markdown("""
+    <style>
+    .app-header {
+        margin: 2rem auto;
+        padding: 2rem;
+        max-width: 1200px;
+    }
+    
+    .app-title {
+        color: #00ff9d;
+        font-size: 3.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+        text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                     0 0 30px rgba(0, 255, 157, 0.3);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    .app-subtitle {
+        color: #ffffff;
+        font-size: 1.8rem;
+        text-align: center;
+        margin-top: 1.5rem;
+        font-weight: normal;
+    }
+    
+    @keyframes glow {
+        from {
+            text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                         0 0 30px rgba(0, 255, 157, 0.3);
+        }
+        to {
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
+                         0 0 40px rgba(0, 255, 157, 0.5);
+        }
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # تحديث CSS للواجهة
 st.markdown("""
