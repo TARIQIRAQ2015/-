@@ -2,15 +2,19 @@ import streamlit as st
 import pandas as pd
 from PIL import Image
 import base64
+import os
+
+# في بداية الملف، أضف هذا المتغير
+DEFAULT_LOGO = """iVBORw0KGgoAAAANSUhEUgAA... """  # سيتم وضع رمز Base64 للصورة هنا
 
 # تعريف أيقونة افتراضية في حالة عدم وجود الملف
 try:
-    icon = Image.open('logo.png')
-    icon_base64 = base64.b64encode(open('logo.png', 'rb').read()).decode()
+    icon = Image.open('assets/logo.png')
+    icon_base64 = base64.b64encode(open('assets/logo.png', 'rb').read()).decode()
 except FileNotFoundError:
-    # استخدام قيم افتراضية في حالة عدم وجود الملف
+    # استخدام الصورة الافتراضية
+    icon_base64 = DEFAULT_LOGO
     icon = None
-    icon_base64 = ""
 
 st.set_page_config(
     page_title="المساعد لحساب الوزاري",
@@ -319,19 +323,18 @@ hide_st_style = """
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# إضافة الشعار والعنوان
-st.markdown(f"""
-    <div class="app-header">
-        <img src="data:image/png;base64,{icon_base64}" 
-             style="width: 150px; 
-                    height: 150px; 
-                    object-fit: contain;
-                    margin: 10px;
-                    filter: drop-shadow(0 0 10px rgba(0, 255, 157, 0.5));
-                    animation: float 6s ease-in-out infinite;"
-        >
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
-        <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
+# تعديل طريقة عرض الصورة في العنوان
+st.markdown('<div class="app-header">', unsafe_allow_html=True)
+
+# عرض الصورة باستخدام st.image
+if icon:
+    st.image(icon, width=200, use_column_width=False)
+else:
+    st.image("https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png", width=200)
+
+st.markdown("""
+    <h1 class="app-title">المساعد لحساب الوزاري</h1>
+    <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -495,3 +498,6 @@ st.markdown("""
         </div>
     </div>
 """, unsafe_allow_html=True)
+
+print("Current working directory:", os.getcwd())
+print("Logo file exists:", os.path.exists('logo.png'))
