@@ -16,7 +16,12 @@ except FileNotFoundError:
     icon_base64 = DEFAULT_LOGO
     icon = None
 
-st.set_page_config(layout="centered", page_title="المساعد لحساب الوزاري")
+st.set_page_config(
+    page_title="المساعد لحساب الوزاري",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 # إخفاء جميع العناصر الافتراضية
 hide_st_style = """
@@ -900,79 +905,33 @@ st.markdown("""
     <style>
     /* إزالة الهوامش الافتراضية */
     .main .block-container {
-        padding-top: 1rem;
-        padding-right: 1rem;
-        padding-left: 1rem;
-        padding-bottom: 1rem;
+        padding: 2rem 5rem;
+        max-width: 100%;
     }
     
-    /* تحسين عرض الأعمدة للشاشات الصغيرة */
-    @media (max-width: 768px) {
-        .stColumns {
-            gap: 0.5rem !important;
-        }
-        
-        /* تصغير حجم الخط في الجدول للشاشات الصغيرة */
-        .dataframe {
-            font-size: 0.8rem !important;
-        }
-        
-        /* تحسين عرض حقول الإدخال */
-        .stNumberInput {
-            min-width: 100% !important;
-        }
-        
-        /* تصغير حجم الخط في النصائح */
-        .advice-section {
-            font-size: 0.9rem !important;
-        }
-        
-        .final-advice {
-            font-size: 1rem !important;
-            padding: 1rem !important;
-        }
-        
-        /* تحسين عرض روابط التذييل */
-        .social-links {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .social-links a {
-            width: 100%;
-            text-align: center;
-        }
+    /* تحسين عرض الأعمدة */
+    .stColumns {
+        gap: 2rem !important;
     }
     
     /* تحسين عرض الجدول */
     .results-table {
-        overflow-x: auto;
-        max-width: 100%;
+        margin: 2rem 0;
     }
     
-    /* تحسين حجم حقول الإدخال */
-    .stNumberInput > div > div > input {
-        padding: 0.5rem !important;
-        font-size: 1rem !important;
+    /* تحسين عرض حقول الإدخال */
+    .stNumberInput {
+        width: 100% !important;
     }
     
-    /* تحسين المظهر العام للتطبيق */
-    .stApp {
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-    
-    /* تحسين عرض عناوين المواد */
-    .subject-name {
-        font-size: 1.2rem;
-        padding: 0.8rem;
-        margin: 0.5rem 0;
-    }
-    
-    /* تحسين المسافات بين العناصر */
-    .grade-label {
-        margin-bottom: 0.3rem;
-        font-size: 0.9rem;
+    @media (max-width: 768px) {
+        .main .block-container {
+            padding: 1rem;
+        }
+        
+        .stColumns {
+            gap: 1rem !important;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
