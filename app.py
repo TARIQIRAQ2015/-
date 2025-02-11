@@ -463,6 +463,17 @@ hide_st_style = """
         color: rgba(255, 255, 255, 0.7);
         font-size: 1rem;
     }
+
+    /* تعديل ترتيب الأعمدة حسب اللغة */
+    .dataframe thead tr {{
+        display: flex;
+        flex-direction: {direction == 'rtl' and 'row' or 'row-reverse'};
+    }}
+    
+    .dataframe tbody tr {{
+        display: flex;
+        flex-direction: {direction == 'rtl' and 'row' or 'row-reverse'};
+    }}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -634,9 +645,9 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # إعادة ترتيب الأعمدة حسب اللغة
     if direction == 'rtl':
-        column_order = ["الحد الأدنى المطلوب في الفصل الثاني", "الفصل الثاني", "نصف السنة", "الفصل الأول", "المادة"]
-    else:
         column_order = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
+    else:
+        column_order = ["الحد الأدنى المطلوب في الفصل الثاني", "الفصل الثاني", "نصف السنة", "الفصل الأول", "المادة"]
     
     df = df[column_order]
     
@@ -685,12 +696,12 @@ st.markdown(f"""
     /* تعديل ترتيب الأعمدة حسب اللغة */
     .dataframe thead tr {{
         display: flex;
-        flex-direction: {direction == 'rtl' and 'row-reverse' or 'row'};
+        flex-direction: {direction == 'rtl' and 'row' or 'row-reverse'};
     }}
     
     .dataframe tbody tr {{
         display: flex;
-        flex-direction: {direction == 'rtl' and 'row-reverse' or 'row'};
+        flex-direction: {direction == 'rtl' and 'row' or 'row-reverse'};
     }}
 
     .dataframe th, .dataframe td {{
