@@ -3,14 +3,17 @@ import pandas as pd
 from PIL import Image
 import base64
 
-# تعريف أيقونة افتراضية في حالة عدم وجود الملف
+# صورة افتراضية مضمنة Base64 (يمكنك استبدالها بصورة شعار المساعد)
+DEFAULT_LOGO = """
+iVBORw0KGgoAAAANSUhEUgAA...
+"""  # هنا يجب وضع الـ base64 الخاص بصورة الشعار
+
 try:
     icon = Image.open('logo.png')
-    icon_base64 = base64.b64encode(open('logo.png', 'rb').read()).decode()
+    with open('logo.png', 'rb') as f:
+        icon_base64 = base64.b64encode(f.read()).decode()
 except FileNotFoundError:
-    # استخدام قيم افتراضية في حالة عدم وجود الملف
-    icon = None
-    icon_base64 = ""
+    icon_base64 = DEFAULT_LOGO
 
 st.set_page_config(
     page_title="المساعد لحساب الوزاري",
@@ -319,17 +322,15 @@ hide_st_style = """
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# إضافة الشعار والعنوان
-st.markdown(f"""
+# إضافة الشعار والعنوان بدون صورة
+st.markdown("""
     <div class="app-header">
-        <img src="data:image/png;base64,{icon_base64}" 
-             style="width: 150px; 
-                    height: 150px; 
-                    object-fit: contain;
-                    margin: 10px;
-                    filter: drop-shadow(0 0 10px rgba(0, 255, 157, 0.5));
-                    animation: float 6s ease-in-out infinite;"
-        >
+        <div style="font-size: 64px; 
+                    color: #00ff9d;
+                    margin: 20px;
+                    text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);">
+            📚
+        </div>
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
         <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
     </div>
