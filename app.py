@@ -3,17 +3,21 @@ import pandas as pd
 from PIL import Image
 import base64
 
-# تحميل وتحويل الأيقونة
-icon = Image.open('logo.png')
+# تعريف أيقونة افتراضية في حالة عدم وجود الملف
+try:
+    icon = Image.open('logo.png')
+    icon_base64 = base64.b64encode(open('logo.png', 'rb').read()).decode()
+except FileNotFoundError:
+    # استخدام قيم افتراضية في حالة عدم وجود الملف
+    icon = None
+    icon_base64 = ""
+
 st.set_page_config(
     page_title="المساعد لحساب الوزاري",
-    page_icon=icon,
+    page_icon=icon if icon else "📊",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-
-# إضافة الأيقونة كصورة متحركة في CSS
-icon_base64 = base64.b64encode(open('logo.png', 'rb').read()).decode()
 
 # إخفاء جميع العناصر الافتراضية
 hide_st_style = """
