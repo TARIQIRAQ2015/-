@@ -927,35 +927,46 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         /* تنسيق الجداول */
         .dataframe {{
             direction: {direction};
-            background: rgba(0, 9, 42, 0.8) !important;
-            border-radius: 10px !important;
-            border: 1px solid rgba(0, 255, 157, 0.2) !important;
+            background: rgba(0, 9, 42, 0.95) !important;
+            border-radius: 15px !important;
+            border: 2px solid rgba(0, 255, 157, 0.2) !important;
             color: #fff !important;
             width: 100% !important;
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1) !important;
+            overflow: hidden !important;
+            margin: 2rem 0 !important;
         }}
 
         /* تنسيق رؤوس الأعمدة */
         .dataframe thead tr th {{
-            background: rgba(0, 255, 157, 0.1) !important;
+            background: linear-gradient(45deg, rgba(0, 255, 157, 0.1), rgba(0, 255, 157, 0.2)) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
-            padding: 1rem !important;
+            padding: 1.2rem !important;
             text-align: center !important;
+            font-size: 1.1rem !important;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.3) !important;
+            border-bottom: 2px solid rgba(0, 255, 157, 0.2) !important;
         }}
 
         /* تنسيق خلايا الجدول */
         .dataframe tbody tr td {{
-            padding: 0.8rem !important;
+            padding: 1rem !important;
             text-align: center !important;
+            font-size: 1.05rem !important;
+            transition: all 0.3s ease !important;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
         }}
 
         /* تنسيق عمود الفهرس */
         .dataframe .index {{
-            width: 50px !important;
+            width: 60px !important;
             text-align: center !important;
             background: rgba(0, 255, 157, 0.05) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
+            font-size: 1.1rem !important;
+            border-right: 2px solid rgba(0, 255, 157, 0.2) !important;
         }}
 
         /* تنسيق خاص للغة العربية */
@@ -968,7 +979,7 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             display: flex !important;
             flex-direction: row !important;
         }}
-        
+
         [dir="rtl"] .dataframe th,
         [dir="rtl"] .dataframe td {{
             flex: 1 !important;
@@ -980,8 +991,9 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
 
         /* تنسيق خاص للفهرس في اللغة العربية */
         [dir="rtl"] .dataframe .index {{
-            order: -1 !important;  /* يجعل الفهرس في آخر الصف (بجانب المادة) */
-            border-right: 2px solid rgba(0, 255, 157, 0.2) !important;
+            order: -1 !important;
+            border-right: none !important;
+            border-left: 2px solid rgba(0, 255, 157, 0.2) !important;
         }}
 
         /* تنسيق عرض الأعمدة */
@@ -993,6 +1005,8 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         /* تنسيق الصفوف عند التحويم */
         .dataframe tbody tr:hover {{
             background: rgba(0, 255, 157, 0.05) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1) !important;
         }}
 
         /* تنسيق الحدود بين الخلايا */
@@ -1001,9 +1015,31 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             border-left: 1px solid rgba(0, 255, 157, 0.1) !important;
         }}
 
-        .dataframe td:last-child,
-        .dataframe th:last-child {{
-            border-left: none !important;
+        /* تنسيق خاص للمادة */
+        .dataframe td:last-child {{
+            font-weight: bold !important;
+            color: #00ff9d !important;
+        }}
+
+        /* تنسيق خاص للحد الأدنى المطلوب */
+        .dataframe td:first-child {{
+            color: #ff4848 !important;
+            font-weight: bold !important;
+        }}
+
+        /* تنسيق الصف الأخير */
+        .dataframe tbody tr:last-child td {{
+            border-bottom: none !important;
+        }}
+
+        /* تأثير التحويم على الخلايا */
+        .dataframe td:hover {{
+            background: rgba(0, 255, 157, 0.1) !important;
+        }}
+
+        /* تنسيق خاص للقيم الصفرية */
+        .dataframe td:not(:first-child):not(:last-child) {{
+            opacity: 0.8;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -1089,8 +1125,8 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
                 f'⛔ Not eligible for ministry exam this year.'
                 f'<br>You only have {passing_count} guaranteed subjects and {improvement_count} subjects need improvement.'
                 f'<br>You must guarantee success in at least 4 subjects to qualify.'
-                '</div>'
-            )
+            '</div>'
+        )
 
     # تحديث عرض النصائح مع إضافة التقييم النهائي
     if language == "العربية":
@@ -1130,12 +1166,12 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
                 <br>
                 <div class="advice-item danger">
                     ❌ Subjects impossible to pass: {impossible_subjects_en}
-                </div>
-                <br>
-                <div class="final-advice-separator"></div>
-                {final_advice}
             </div>
-        """, unsafe_allow_html=True)
+            <br>
+            <div class="final-advice-separator"></div>
+            {final_advice}
+        </div>
+    """, unsafe_allow_html=True)
 
 # إضافة CSS للتقييم النهائي
 st.markdown("""
@@ -1158,8 +1194,8 @@ st.markdown("""
 st.markdown("""
     <div class="footer">
         <div class="social-links">
-            <a href="https://t.me/SadsHelp" target="_blank">شبكة المساعد التعليمية 📖</a>
-            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي 📖</a>
+            <a href="https://t.me/SadsHelp" target="_blank">شبكة المساعد التعليمية ��</a>
+            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي ��</a>
         </div>
         <div class="copyright">
             By Tariq Al-Yaseen © 2025-2026
