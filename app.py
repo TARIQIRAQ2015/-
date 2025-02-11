@@ -486,9 +486,9 @@ direction = "rtl" if language == "العربية" else "ltr"
 
 # إضافة العنوان حسب اللغة
 if language == "العربية":
-st.markdown("""
-    <div class="app-header">
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+    st.markdown("""
+        <div class="app-header">
+            <h1 class="app-title">المساعد لحساب الوزاري</h1>
             <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
         </div>
     """, unsafe_allow_html=True)
@@ -497,8 +497,8 @@ else:
         <div class="app-header">
             <h1 class="app-title">Ministry Calculator Assistant</h1>
             <p class="app-subtitle">Calculate your ministry entry accurately and easily</p>
-    </div>
-""", unsafe_allow_html=True)
+        </div>
+    """, unsafe_allow_html=True)
 
 # تحديث CSS للعنوان
 st.markdown("""
@@ -894,13 +894,13 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             need_improvement_subjects.append(subject)
         
         if language == "العربية":
-        results.append({
-            "المادة": subject,
-            "الفصل الأول": scores["الفصل الأول"],
-            "نصف السنة": scores["نصف السنة"],
-            "الفصل الثاني": scores["الفصل الثاني"],
-            "الحد الأدنى المطلوب في الفصل الثاني": status
-        })
+            results.append({
+                "المادة": subject,
+                "الفصل الأول": scores["الفصل الأول"],
+                "نصف السنة": scores["نصف السنة"],
+                "الفصل الثاني": scores["الفصل الثاني"],
+                "الحد الأدنى المطلوب في الفصل الثاني": status
+            })
         else:
             results.append({
                 "Subject": current_texts["subjects"][subject],
@@ -1066,39 +1066,39 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # تحديد النصيحة النهائية حسب اللغة
     if language == "العربية":
-    if passing_count >= 4:
-        final_advice = (
-            '<div class="advice-item success final-advice">'
-            '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
-            '</div>'
-        )
-    elif passing_count + improvement_count >= 4:
-        improvement_details = []
-        for subject in need_improvement_subjects:
-            min_required = calculate_minimum_required(
-                subjects[subject]["الفصل الأول"],
-                subjects[subject]["نصف السنة"]
+        if passing_count >= 4:
+            final_advice = (
+                '<div class="advice-item success final-advice">'
+                '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
+                '</div>'
             )
-            improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
+        elif passing_count + improvement_count >= 4:
+            improvement_details = []
+            for subject in need_improvement_subjects:
+                min_required = calculate_minimum_required(
+                    subjects[subject]["الفصل الأول"],
+                    subjects[subject]["نصف السنة"]
+                )
+                improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
 
-        improvement_subjects_details = "، ".join(improvement_details)
-        
-        final_advice = (
-            '<div class="advice-item warning final-advice">'
-            f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
-            f'<br>لديك {passing_count} مواد مضمونة.'
-            f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
-            f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
-            '</div>'
-        )
-    else:
-        final_advice = (
-            '<div class="advice-item danger final-advice">'
-            f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
-            f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
-            f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
-            '</div>'
-        )
+            improvement_subjects_details = "، ".join(improvement_details)
+            
+            final_advice = (
+                '<div class="advice-item warning final-advice">'
+                f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
+                f'<br>لديك {passing_count} مواد مضمونة.'
+                f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
+                f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
+                '</div>'
+            )
+        else:
+            final_advice = (
+                '<div class="advice-item danger final-advice">'
+                f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
+                f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
+                f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
+                '</div>'
+            )
     else:
         if passing_count >= 4:
             final_advice = (
@@ -1136,24 +1136,24 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
 
     # تحديث عرض النصائح مع إضافة التقييم النهائي
     if language == "العربية":
-    st.markdown(f"""
-        <div class="advice-section">
-            <div class="advice-item success">
-                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+        st.markdown(f"""
+            <div class="advice-section">
+                <div class="advice-item success">
+                    ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+                </div>
+                <br>
+                <div class="advice-item warning">
+                    ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+                </div>
+                <br>
+                <div class="advice-item danger">
+                    ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
+                </div>
+                <br>
+                <div class="final-advice-separator"></div>
+                {final_advice}
             </div>
-            <br>
-            <div class="advice-item warning">
-                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
-            </div>
-            <br>
-            <div class="advice-item danger">
-                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
-            </div>
-            <br>
-            <div class="final-advice-separator"></div>
-            {final_advice}
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     else:
         # تحويل أسماء المواد للإنجليزية
         passed_subjects_en = ", ".join([current_texts["subjects"][sub] for sub in passing_subjects]) if passing_subjects else "None"
