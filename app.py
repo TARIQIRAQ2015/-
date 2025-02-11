@@ -964,42 +964,75 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     impossible_count = len(impossible_subjects)  # عدد المواد المستحيلة
     improvement_count = len(need_improvement_subjects)  # عدد المواد التي تحتاج تحسين
     
-    # تحديد النصيحة النهائية
-    final_advice = ""
-    if passing_count >= 4:
-        final_advice = (
-            '<div class="advice-item success final-advice">'
-            '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
-            '</div>'
-        )
-    elif passing_count + improvement_count >= 4:
-        # تجميع المعلومات التفصيلية عن المواد التي تحتاج تحسين
-        improvement_details = []
-        for subject in need_improvement_subjects:
-            min_required = calculate_minimum_required(
-                subjects[subject]["الفصل الأول"],
-                subjects[subject]["نصف السنة"]
+    # تحديد النصيحة النهائية حسب اللغة
+    if language == "العربية":
+        if passing_count >= 4:
+            final_advice = (
+                '<div class="advice-item success final-advice">'
+                '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
+                '</div>'
             )
-            improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
+        elif passing_count + improvement_count >= 4:
+            improvement_details = []
+            for subject in need_improvement_subjects:
+                min_required = calculate_minimum_required(
+                    subjects[subject]["الفصل الأول"],
+                    subjects[subject]["نصف السنة"]
+                )
+                improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
 
-        improvement_subjects_details = "، ".join(improvement_details)
-        
-        final_advice = (
-            '<div class="advice-item warning final-advice">'
-            f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
-            f'<br>لديك {passing_count} مواد مضمونة.'
-            f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
-            f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
-            '</div>'
-        )
+            improvement_subjects_details = "، ".join(improvement_details)
+            
+            final_advice = (
+                '<div class="advice-item warning final-advice">'
+                f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
+                f'<br>لديك {passing_count} مواد مضمونة.'
+                f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
+                f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
+                '</div>'
+            )
+        else:
+            final_advice = (
+                '<div class="advice-item danger final-advice">'
+                f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
+                f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
+                f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
+                '</div>'
+            )
     else:
-        final_advice = (
-            '<div class="advice-item danger final-advice">'
-            f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
-            f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
-            f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
-            '</div>'
-        )
+        if passing_count >= 4:
+            final_advice = (
+                '<div class="advice-item success final-advice">'
+                '🎉 Congratulations! You can enter the ministry exam as you have guaranteed success in 4 or more subjects.'
+                '</div>'
+            )
+        elif passing_count + improvement_count >= 4:
+            improvement_details = []
+            for subject in need_improvement_subjects:
+                min_required = calculate_minimum_required(
+                    subjects[subject]["الفصل الأول"],
+                    subjects[subject]["نصف السنة"]
+                )
+                improvement_details.append(f"{current_texts['subjects'][subject]} (needs {min_required:.0f} points)")
+
+            improvement_subjects_details = ", ".join(improvement_details)
+            
+            final_advice = (
+                '<div class="advice-item warning final-advice">'
+                f'⚠️ You can enter the ministry exam with focus on improving your grades.'
+                f'<br>You have {passing_count} guaranteed subjects.'
+                f'<br>Subjects that need improvement: {improvement_subjects_details}.'
+                f'<br>You need to pass at least {max(4 - passing_count, 0)} subjects from the remaining ones.'
+                '</div>'
+            )
+        else:
+            final_advice = (
+                '<div class="advice-item danger final-advice">'
+                f'⛔ Not eligible for ministry exam this year.'
+                f'<br>You only have {passing_count} guaranteed subjects and {improvement_count} subjects need improvement.'
+                f'<br>You must guarantee success in at least 4 subjects to qualify.'
+                '</div>'
+            )
 
     # تحديث عرض النصائح مع إضافة التقييم النهائي
     st.markdown(f"""
@@ -1133,6 +1166,23 @@ st.markdown(f"""
     .final-advice-separator {{
         border-top: 2px solid rgba(0, 255, 157, 0.2);
         margin: 1.5rem 0;
+    }}
+
+    /* تنسيق خاص للجدول باللغة العربية */
+    [dir="rtl"] .dataframe {{
+        direction: rtl !important;
+    }}
+    
+    [dir="rtl"] .dataframe thead tr,
+    [dir="rtl"] .dataframe tbody tr {{
+        display: flex !important;
+        flex-direction: row-reverse !important;
+    }}
+    
+    [dir="rtl"] .dataframe th,
+    [dir="rtl"] .dataframe td {{
+        flex: 1 !important;
+        text-align: right !important;
     }}
     </style>
 """, unsafe_allow_html=True)
