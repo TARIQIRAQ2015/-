@@ -913,7 +913,7 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     # عند إنشاء DataFrame وعرض النتائج
     if language == "العربية":
         # إعادة ترتيب الأعمدة للغة العربية من اليمين إلى اليسار
-        columns = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
+        columns = ["الحد الأدنى المطلوب في الفصل الثاني", "الفصل الثاني", "نصف السنة", "الفصل الأول", "المادة"]
     else:
         # ترتيب الأعمدة للغة الإنجليزية من اليسار إلى اليمين
         columns = ["Subject", "First Term", "Mid Term", "Second Term", "Minimum Required"]
@@ -927,12 +927,11 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         /* تنسيق الجداول */
         .dataframe {{
             direction: {direction};
-            width: 100% !important;
             background: rgba(0, 9, 42, 0.8) !important;
             border-radius: 10px !important;
             border: 1px solid rgba(0, 255, 157, 0.2) !important;
             color: #fff !important;
-            table-layout: fixed !important;
+            width: 100% !important;
         }}
 
         /* تنسيق رؤوس الأعمدة */
@@ -942,7 +941,6 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             font-weight: bold !important;
             padding: 1rem !important;
             text-align: center !important;
-            white-space: nowrap !important;
         }}
 
         /* تنسيق خلايا الجدول */
@@ -979,13 +977,8 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         }}
 
         /* تنسيق عرض الأعمدة */
-        .dataframe th:first-child,
-        .dataframe td:first-child {{
-            width: 20% !important;
-        }}
-
-        .dataframe th:not(:first-child),
-        .dataframe td:not(:first-child) {{
+        .dataframe th,
+        .dataframe td {{
             width: 20% !important;
         }}
         </style>
