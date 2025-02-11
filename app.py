@@ -681,9 +681,9 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     else:
         final_advice = (
             '<div class="advice-item danger final-advice">'
-            f'⛔ ننصحك بعدم الدخول للوزاري هذا العام.'
+            f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
             f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
-            f'<br>تحتاج إلى ضمان النجاح في 4 مواد على الأقل للدخول للوزاري.'
+            f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
             '</div>'
         )
 
