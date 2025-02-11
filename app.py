@@ -806,6 +806,88 @@ st.markdown(f"""
         text-align: center !important;
     }}
     
-    /* باقي التنسيقات السابقة ... */
+    /* تنسيق قسم النصائح */
+    .advice-section {{
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        color: white;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        text-align: {direction == 'rtl' and 'right' or 'left'};
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        direction: {direction};
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }}
+
+    .advice-item {{
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 0.8rem 0;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }}
+
+    .advice-item.success {{
+        background: rgba(0, 255, 157, 0.1);
+        border-right: 4px solid #00ff9d;
+        border-left: 4px solid #00ff9d;
+    }}
+
+    .advice-item.warning {{
+        background: rgba(255, 193, 7, 0.1);
+        border-right: 4px solid #ffc107;
+        border-left: 4px solid #ffc107;
+    }}
+
+    .advice-item.danger {{
+        background: rgba(255, 72, 72, 0.1);
+        border-right: 4px solid #ff4848;
+        border-left: 4px solid #ff4848;
+    }}
+
+    .final-advice-separator {{
+        border-top: 2px solid rgba(0, 255, 157, 0.2);
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 10px rgba(0, 255, 157, 0.1);
+    }}
+
+    .final-advice {{
+        font-size: 1.3rem !important;
+        padding: 1.5rem !important;
+        margin-top: 1.5rem !important;
+        border-width: 4px !important;
+        text-align: center !important;
+        background: rgba(0, 9, 42, 0.9) !important;
+        box-shadow: 0 4px 20px rgba(0, 255, 157, 0.15);
+        animation: glow 2s infinite alternate;
+    }}
+
+    @keyframes glow {{
+        from {{
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+        }}
+        to {{
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+        }}
+    }}
+
+    /* تحسين الأيقونات */
+    .advice-item::before {{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }}
+
+    /* تحسين المسافات بين العناصر */
+    br {{
+        display: none;
+    }}
+
+    .advice-item + .advice-item {{
+        margin-top: 1rem;
+    }}
     </style>
 """, unsafe_allow_html=True)
