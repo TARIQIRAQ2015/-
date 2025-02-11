@@ -596,12 +596,11 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     passing_subjects = []
     
     for subject, scores in subjects.items():
-        # تخطي مادة اللغة الفرنسية إذا كانت جميع درجاتها صفر
-        if subject == "اللغة الفرنسية" and \
-           scores["الفصل الأول"] == 0 and \
-           scores["نصف السنة"] == 0 and \
-           scores["الفصل الثاني"] == 0:
-            continue
+        # تضمين اللغة الفرنسية فقط إذا كان هناك درجة واحدة على الأقل
+        if subject == "اللغة الفرنسية":
+            has_any_grade = scores["الفصل الأول"] > 0 or scores["نصف السنة"] > 0 or scores["الفصل الثاني"] > 0
+            if not has_any_grade:
+                continue
             
         minimum_required = calculate_minimum_required(
             scores["الفصل الأول"],
