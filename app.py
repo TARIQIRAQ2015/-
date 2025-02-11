@@ -664,10 +664,23 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             '</div>'
         )
     elif passing_count + improvement_count >= 4:
+        # تجميع المعلومات التفصيلية عن المواد التي تحتاج تحسين
+        improvement_details = []
+        for subject in need_improvement_subjects:
+            min_required = calculate_minimum_required(
+                subjects[subject]["الفصل الأول"],
+                subjects[subject]["نصف السنة"]
+            )
+            improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
+
+        improvement_subjects_details = "، ".join(improvement_details)
+        
         final_advice = (
             '<div class="advice-item warning final-advice">'
-            f'⚠️ يمكنك الدخول للوزاري ولكن عليك التركيز على تحسين درجاتك.'
-            f'<br>لديك {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
+            f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
+            f'<br>لديك {passing_count} مواد مضمونة.'
+            f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
+            f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
             '</div>'
         )
     else:
@@ -679,25 +692,19 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             '</div>'
         )
 
-    # تحديث عرض النصائح مع التفاصيل
+    # تحديث عرض النصائح مع إضافة التقييم النهائي
     st.markdown(f"""
         <div class="advice-section">
             <div class="advice-item success">
-                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str}
+                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
             </div>
             <br>
             <div class="advice-item warning">
-                ⚠️ المواد التي تحتاج إلى تحسين:
-                <div class="improvement-details">
-                    {"<br>".join([
-                        f"• {subject}: تحتاج إلى {results[i]['الحد الأدنى المطلوب في الفصل الثاني'].replace('❌ (', '').replace(')', '')} درجة في الفصل الثاني"
-                        for i, subject in enumerate(need_improvement_subjects)
-                    ])}
-                </div>
+                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
             </div>
             <br>
             <div class="advice-item danger">
-                ❌ المواد التي يستحيل النجاح فيها: {impossible_subjects_str}
+                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
             </div>
             <br>
             <div class="final-advice-separator"></div>
@@ -705,14 +712,19 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         </div>
     """, unsafe_allow_html=True)
 
-# إضافة CSS للتفاصيل
+# إضافة CSS للتقييم النهائي
 st.markdown("""
     <style>
-    .improvement-details {
-        margin-top: 0.5rem;
-        padding-right: 1rem;
-        font-size: 1rem;
-        line-height: 1.8;
+    .final-advice-separator {
+        border-top: 1px solid rgba(0, 255, 157, 0.2);
+        margin: 1rem 0;
+    }
+    
+    .final-advice {
+        font-size: 1.2rem !important;
+        padding: 1.2rem !important;
+        margin-top: 1rem !important;
+        border-width: 2px !important;
     }
     </style>
 """, unsafe_allow_html=True)
