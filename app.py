@@ -478,19 +478,30 @@ hide_st_style = """
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# تعديل طريقة عرض الصورة في العنوان
-st.markdown('<div class="app-header">', unsafe_allow_html=True)
-
-# عرض الصورة باستخدام st.image
-if icon:
-    st.image(icon, width=200, use_column_width=False)
-else:
-    st.image("https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png", width=200)
-
+# تعديل العنوان الرئيسي
 st.markdown("""
-    <h1 class="app-title">المساعد لحساب الوزاري</h1>
-    <div class="app-subtitle"></div>
+    <div class="app-header">
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
     </div>
+""", unsafe_allow_html=True)
+
+# تحديث CSS للعنوان
+st.markdown(f"""
+    <style>
+    .app-header {{
+        text-align: center;
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+    }}
+    
+    .app-title {{
+        color: #00ff9d;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+    }}
+    </style>
 """, unsafe_allow_html=True)
 
 # إضافة العنوان في بداية التطبيق
