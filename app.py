@@ -312,7 +312,7 @@ hide_st_style = """
         flex-direction: row;
     }
     </style>
-""", unsafe_allow_html=True)
+"""
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # إضافة الشعار والعنوان
