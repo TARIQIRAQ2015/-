@@ -483,7 +483,7 @@ st.markdown("""
     <div class="app-header">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
     </div>
-""", unsafe_allow_html=True)
+
 
 # تحديث CSS للعنوان
 st.markdown(f"""
