@@ -1035,24 +1035,49 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             )
 
     # تحديث عرض النصائح مع إضافة التقييم النهائي
-    st.markdown(f"""
-        <div class="advice-section">
-            <div class="advice-item success">
-                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+    if language == "العربية":
+        st.markdown(f"""
+            <div class="advice-section">
+                <div class="advice-item success">
+                    ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+                </div>
+                <br>
+                <div class="advice-item warning">
+                    ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+                </div>
+                <br>
+                <div class="advice-item danger">
+                    ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
+                </div>
+                <br>
+                <div class="final-advice-separator"></div>
+                {final_advice}
             </div>
-            <br>
-            <div class="advice-item warning">
-                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+        """, unsafe_allow_html=True)
+    else:
+        # تحويل أسماء المواد للإنجليزية
+        passed_subjects_en = ", ".join([current_texts["subjects"][sub] for sub in passing_subjects]) if passing_subjects else "None"
+        impossible_subjects_en = ", ".join([current_texts["subjects"][sub] for sub in impossible_subjects]) if impossible_subjects else "None"
+        need_improvement_subjects_en = ", ".join([current_texts["subjects"][sub] for sub in need_improvement_subjects]) if need_improvement_subjects else "None"
+        
+        st.markdown(f"""
+            <div class="advice-section">
+                <div class="advice-item success">
+                    ✅ Subjects with guaranteed success: {passed_subjects_en} even if you get 0 in the second term.
+                </div>
+                <br>
+                <div class="advice-item warning">
+                    ⚠️ Subjects that need improvement: {need_improvement_subjects_en}
+                </div>
+                <br>
+                <div class="advice-item danger">
+                    ❌ Subjects impossible to pass: {impossible_subjects_en}
+                </div>
+                <br>
+                <div class="final-advice-separator"></div>
+                {final_advice}
             </div>
-            <br>
-            <div class="advice-item danger">
-                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
-            </div>
-            <br>
-            <div class="final-advice-separator"></div>
-            {final_advice}
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 # إضافة CSS للتقييم النهائي
 st.markdown("""
