@@ -486,9 +486,9 @@ direction = "rtl" if language == "العربية" else "ltr"
 
 # إضافة العنوان حسب اللغة
 if language == "العربية":
-    st.markdown("""
-        <div class="app-header">
-            <h1 class="app-title">المساعد لحساب الوزاري</h1>
+st.markdown("""
+    <div class="app-header">
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
             <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
         </div>
     """, unsafe_allow_html=True)
@@ -497,8 +497,8 @@ else:
         <div class="app-header">
             <h1 class="app-title">Ministry Calculator Assistant</h1>
             <p class="app-subtitle">Calculate your ministry entry accurately and easily</p>
-        </div>
-    """, unsafe_allow_html=True)
+    </div>
+""", unsafe_allow_html=True)
 
 # تحديث CSS للعنوان
 st.markdown("""
@@ -894,13 +894,13 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             need_improvement_subjects.append(subject)
         
         if language == "العربية":
-            results.append({
-                "المادة": subject,
-                "الفصل الأول": scores["الفصل الأول"],
-                "نصف السنة": scores["نصف السنة"],
-                "الفصل الثاني": scores["الفصل الثاني"],
-                "الحد الأدنى المطلوب في الفصل الثاني": status
-            })
+        results.append({
+            "المادة": subject,
+            "الفصل الأول": scores["الفصل الأول"],
+            "نصف السنة": scores["نصف السنة"],
+            "الفصل الثاني": scores["الفصل الثاني"],
+            "الحد الأدنى المطلوب في الفصل الثاني": status
+        })
         else:
             results.append({
                 "Subject": current_texts["subjects"][subject],
@@ -924,59 +924,37 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     # تحديث CSS للجداول
     st.markdown(f"""
         <style>
-        /* تنسيق أساسي للجدول */
+        /* تنسيق الجداول */
         .dataframe {{
             direction: {direction};
             background: rgba(0, 9, 42, 0.8) !important;
-            border-radius: 15px !important;
+            border-radius: 10px !important;
             border: 1px solid rgba(0, 255, 157, 0.2) !important;
             color: #fff !important;
             width: 100% !important;
-            border-collapse: separate !important;
-            border-spacing: 0 !important;
-            margin: 1rem 0 !important;
-            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1) !important;
         }}
 
-        /* تنسيق رأس الجدول */
-        .dataframe thead {{
-            background: rgba(0, 9, 42, 0.95) !important;
-        }}
-
-        .dataframe thead th {{
+        /* تنسيق رؤوس الأعمدة */
+        .dataframe thead tr th {{
             background: rgba(0, 255, 157, 0.1) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
-            padding: 1.2rem 1rem !important;
+            padding: 1rem !important;
             text-align: center !important;
-            border-bottom: 2px solid rgba(0, 255, 157, 0.2) !important;
-            font-size: 1.1rem !important;
         }}
 
         /* تنسيق خلايا الجدول */
-        .dataframe tbody td {{
-            padding: 1rem !important;
+        .dataframe tbody tr td {{
+            padding: 0.8rem !important;
             text-align: center !important;
-            border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
-            transition: all 0.3s ease !important;
-        }}
-
-        /* تنسيق الصفوف */
-        .dataframe tbody tr {{
-            transition: all 0.3s ease !important;
-        }}
-
-        .dataframe tbody tr:hover {{
-            background: rgba(0, 255, 157, 0.05) !important;
         }}
 
         /* تنسيق عمود الفهرس */
         .dataframe .index {{
-            width: 60px !important;
+            width: 50px !important;
+            text-align: center !important;
             background: rgba(0, 255, 157, 0.05) !important;
             color: #00ff9d !important;
-            font-weight: bold !important;
-            border-right: 2px solid rgba(0, 255, 157, 0.2) !important;
         }}
 
         /* تنسيق خاص للغة العربية */
@@ -989,63 +967,21 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             display: flex !important;
             flex-direction: row !important;
         }}
-
+        
         [dir="rtl"] .dataframe th,
         [dir="rtl"] .dataframe td {{
             flex: 1 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            min-width: 0 !important;
-            word-wrap: break-word !important;
         }}
 
-        /* تنسيق عمود المادة */
-        [dir="rtl"] .dataframe td:last-child {{
-            font-weight: bold !important;
-            color: #00ff9d !important;
+        /* تنسيق خاص للفهرس في اللغة العربية */
+        [dir="rtl"] .dataframe .index {{
+            order: -1 !important;  /* يجعل الفهرس في آخر الصف (بجانب المادة) */
         }}
 
-        /* تنسيق عمود الحد الأدنى المطلوب */
-        [dir="rtl"] .dataframe td:first-child {{
-            color: #ff4848 !important;
-            font-weight: bold !important;
-        }}
-
-        /* تنسيق الأعمدة الوسطى */
-        [dir="rtl"] .dataframe td:not(:first-child):not(:last-child) {{
-            color: #ffffff !important;
-        }}
-
-        /* تحسين مظهر الأرقام */
-        .dataframe td:not(:first-child):not(:last-child) {{
-            font-family: monospace !important;
-            font-size: 1.1rem !important;
-        }}
-
-        /* إخفاء الحدود الزائدة */
-        .dataframe thead th:first-child {{
-            border-top-right-radius: 15px !important;
-        }}
-
-        .dataframe thead th:last-child {{
-            border-top-left-radius: 15px !important;
-        }}
-
-        .dataframe tbody tr:last-child td:first-child {{
-            border-bottom-right-radius: 15px !important;
-        }}
-
-        .dataframe tbody tr:last-child td:last-child {{
-            border-bottom-left-radius: 15px !important;
-        }}
-
-        /* تحسين المسافات بين الأعمدة */
-        .dataframe th, 
+        /* تنسيق عرض الأعمدة */
+        .dataframe th,
         .dataframe td {{
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
+            width: 20% !important;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -1066,39 +1002,39 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # تحديد النصيحة النهائية حسب اللغة
     if language == "العربية":
-        if passing_count >= 4:
-            final_advice = (
-                '<div class="advice-item success final-advice">'
-                '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
-                '</div>'
+    if passing_count >= 4:
+        final_advice = (
+            '<div class="advice-item success final-advice">'
+            '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
+            '</div>'
+        )
+    elif passing_count + improvement_count >= 4:
+        improvement_details = []
+        for subject in need_improvement_subjects:
+            min_required = calculate_minimum_required(
+                subjects[subject]["الفصل الأول"],
+                subjects[subject]["نصف السنة"]
             )
-        elif passing_count + improvement_count >= 4:
-            improvement_details = []
-            for subject in need_improvement_subjects:
-                min_required = calculate_minimum_required(
-                    subjects[subject]["الفصل الأول"],
-                    subjects[subject]["نصف السنة"]
-                )
-                improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
+            improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
 
-            improvement_subjects_details = "، ".join(improvement_details)
-            
-            final_advice = (
-                '<div class="advice-item warning final-advice">'
-                f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
-                f'<br>لديك {passing_count} مواد مضمونة.'
-                f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
-                f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
-                '</div>'
-            )
-        else:
-            final_advice = (
-                '<div class="advice-item danger final-advice">'
-                f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
-                f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
-                f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
-                '</div>'
-            )
+        improvement_subjects_details = "، ".join(improvement_details)
+        
+        final_advice = (
+            '<div class="advice-item warning final-advice">'
+            f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
+            f'<br>لديك {passing_count} مواد مضمونة.'
+            f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
+            f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
+            '</div>'
+        )
+    else:
+        final_advice = (
+            '<div class="advice-item danger final-advice">'
+            f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
+            f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
+            f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
+            '</div>'
+        )
     else:
         if passing_count >= 4:
             final_advice = (
@@ -1136,24 +1072,24 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
 
     # تحديث عرض النصائح مع إضافة التقييم النهائي
     if language == "العربية":
-        st.markdown(f"""
-            <div class="advice-section">
-                <div class="advice-item success">
-                    ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
-                </div>
-                <br>
-                <div class="advice-item warning">
-                    ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
-                </div>
-                <br>
-                <div class="advice-item danger">
-                    ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
-                </div>
-                <br>
-                <div class="final-advice-separator"></div>
-                {final_advice}
+    st.markdown(f"""
+        <div class="advice-section">
+            <div class="advice-item success">
+                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
             </div>
-        """, unsafe_allow_html=True)
+            <br>
+            <div class="advice-item warning">
+                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+            </div>
+            <br>
+            <div class="advice-item danger">
+                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
+            </div>
+            <br>
+            <div class="final-advice-separator"></div>
+            {final_advice}
+        </div>
+    """, unsafe_allow_html=True)
     else:
         # تحويل أسماء المواد للإنجليزية
         passed_subjects_en = ", ".join([current_texts["subjects"][sub] for sub in passing_subjects]) if passing_subjects else "None"
@@ -1201,7 +1137,7 @@ st.markdown("""
     <div class="footer">
         <div class="social-links">
             <a href="https://t.me/SadsHelp" target="_blank">شبكة المساعد التعليمية 📖</a>
-            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي ��</a>
+            <a href="https://t.me/+mg19Snwv14U4NWZi" target="_blank">كروب طلاب السادس الاعدادي 📖</a>
         </div>
         <div class="copyright">
             By Tariq Al-Yaseen © 2025-2026
