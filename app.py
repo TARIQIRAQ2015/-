@@ -489,7 +489,6 @@ st.markdown("""
 # تحديث CSS للعنوان
 st.markdown("""
     <style>
-    /* إعادة تعيين أي تنسيقات سابقة */
     .app-header {
         all: unset;
         display: block;
@@ -501,6 +500,9 @@ st.markdown("""
         border: 2px solid rgba(0, 255, 157, 0.2) !important;
         box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2) !important;
         max-width: 800px !important;
+        cursor: default !important;  /* منع ظهور مؤشر الرابط */
+        pointer-events: none !important;  /* تعطيل التفاعل كرابط */
+        text-decoration: none !important;  /* إزالة تنسيق الرابط */
     }
     
     .app-title {
@@ -512,6 +514,9 @@ st.markdown("""
         margin-bottom: 1rem !important;
         text-align: center !important;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3) !important;
+        cursor: default !important;
+        pointer-events: none !important;
+        text-decoration: none !important;
     }
     
     .app-subtitle {
@@ -521,11 +526,9 @@ st.markdown("""
         font-size: 1.5rem !important;
         text-align: center !important;
         margin-top: 1rem !important;
-    }
-    
-    /* إزالة النص المكرر */
-    .main-title {
-        display: none !important;
+        cursor: default !important;
+        pointer-events: none !important;
+        text-decoration: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
