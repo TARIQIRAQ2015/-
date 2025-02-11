@@ -860,21 +860,88 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             "الحد الأدنى المطلوب في الفصل الثاني": status
         })
     
-    # إنشاء وعرض جدول الدرجات
-    df = pd.DataFrame(results)
-    
-    # إعادة ترتيب الأعمدة حسب اللغة
-    if direction == 'rtl':
-        column_order = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
+    # عند إنشاء DataFrame وعرض النتائج
+    if language == "العربية":
+        # إعادة ترتيب الأعمدة للغة العربية
+        df = pd.DataFrame(results)
+        df = df[["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]]
     else:
-        column_order = ["الحد الأدنى المطلوب في الفصل الثاني", "الفصل الثاني", "نصف السنة", "الفصل الأول", "المادة"]
-    
-    df = df[column_order]
-    
-    # عرض جدول الدرجات
-    st.markdown('<div class="results-table">', unsafe_allow_html=True)
+        # ترتيب الأعمدة للغة الإنجليزية
+        df = pd.DataFrame(results)
+        df = df[["Subject", "First Term", "Mid Term", "Second Term", "Minimum Required"]]
+
+    # تحديث CSS للجداول
+    st.markdown(f"""
+        <style>
+        /* تنسيق الجداول */
+        .dataframe {{
+            direction: {direction};
+            background: rgba(0, 9, 42, 0.8) !important;
+            border-radius: 10px !important;
+            border: 1px solid rgba(0, 255, 157, 0.2) !important;
+            color: #fff !important;
+            width: 100% !important;
+        }}
+
+        /* تنسيق رؤوس الأعمدة */
+        .dataframe thead tr th {{
+            text-align: {'right' if direction == 'rtl' else 'left'} !important;
+            background: rgba(0, 255, 157, 0.1) !important;
+            color: #00ff9d !important;
+            font-weight: bold !important;
+            padding: 1rem !important;
+            white-space: nowrap !important;
+        }}
+
+        /* تنسيق خلايا الجدول */
+        .dataframe tbody tr td {{
+            text-align: {'right' if direction == 'rtl' else 'left'} !important;
+            padding: 0.8rem !important;
+        }}
+
+        /* تنسيق الصفوف */
+        .dataframe tbody tr {{
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
+        }}
+
+        /* تنسيق الصف عند التحويم */
+        .dataframe tbody tr:hover {{
+            background: rgba(0, 255, 157, 0.05) !important;
+        }}
+
+        /* تنسيق عمود الترقيم */
+        .dataframe .index {{
+            text-align: center !important;
+            background: rgba(0, 255, 157, 0.05) !important;
+            font-weight: bold !important;
+        }}
+
+        /* تعديل ترتيب العرض للغة العربية */
+        [dir="rtl"] .dataframe {{
+            display: table !important;
+        }}
+
+        [dir="rtl"] .dataframe thead {{
+            float: right !important;
+        }}
+
+        [dir="rtl"] .dataframe tbody {{
+            float: right !important;
+        }}
+
+        [dir="rtl"] .dataframe tr {{
+            float: right !important;
+        }}
+
+        [dir="rtl"] .dataframe td,
+        [dir="rtl"] .dataframe th {{
+            float: right !important;
+        }}
+        </style>
+    """, unsafe_allow_html=True)
+
+    # عرض الجدول
     st.table(df)
-    st.markdown('</div>', unsafe_allow_html=True)
     
     # عرض النصائح في قسم منفصل
     passed_subjects_str = "، ".join(passing_subjects) if passing_subjects else "لا يوجد"
