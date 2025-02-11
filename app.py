@@ -443,6 +443,13 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     impossible_subjects = []
     
     for subject, scores in subjects.items():
+        # تخطي مادة اللغة الفرنسية إذا كانت جميع درجاتها صفر
+        if subject == "اللغة الفرنسية" and \
+           scores["الفصل الأول"] == 0 and \
+           scores["نصف السنة"] == 0 and \
+           scores["الفصل الثاني"] == 0:
+            continue
+            
         minimum_required = calculate_minimum_required(
             scores["الفصل الأول"],
             scores["نصف السنة"]
