@@ -482,49 +482,50 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 st.markdown("""
     <div class="app-header">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
+        <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
     </div>
 """, unsafe_allow_html=True)
 
 # تحديث CSS للعنوان
-st.markdown(f"""
+st.markdown("""
     <style>
-    .app-header {{
-        text-align: center;
-        margin: 1rem 0 2rem 0;
-        padding: 1rem;
-    }}
+    /* إعادة تعيين أي تنسيقات سابقة */
+    .app-header {
+        all: unset;
+        display: block;
+        text-align: center !important;
+        margin: 2rem auto !important;
+        padding: 2rem !important;
+        background: rgba(0, 9, 42, 0.8) !important;
+        border-radius: 20px !important;
+        border: 2px solid rgba(0, 255, 157, 0.2) !important;
+        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2) !important;
+        max-width: 800px !important;
+    }
     
-    .app-title {{
-        color: #00ff9d;
-        font-size: 2rem;
-        font-weight: bold;
-        margin: 0;
-        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-    }}
-    </style>
-""", unsafe_allow_html=True)
-
-# إضافة العنوان في بداية التطبيق
-st.markdown("""
-    <div class="main-title">
-        احسب دخولك للوزاري بدقة وسهولة
-    </div>
-""", unsafe_allow_html=True)
-
-# إضافة CSS للعنوان
-st.markdown("""
-    <style>
+    .app-title {
+        all: unset;
+        display: block;
+        color: #00ff9d !important;
+        font-size: 2.5rem !important;
+        font-weight: bold !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3) !important;
+    }
+    
+    .app-subtitle {
+        all: unset;
+        display: block;
+        color: #fff !important;
+        font-size: 1.5rem !important;
+        text-align: center !important;
+        margin-top: 1rem !important;
+    }
+    
+    /* إزالة النص المكرر */
     .main-title {
-        text-align: center;
-        color: #00ff9d;
-        font-size: 1.8rem;
-        font-weight: bold;
-        margin: 1rem 0 2rem 0;
-        padding: 1rem;
-        background: rgba(0, 9, 42, 0.8);
-        border-radius: 15px;
-        border: 2px solid rgba(0, 255, 157, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        display: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
