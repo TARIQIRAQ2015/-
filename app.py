@@ -583,8 +583,6 @@ def calculate_minimum_required(first_term, mid_term):
 if st.button(current_texts["analyze"], key="calculate_btn"):
     results = []
     passing_subjects = []
-    possible_subjects = []
-    impossible_subjects = []
     
     for subject, scores in subjects.items():
         # تخطي مادة اللغة الفرنسية إذا كانت جميع درجاتها صفر
@@ -605,10 +603,8 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             passing_subjects.append(subject)
         elif minimum_required > 100:
             status = f"❌ ({minimum_required:.0f})"
-            impossible_subjects.append(subject)
         else:
             status = f"❌ ({minimum_required:.0f})"
-            possible_subjects.append(subject)
         
         results.append({
             "المادة": subject,
@@ -618,38 +614,63 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             "الحد الأدنى المطلوب في الفصل الثاني": status
         })
     
-    st.markdown('<div class="results-table">', unsafe_allow_html=True)
+    # إنشاء DataFrame وإضافة صف إضافي للنصيحة
     df = pd.DataFrame(results)
+    
+    # إضافة صف النصيحة
+    passed_subjects_str = "، ".join(passing_subjects)
+    advice_text = f"المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني."
+    
+    # إضافة صف النصيحة إلى DataFrame
+    advice_row = pd.DataFrame([{
+        "المادة": advice_text,
+        "الفصل الأول": "",
+        "نصف السنة": "",
+        "الفصل الثاني": "",
+        "الحد الأدنى المطلوب في الفصل الثاني": ""
+    }])
+    
+    df = pd.concat([df, advice_row], ignore_index=True)
+    
+    # عرض الجدول
+    st.markdown('<div class="results-table">', unsafe_allow_html=True)
     st.table(df)
     st.markdown('</div>', unsafe_allow_html=True)
-    
-    # تعديل طريقة عرض النصائح
-    st.markdown('<div class="conclusion">', unsafe_allow_html=True)
-    passed_subjects_str = "، ".join(passing_subjects)
-    st.write(f"المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.")
-    st.markdown('</div>', unsafe_allow_html=True)
 
-# تحسين CSS للنصائح
+# تحديث CSS للجدول
 st.markdown("""
     <style>
-    .conclusion {
-        background: rgba(0, 9, 42, 0.8);
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 1rem 0;
-        color: white;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        text-align: right;
-        border: 1px solid rgba(0, 255, 157, 0.2);
-    }
-    
     .results-table {
-        margin-bottom: 0.5rem;
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 1rem 0;
+        border: 1px solid rgba(0, 255, 157, 0.2);
     }
     
     .dataframe {
         margin-bottom: 0 !important;
+        width: 100%;
+    }
+    
+    .dataframe td {
+        color: white !important;
+        padding: 12px !important;
+        text-align: right !important;
+    }
+    
+    .dataframe tr:last-child td {
+        border-top: 1px solid rgba(0, 255, 157, 0.2) !important;
+        background: rgba(0, 255, 157, 0.05) !important;
+        font-weight: bold !important;
+    }
+    
+    .dataframe th {
+        background: rgba(0, 255, 157, 0.1) !important;
+        color: #00ff9d !important;
+        padding: 15px !important;
+        font-weight: bold !important;
+        text-align: right !important;
     }
     </style>
 """, unsafe_allow_html=True)
