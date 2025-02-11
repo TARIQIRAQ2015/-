@@ -26,9 +26,9 @@ st.set_page_config(
 # إخفاء جميع العناصر الافتراضية
 hide_st_style = """
     <style>
-        #MainMenu {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-        header {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -41,61 +41,77 @@ direction = 'rtl' if language == "العربية" else 'ltr'
 st.markdown("""
     <div class="app-header">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
-        <div class="main-title">
-            احسب دخولك للوزاري بدقة وسهولة
-        </div>
     </div>
 """, unsafe_allow_html=True)
 
-# تحديث CSS للعناوين
+# تحديث CSS للعنوان
 st.markdown("""
     <style>
-    /* تنسيق العنوان الرئيسي والفرعي */
+    /* تنسيق العنوان الرئيسي */
     .app-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        text-align: center;
         width: 100%;
-        padding: 2rem 0;
-        margin-bottom: 2rem;
+        position: relative;
+        padding: 1rem;
+        margin: 0;
     }
     
     .app-title {
         color: #00ff9d;
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: bold;
+        margin: 0 auto;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        text-align: center;
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+
+    /* تحسين شكل قائمة اختيار اللغة */
+    .stSelectbox {
         margin-bottom: 1rem;
     }
 
+    .stSelectbox > div {
+        width: fit-content;
+        margin-left: auto;
+    }
+
+    /* إخفاء تسمية قائمة اختيار اللغة */
+    .stSelectbox label {
+        display: none;
+    }
+
+    /* تصحيح المسافات */
+    .block-container {
+        padding-top: 0 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# إضافة العنوان في بداية التطبيق
+st.markdown("""
+    <div class="main-title">
+        احسب دخولك للوزاري بدقة وسهولة
+    </div>
+""", unsafe_allow_html=True)
+
+# إضافة CSS للعنوان
+st.markdown("""
+    <style>
     .main-title {
+        text-align: center;
         color: #00ff9d;
         font-size: 1.8rem;
         font-weight: bold;
-        text-align: center;
+        margin: 1rem 0 2rem 0;
         padding: 1rem;
         background: rgba(0, 9, 42, 0.8);
         border-radius: 15px;
         border: 2px solid rgba(0, 255, 157, 0.2);
         box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
-        width: 80%;
-        margin: 0 auto;
-    }
-
-    /* تحسين موضع قائمة اختيار اللغة */
-    .stSelectbox {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        z-index: 1001;
-        width: auto !important;
-    }
-
-    /* إضافة مسافة للمحتوى تحت العناوين */
-    .main .block-container {
-        margin-top: 12rem;
     }
     </style>
 """, unsafe_allow_html=True)
