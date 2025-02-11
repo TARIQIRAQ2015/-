@@ -649,6 +649,42 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     impossible_subjects_str = "، ".join(impossible_subjects) if impossible_subjects else "لا يوجد"
     need_improvement_subjects_str = "، ".join(need_improvement_subjects) if need_improvement_subjects else "لا يوجد"
     
+    # تحديد إمكانية الدخول للوزاري
+    total_subjects = len(results)  # عدد المواد الكلي
+    passing_count = len(passing_subjects)  # عدد المواد المضمونة
+    impossible_count = len(impossible_subjects)  # عدد المواد المستحيلة
+    improvement_count = len(need_improvement_subjects)  # عدد المواد التي تحتاج تحسين
+    
+    # تحديد النصيحة النهائية
+    final_advice = ""
+    if impossible_count > 0:
+        final_advice = """
+            <div class="advice-item danger final-advice">
+                ⛔ لا يمكنك الدخول للوزاري هذا العام لوجود مواد يستحيل النجاح فيها. ننصحك بإعادة السنة والتركيز على تحسين درجاتك.
+            </div>
+        """
+    elif passing_count == total_subjects:
+        final_advice = """
+            <div class="advice-item success final-advice">
+                🎉 مبروك! يمكنك الدخول للوزاري بثقة حيث أنك ضامن النجاح في جميع المواد.
+            </div>
+        """
+    elif improvement_count <= 2:
+        final_advice = f"""
+            <div class="advice-item warning final-advice">
+                ⚠️ يمكنك الدخول للوزاري ولكن عليك التركيز بشكل كبير على المواد التي تحتاج إلى تحسين.
+                <br>لديك {improvement_count} مواد تحتاج إلى تحسين، وهذا عدد معقول يمكن تحسينه بالدراسة الجيدة.
+            </div>
+        """
+    else:
+        final_advice = f"""
+            <div class="advice-item danger final-advice">
+                ⚠️ الدخول للوزاري في هذه الحالة محفوف بالمخاطر.
+                <br>لديك {improvement_count} مواد تحتاج إلى تحسين، وهذا عدد كبير. ننصحك بالتفكير جيداً والتشاور مع الأهل والمدرسين.
+            </div>
+        """
+
+    # تحديث عرض النصائح مع إضافة التقييم النهائي
     st.markdown(f"""
         <div class="advice-section">
             <div class="advice-item success">
@@ -662,45 +698,26 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             <div class="advice-item danger">
                 ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
             </div>
+            <br>
+            <div class="final-advice-separator"></div>
+            {final_advice}
         </div>
     """, unsafe_allow_html=True)
 
-# إضافة CSS للنصائح
-st.markdown(f"""
+# إضافة CSS للتقييم النهائي
+st.markdown("""
     <style>
-    .advice-section {{
-        background: rgba(0, 9, 42, 0.8);
-        border-radius: 15px;
-        padding: 1.5rem;
+    .final-advice-separator {
+        border-top: 1px solid rgba(0, 255, 157, 0.2);
         margin: 1rem 0;
-        color: white;
-        font-size: 1.1rem;
-        line-height: 1.8;
-        text-align: {direction == 'rtl' and 'right' or 'left'};
-        border: 1px solid rgba(0, 255, 157, 0.2);
-        direction: {direction};
-    }}
-
-    .advice-item {{
-        padding: 0.8rem;
-        border-radius: 10px;
-        margin: 0.5rem 0;
-    }}
-
-    .advice-item.success {{
-        background: rgba(0, 255, 157, 0.1);
-        border-right: 4px solid #00ff9d;
-    }}
-
-    .advice-item.warning {{
-        background: rgba(255, 193, 7, 0.1);
-        border-right: 4px solid #ffc107;
-    }}
-
-    .advice-item.danger {{
-        background: rgba(255, 72, 72, 0.1);
-        border-right: 4px solid #ff4848;
-    }}
+    }
+    
+    .final-advice {
+        font-size: 1.2rem !important;
+        padding: 1.2rem !important;
+        margin-top: 1rem !important;
+        border-width: 2px !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
