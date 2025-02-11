@@ -903,20 +903,26 @@ st.markdown(f"""
 # تحديث CSS للتصميم المتجاوب
 st.markdown("""
     <style>
-    /* إزالة الهوامش الافتراضية */
+    /* إزالة الهوامش والحواف الزائدة */
     .main .block-container {
-        padding: 2rem 5rem;
+        padding: 1rem;
         max-width: 100%;
+    }
+    
+    /* إزالة التمرير الأفقي */
+    .main {
+        overflow-x: hidden;
     }
     
     /* تحسين عرض الأعمدة */
     .stColumns {
-        gap: 2rem !important;
+        gap: 1rem !important;
     }
     
     /* تحسين عرض الجدول */
     .results-table {
-        margin: 2rem 0;
+        margin: 1rem 0;
+        width: 100%;
     }
     
     /* تحسين عرض حقول الإدخال */
@@ -924,14 +930,14 @@ st.markdown("""
         width: 100% !important;
     }
     
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding: 1rem;
-        }
-        
-        .stColumns {
-            gap: 1rem !important;
-        }
+    /* إخفاء شريط التمرير */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* تعطيل التمرير الأفقي للصفحة بالكامل */
+    body {
+        overflow-x: hidden !important;
     }
     </style>
 """, unsafe_allow_html=True)
