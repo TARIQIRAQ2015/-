@@ -689,7 +689,7 @@ st.markdown("""
 print("Current working directory:", os.getcwd())
 print("Logo file exists:", os.path.exists('logo.png'))
 
-# تحديث CSS للتصميم الكامل مع مراعاة اتجاه اللغة
+# تحديث CSS للتصميم الكامل
 st.markdown(f"""
     <style>
     /* تحسين المظهر العام */
@@ -707,63 +707,55 @@ st.markdown(f"""
         text-align: center !important;
     }}
     
-    .app-subtitle {{
+    /* عناوين المواد في الوسط */
+    .subject-name {{
         text-align: center !important;
     }}
     
-    /* محاذاة النصوص حسب اللغة */
-    .subject-name {{
-        text-align: {direction == 'rtl' and 'right' or 'left'};
-        padding-{direction == 'rtl' and 'right' or 'left'}: 2rem;
-    }}
-    
+    /* عناوين الفصول في الوسط */
     .grade-label {{
-        text-align: {direction == 'rtl' and 'right' or 'left'};
-        padding-{direction == 'rtl' and 'right' or 'left'}: 1rem;
+        text-align: center !important;
     }}
     
-    .stNumberInput {{
-        direction: {direction};
+    /* محاذاة النص حسب اللغة */
+    .advice-section {{
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
     }}
     
-    /* محاذاة جدول النتائج */
+    /* تنسيق الجدول */
     .dataframe {{
         direction: {direction};
     }}
     
     .dataframe th {{
-        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
-        padding-{direction == 'rtl' and 'right' or 'left'}: 1.5rem !important;
-    }}
-    
-    .dataframe td {{
-        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
-        padding-{direction == 'rtl' and 'right' or 'left'}: 1.5rem !important;
-    }}
-    
-    /* محاذاة قسم النصائح */
-    .advice-section {{
-        text-align: {direction == 'rtl' and 'right' or 'left'};
-        padding: 2rem;
-    }}
-    
-    /* محاذاة التذييل */
-    .footer {{
         text-align: center !important;
+    }}
+    
+    /* المواد والفصول في وسط الجدول */
+    .dataframe td:nth-child(1),
+    .dataframe td:nth-child(2),
+    .dataframe td:nth-child(3),
+    .dataframe td:nth-child(4) {{
+        text-align: center !important;
+    }}
+    
+    /* الحد الأدنى المطلوب محاذاة حسب اللغة */
+    .dataframe td:nth-child(5) {{
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
     }}
     
     /* تحسين قائمة اختيار اللغة */
     .stSelectbox {{
-        text-align: {direction == 'rtl' and 'right' or 'left'};
-    }}
-    
-    .stSelectbox > div > div {{
         text-align: {direction == 'rtl' and 'right' or 'left'} !important;
     }}
     
-    /* تعديل اتجاه الأزرار */
-    .stButton {{
-        direction: {direction};
+    /* روابط التذييل */
+    .social-links {{
+        text-align: center !important;
+    }}
+    
+    .copyright {{
+        text-align: center !important;
     }}
     
     /* باقي التنسيقات السابقة ... */
