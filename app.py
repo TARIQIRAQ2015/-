@@ -632,46 +632,73 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     df = pd.concat([df, advice_row], ignore_index=True)
     
+    # إعادة ترتيب الأعمدة حسب اللغة
+    if direction == 'rtl':
+        column_order = ["الحد الأدنى المطلوب في الفصل الثاني", "الفصل الثاني", "نصف السنة", "الفصل الأول", "المادة"]
+    else:
+        column_order = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
+    
+    df = df[column_order]
+    
     # عرض الجدول
     st.markdown('<div class="results-table">', unsafe_allow_html=True)
     st.table(df)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# تحديث CSS للجدول
-st.markdown("""
+# تحديث CSS للجدول مع مراعاة اتجاه اللغة
+st.markdown(f"""
     <style>
-    .results-table {
+    .results-table {{
         background: rgba(0, 9, 42, 0.8);
         border-radius: 15px;
         padding: 1rem;
         margin: 1rem 0;
         border: 1px solid rgba(0, 255, 157, 0.2);
-    }
+        direction: {direction};
+    }}
     
-    .dataframe {
+    .dataframe {{
         margin-bottom: 0 !important;
         width: 100%;
-    }
+    }}
     
-    .dataframe td {
+    .dataframe td {{
         color: white !important;
         padding: 12px !important;
-        text-align: right !important;
-    }
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
+    }}
     
-    .dataframe tr:last-child td {
+    .dataframe tr:last-child td {{
         border-top: 1px solid rgba(0, 255, 157, 0.2) !important;
         background: rgba(0, 255, 157, 0.05) !important;
         font-weight: bold !important;
-    }
+    }}
     
-    .dataframe th {
+    .dataframe th {{
         background: rgba(0, 255, 157, 0.1) !important;
         color: #00ff9d !important;
         padding: 15px !important;
         font-weight: bold !important;
-        text-align: right !important;
-    }
+        text-align: {direction == 'rtl' and 'right' or 'left'} !important;
+    }}
+
+    /* تعديل ترتيب الأعمدة حسب اللغة */
+    .dataframe thead tr {{
+        display: flex;
+        flex-direction: {direction == 'rtl' and 'row-reverse' or 'row'};
+    }}
+    
+    .dataframe tbody tr {{
+        display: flex;
+        flex-direction: {direction == 'rtl' and 'row-reverse' or 'row'};
+    }}
+
+    .dataframe th, .dataframe td {{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: {direction == 'rtl' and 'flex-end' or 'flex-start'};
+    }}
     </style>
 """, unsafe_allow_html=True)
 
