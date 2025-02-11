@@ -486,9 +486,9 @@ direction = "rtl" if language == "العربية" else "ltr"
 
 # إضافة العنوان حسب اللغة
 if language == "العربية":
-st.markdown("""
-    <div class="app-header">
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+    st.markdown("""
+        <div class="app-header">
+            <h1 class="app-title">المساعد لحساب الوزاري</h1>
             <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
         </div>
     """, unsafe_allow_html=True)
@@ -497,8 +497,8 @@ else:
         <div class="app-header">
             <h1 class="app-title">Ministry Calculator Assistant</h1>
             <p class="app-subtitle">Calculate your ministry entry accurately and easily</p>
-    </div>
-""", unsafe_allow_html=True)
+        </div>
+    """, unsafe_allow_html=True)
 
 # تحديث CSS للعنوان
 st.markdown("""
@@ -894,13 +894,13 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             need_improvement_subjects.append(subject)
         
         if language == "العربية":
-        results.append({
-            "المادة": subject,
-            "الفصل الأول": scores["الفصل الأول"],
-            "نصف السنة": scores["نصف السنة"],
-            "الفصل الثاني": scores["الفصل الثاني"],
-            "الحد الأدنى المطلوب في الفصل الثاني": status
-        })
+            results.append({
+                "المادة": subject,
+                "الفصل الأول": scores["الفصل الأول"],
+                "نصف السنة": scores["نصف السنة"],
+                "الفصل الثاني": scores["الفصل الثاني"],
+                "الحد الأدنى المطلوب في الفصل الثاني": status
+            })
         else:
             results.append({
                 "Subject": current_texts["subjects"][subject],
@@ -912,10 +912,10 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # عند إنشاء DataFrame وعرض النتائج
     if language == "العربية":
-        # إعادة ترتيب الأعمدة للغة العربية من اليمين إلى اليسار
-        columns = ["الحد الأدنى المطلوب في الفصل الثاني", "الفصل الثاني", "نصف السنة", "الفصل الأول", "المادة"]
+        # إعادة ترتيب الأعمدة للغة العربية
+        columns = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
     else:
-        # ترتيب الأعمدة للغة الإنجليزية من اليسار إلى اليمين
+        # ترتيب الأعمدة للغة الإنجليزية
         columns = ["Subject", "First Term", "Mid Term", "Second Term", "Minimum Required"]
 
     df = pd.DataFrame(results)
@@ -936,57 +936,62 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
 
         /* تنسيق رؤوس الأعمدة */
         .dataframe thead tr th {{
+            text-align: {'right' if direction == 'rtl' else 'left'} !important;
             background: rgba(0, 255, 157, 0.1) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
             padding: 1rem !important;
-            text-align: center !important;
+            white-space: nowrap !important;
         }}
 
         /* تنسيق خلايا الجدول */
         .dataframe tbody tr td {{
+            text-align: {'right' if direction == 'rtl' else 'left'} !important;
             padding: 0.8rem !important;
-            text-align: center !important;
         }}
 
-        /* تنسيق عمود الفهرس */
+        /* تنسيق الصفوف */
+        .dataframe tbody tr {{
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
+        }}
+
+        /* تنسيق الصف عند التحويم */
+        .dataframe tbody tr:hover {{
+            background: rgba(0, 255, 157, 0.05) !important;
+        }}
+
+        /* تنسيق عمود الترقيم */
         .dataframe .index {{
-            width: 50px !important;
             text-align: center !important;
             background: rgba(0, 255, 157, 0.05) !important;
-            color: #00ff9d !important;
+            font-weight: bold !important;
         }}
 
-        /* تنسيق خاص للغة العربية */
+        /* تعديل ترتيب العرض للغة العربية */
         [dir="rtl"] .dataframe {{
-            direction: rtl !important;
+            display: table !important;
         }}
 
-        [dir="rtl"] .dataframe thead tr,
-        [dir="rtl"] .dataframe tbody tr {{
-            display: flex !important;
-            flex-direction: row !important;
-        }}
-        
-        [dir="rtl"] .dataframe th,
-        [dir="rtl"] .dataframe td {{
-            flex: 1 !important;
+        [dir="rtl"] .dataframe thead {{
+            float: right !important;
         }}
 
-        /* تنسيق خاص للفهرس في اللغة العربية */
-        [dir="rtl"] .dataframe .index {{
-            order: -1 !important;  /* يجعل الفهرس في آخر الصف (بجانب المادة) */
+        [dir="rtl"] .dataframe tbody {{
+            float: right !important;
         }}
 
-        /* تنسيق عرض الأعمدة */
-        .dataframe th,
-        .dataframe td {{
-            width: 20% !important;
+        [dir="rtl"] .dataframe tr {{
+            float: right !important;
+        }}
+
+        [dir="rtl"] .dataframe td,
+        [dir="rtl"] .dataframe th {{
+            float: right !important;
         }}
         </style>
     """, unsafe_allow_html=True)
 
-    # عرض الجدول مع الفهرس
+    # عرض الجدول
     st.table(df)
     
     # عرض النصائح في قسم منفصل
@@ -1002,39 +1007,39 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # تحديد النصيحة النهائية حسب اللغة
     if language == "العربية":
-    if passing_count >= 4:
-        final_advice = (
-            '<div class="advice-item success final-advice">'
-            '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
-            '</div>'
-        )
-    elif passing_count + improvement_count >= 4:
-        improvement_details = []
-        for subject in need_improvement_subjects:
-            min_required = calculate_minimum_required(
-                subjects[subject]["الفصل الأول"],
-                subjects[subject]["نصف السنة"]
+        if passing_count >= 4:
+            final_advice = (
+                '<div class="advice-item success final-advice">'
+                '🎉 مبارك! يمكنك الدخول للوزاري حيث أنك ضامن النجاح في 4 مواد أو أكثر.'
+                '</div>'
             )
-            improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
+        elif passing_count + improvement_count >= 4:
+            improvement_details = []
+            for subject in need_improvement_subjects:
+                min_required = calculate_minimum_required(
+                    subjects[subject]["الفصل الأول"],
+                    subjects[subject]["نصف السنة"]
+                )
+                improvement_details.append(f"{subject} (تحتاج {min_required:.0f} درجة)")
 
-        improvement_subjects_details = "، ".join(improvement_details)
-        
-        final_advice = (
-            '<div class="advice-item warning final-advice">'
-            f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
-            f'<br>لديك {passing_count} مواد مضمونة.'
-            f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
-            f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
-            '</div>'
-        )
-    else:
-        final_advice = (
-            '<div class="advice-item danger final-advice">'
-            f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
-            f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
-            f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
-            '</div>'
-        )
+            improvement_subjects_details = "، ".join(improvement_details)
+            
+            final_advice = (
+                '<div class="advice-item warning final-advice">'
+                f'⚠️ يمكنك الدخول للوزاري مع التركيز على تحسين درجاتك.'
+                f'<br>لديك {passing_count} مواد مضمونة.'
+                f'<br>المواد التي تحتاج إلى تحسين هي: {improvement_subjects_details}.'
+                f'<br>تحتاج إلى النجاح في {max(4 - passing_count, 0)} مواد على الأقل من المواد المتبقية.'
+                '</div>'
+            )
+        else:
+            final_advice = (
+                '<div class="advice-item danger final-advice">'
+                f'⛔ غير مؤهل للدخول للوزاري هذا العام.'
+                f'<br>لديك فقط {passing_count} مواد مضمونة و {improvement_count} مواد تحتاج إلى تحسين.'
+                f'<br>يجب ضمان النجاح في 4 مواد على الأقل للتأهل للوزاري.'
+                '</div>'
+            )
     else:
         if passing_count >= 4:
             final_advice = (
@@ -1072,24 +1077,24 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
 
     # تحديث عرض النصائح مع إضافة التقييم النهائي
     if language == "العربية":
-    st.markdown(f"""
-        <div class="advice-section">
-            <div class="advice-item success">
-                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+        st.markdown(f"""
+            <div class="advice-section">
+                <div class="advice-item success">
+                    ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+                </div>
+                <br>
+                <div class="advice-item warning">
+                    ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+                </div>
+                <br>
+                <div class="advice-item danger">
+                    ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
+                </div>
+                <br>
+                <div class="final-advice-separator"></div>
+                {final_advice}
             </div>
-            <br>
-            <div class="advice-item warning">
-                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
-            </div>
-            <br>
-            <div class="advice-item danger">
-                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
-            </div>
-            <br>
-            <div class="final-advice-separator"></div>
-            {final_advice}
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     else:
         # تحويل أسماء المواد للإنجليزية
         passed_subjects_en = ", ".join([current_texts["subjects"][sub] for sub in passing_subjects]) if passing_subjects else "None"
