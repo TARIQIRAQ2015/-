@@ -51,9 +51,12 @@ st.markdown("""
     .app-header {
         text-align: center;
         width: 100%;
-        position: relative;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         padding: 1rem;
         margin: 0;
+        z-index: 1;
     }
     
     .app-title {
@@ -63,30 +66,21 @@ st.markdown("""
         margin: 0 auto;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
         display: inline-block;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
         white-space: nowrap;
     }
 
     /* تحسين شكل قائمة اختيار اللغة */
     .stSelectbox {
-        margin-bottom: 1rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: auto;
+        z-index: 2;
     }
 
-    .stSelectbox > div {
-        width: fit-content;
-        margin-left: auto;
-    }
-
-    /* إخفاء تسمية قائمة اختيار اللغة */
-    .stSelectbox label {
-        display: none;
-    }
-
-    /* تصحيح المسافات */
-    .block-container {
-        padding-top: 0 !important;
+    /* إضافة مسافة للمحتوى تحت العنوان */
+    .main-title {
+        margin-top: 5rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
