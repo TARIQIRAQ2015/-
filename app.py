@@ -594,7 +594,8 @@ def calculate_minimum_required(first_term, mid_term):
 if st.button(current_texts["analyze"], key="calculate_btn"):
     results = []
     passing_subjects = []
-    failing_subjects = []
+    impossible_subjects = []  # المواد التي يستحيل النجاح فيها
+    need_improvement_subjects = []  # المواد التي تحتاج إلى تحسين
     
     for subject, scores in subjects.items():
         # تضمين اللغة الفرنسية فقط إذا كان هناك درجة واحدة على الأقل
@@ -614,10 +615,10 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             passing_subjects.append(subject)
         elif minimum_required > 100:
             status = f"❌ ({minimum_required:.0f})"
-            failing_subjects.append(subject)
+            impossible_subjects.append(subject)
         else:
             status = f"❌ ({minimum_required:.0f})"
-            failing_subjects.append(subject)
+            need_improvement_subjects.append(subject)
         
         results.append({
             "المادة": subject,
@@ -645,13 +646,22 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # عرض النصائح في قسم منفصل
     passed_subjects_str = "، ".join(passing_subjects) if passing_subjects else "لا يوجد"
-    failed_subjects_str = "، ".join(failing_subjects) if failing_subjects else "لا يوجد"
+    impossible_subjects_str = "، ".join(impossible_subjects) if impossible_subjects else "لا يوجد"
+    need_improvement_subjects_str = "، ".join(need_improvement_subjects) if need_improvement_subjects else "لا يوجد"
     
     st.markdown(f"""
         <div class="advice-section">
-            المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
-            <br><br>
-            المواد التي تحتاج إلى تحسين هي: {failed_subjects_str}
+            <div class="advice-item success">
+                ✅ المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+            </div>
+            <br>
+            <div class="advice-item warning">
+                ⚠️ المواد التي تحتاج إلى تحسين هي: {need_improvement_subjects_str}
+            </div>
+            <br>
+            <div class="advice-item danger">
+                ❌ المواد التي يستحيل النجاح فيها هي: {impossible_subjects_str}
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -665,10 +675,31 @@ st.markdown(f"""
         margin: 1rem 0;
         color: white;
         font-size: 1.1rem;
-        line-height: 1.6;
+        line-height: 1.8;
         text-align: {direction == 'rtl' and 'right' or 'left'};
         border: 1px solid rgba(0, 255, 157, 0.2);
         direction: {direction};
+    }}
+
+    .advice-item {{
+        padding: 0.8rem;
+        border-radius: 10px;
+        margin: 0.5rem 0;
+    }}
+
+    .advice-item.success {{
+        background: rgba(0, 255, 157, 0.1);
+        border-right: 4px solid #00ff9d;
+    }}
+
+    .advice-item.warning {{
+        background: rgba(255, 193, 7, 0.1);
+        border-right: 4px solid #ffc107;
+    }}
+
+    .advice-item.danger {{
+        background: rgba(255, 72, 72, 0.1);
+        border-right: 4px solid #ff4848;
     }}
     </style>
 """, unsafe_allow_html=True)
