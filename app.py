@@ -23,35 +23,41 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# إخفاء جميع العناصر الافتراضية
+# إخفاء العناصر الافتراضية
 hide_st_style = """
-    <style>
+<style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    </style>
+</style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# اختيار اللغة (نقل هذا الجزء إلى الأعلى)
-language = st.selectbox("", ["العربية", "English"], index=0)
+# اختيار اللغة أولاً
+language = st.selectbox("", ["العربية", "English"], key="language_selector")
 direction = 'rtl' if language == "العربية" else 'ltr'
 
-# تعديل العنوان الرئيسي
+# العنوان الرئيسي
 st.markdown("""
     <div class="app-header">
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
     </div>
 """, unsafe_allow_html=True)
 
-# تحديث CSS للعنوان وقائمة اختيار اللغة
+# تحديث CSS للعنوان
 st.markdown("""
     <style>
-    /* تنسيق العنوان */
+    /* تنسيق قائمة اختيار اللغة */
+    .stSelectbox {
+        width: 200px !important;
+        margin: 0 auto 1rem auto !important;
+    }
+    
+    /* تنسيق العنوان الرئيسي */
     .app-header {
         text-align: center;
+        width: 100%;
         margin: 1rem 0 2rem 0;
-        padding: 1rem;
     }
     
     .app-title {
@@ -60,27 +66,18 @@ st.markdown("""
         font-weight: bold;
         margin: 0;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        text-align: center !important;
-    }
-    
-    /* تنسيق قائمة اختيار اللغة */
-    .stSelectbox {
-        margin-bottom: 2rem;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
     }
     
     /* إخفاء أيقونة الارتباط */
-    .stSelectbox > div > div > div:last-child {
-        display: none !important;
+    .stMarkdown a {
+        text-decoration: none !important;
     }
     
-    /* تحسين تنسيق قائمة اختيار اللغة */
-    .stSelectbox > div {
-        display: flex;
-        justify-content: center;
-    }
-    
-    .stSelectbox > div > div {
-        max-width: 200px;
+    .stMarkdown a::after {
+        content: none !important;
     }
     </style>
 """, unsafe_allow_html=True)
