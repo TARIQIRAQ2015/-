@@ -481,54 +481,126 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # تعديل العنوان الرئيسي
 st.markdown("""
     <div class="app-header">
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
-        <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
+        <div class="header-content">
+            <h1 class="app-title">المساعد لحساب الوزاري</h1>
+            <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
+        </div>
     </div>
 """, unsafe_allow_html=True)
 
-# تحديث CSS للعنوان
+# تحديث CSS للعنوان مع إضافة تأثيرات جديدة
 st.markdown("""
     <style>
     .app-header {
         all: unset;
-        display: block;
-        text-align: center !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 2rem auto !important;
-        padding: 2rem !important;
-        background: rgba(0, 9, 42, 0.8) !important;
-        border-radius: 20px !important;
+        padding: 3rem 2rem !important;
+        background: linear-gradient(135deg, rgba(0, 9, 42, 0.95), rgba(0, 20, 80, 0.95)) !important;
+        border-radius: 25px !important;
         border: 2px solid rgba(0, 255, 157, 0.2) !important;
-        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.2) !important;
-        max-width: 800px !important;
-        cursor: default !important;  /* منع ظهور مؤشر الرابط */
-        pointer-events: none !important;  /* تعطيل التفاعل كرابط */
-        text-decoration: none !important;  /* إزالة تنسيق الرابط */
+        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15) !important;
+        max-width: 900px !important;
+        position: relative;
+        overflow: hidden;
+        cursor: default !important;
+        pointer-events: none !important;
+        animation: headerGlow 3s ease-in-out infinite alternate;
+    }
+    
+    .header-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .app-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(0, 255, 157, 0.1),
+            transparent
+        );
+        animation: shine 3s infinite linear;
+        pointer-events: none;
     }
     
     .app-title {
         all: unset;
         display: block;
         color: #00ff9d !important;
-        font-size: 2.5rem !important;
-        font-weight: bold !important;
-        margin-bottom: 1rem !important;
+        font-size: 3.2rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 1.5rem !important;
         text-align: center !important;
-        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3) !important;
-        cursor: default !important;
-        pointer-events: none !important;
-        text-decoration: none !important;
+        text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                     0 0 30px rgba(0, 255, 157, 0.3) !important;
+        letter-spacing: 2px !important;
+        animation: titlePulse 3s ease-in-out infinite alternate;
     }
     
     .app-subtitle {
         all: unset;
         display: block;
-        color: #fff !important;
-        font-size: 1.5rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-size: 1.6rem !important;
         text-align: center !important;
         margin-top: 1rem !important;
-        cursor: default !important;
-        pointer-events: none !important;
-        text-decoration: none !important;
+        font-weight: 500 !important;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
+        letter-spacing: 1px !important;
+    }
+    
+    @keyframes headerGlow {
+        0% {
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
+        }
+        100% {
+            box-shadow: 0 8px 32px rgba(0, 255, 157, 0.3);
+        }
+    }
+    
+    @keyframes shine {
+        0% {
+            transform: translateX(-100%) rotate(45deg);
+        }
+        100% {
+            transform: translateX(100%) rotate(45deg);
+        }
+    }
+    
+    @keyframes titlePulse {
+        0% {
+            text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                         0 0 30px rgba(0, 255, 157, 0.3);
+        }
+        100% {
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
+                         0 0 40px rgba(0, 255, 157, 0.4);
+        }
+    }
+    
+    /* تحسين التجاوب مع الشاشات المختلفة */
+    @media (max-width: 768px) {
+        .app-title {
+            font-size: 2.5rem !important;
+        }
+        
+        .app-subtitle {
+            font-size: 1.3rem !important;
+        }
+        
+        .app-header {
+            padding: 2rem 1rem !important;
+            margin: 1rem auto !important;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
