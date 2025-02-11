@@ -484,6 +484,158 @@ language = st.selectbox("", ["العربية", "English"], index=0)
 # تحديد اتجاه النص بناءً على اللغة
 direction = "rtl" if language == "العربية" else "ltr"
 
+# إضافة العنوان
+st.markdown("""
+    <div class="app-header">
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+        <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
+    </div>
+""", unsafe_allow_html=True)
+
+# تحديث CSS للواجهة
+st.markdown("""
+    <style>
+    /* تحسين المظهر العام */
+    .stApp {
+        background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+    }
+    
+    /* تنسيق العنوان */
+    .app-header {
+        margin: 2rem auto;
+        padding: 2rem;
+        max-width: 1200px;
+    }
+    
+    .app-title {
+        color: #00ff9d;
+        font-size: 3.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+        text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                     0 0 30px rgba(0, 255, 157, 0.3);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    .app-subtitle {
+        color: #ffffff;
+        font-size: 1.8rem;
+        text-align: center;
+        margin-top: 1.5rem;
+        font-weight: normal;
+    }
+    
+    @keyframes glow {
+        from {
+            text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                         0 0 30px rgba(0, 255, 157, 0.3);
+        }
+        to {
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
+                         0 0 40px rgba(0, 255, 157, 0.5);
+        }
+    }
+
+    /* تحسين واجهة المستخدم */
+    .stSelectbox {
+        background: rgba(0, 9, 42, 0.7);
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+    
+    .stSelectbox > div > div {
+        background: transparent !important;
+        border: 1px solid rgba(0, 255, 157, 0.2) !important;
+        color: #fff !important;
+    }
+    
+    /* تحسين أقسام التطبيق */
+    .subject-name {
+        background: rgba(0, 9, 42, 0.8);
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }
+    
+    /* تحسين حقول الإدخال */
+    .stNumberInput > div > div > input {
+        background: rgba(0, 9, 42, 0.7) !important;
+        border: 1px solid rgba(0, 255, 157, 0.2) !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* تحسين الأزرار */
+    .stButton > button {
+        background: linear-gradient(45deg, #000428, #004e92) !important;
+        color: #00ff9d !important;
+        border: 1px solid rgba(0, 255, 157, 0.3) !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 2rem !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 255, 157, 0.2);
+    }
+    
+    /* تحسين التذييل */
+    .footer {
+        margin-top: 3rem;
+        padding: 2rem;
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 10px;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+    
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .social-links a {
+        color: #00ff9d;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        background: rgba(0, 255, 157, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        background: rgba(0, 255, 157, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .copyright {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+    }
+    
+    /* تحسينات عامة */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    
+    body {
+        overflow-x: hidden !important;
+    }
+    
+    .main .block-container {
+        padding: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # تعريف النصوص حسب اللغة
 texts = {
     "العربية": {
