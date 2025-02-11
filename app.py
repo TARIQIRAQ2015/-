@@ -322,7 +322,14 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # إضافة الشعار والعنوان
 st.markdown(f"""
     <div class="app-header">
-        <img src="data:image/png;base64,{icon_base64}" width="100">
+        <img src="data:image/png;base64,{icon_base64}" 
+             style="width: 150px; 
+                    height: 150px; 
+                    object-fit: contain;
+                    margin: 10px;
+                    filter: drop-shadow(0 0 10px rgba(0, 255, 157, 0.5));
+                    animation: float 6s ease-in-out infinite;"
+        >
         <h1 class="app-title">المساعد لحساب الوزاري</h1>
         <div class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</div>
     </div>
