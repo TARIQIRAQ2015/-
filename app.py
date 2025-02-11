@@ -949,14 +949,12 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             text-align: center !important;
         }}
 
-        /* تنسيق الصفوف */
-        .dataframe tbody tr {{
-            border-bottom: 1px solid rgba(0, 255, 157, 0.1) !important;
-        }}
-
-        /* تنسيق الصف عند التحويم */
-        .dataframe tbody tr:hover {{
+        /* تنسيق عمود الفهرس */
+        .dataframe .index {{
+            width: 50px !important;
+            text-align: center !important;
             background: rgba(0, 255, 157, 0.05) !important;
+            color: #00ff9d !important;
         }}
 
         /* تنسيق خاص للغة العربية */
@@ -973,7 +971,11 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         [dir="rtl"] .dataframe th,
         [dir="rtl"] .dataframe td {{
             flex: 1 !important;
-            min-width: 0 !important;
+        }}
+
+        /* تنسيق خاص للفهرس في اللغة العربية */
+        [dir="rtl"] .dataframe .index {{
+            order: -1 !important;  /* يجعل الفهرس في آخر الصف (بجانب المادة) */
         }}
 
         /* تنسيق عرض الأعمدة */
@@ -984,7 +986,7 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         </style>
     """, unsafe_allow_html=True)
 
-    # عرض الجدول
+    # عرض الجدول مع الفهرس
     st.table(df)
     
     # عرض النصائح في قسم منفصل
