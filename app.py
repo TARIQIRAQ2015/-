@@ -594,6 +594,7 @@ def calculate_minimum_required(first_term, mid_term):
 if st.button(current_texts["analyze"], key="calculate_btn"):
     results = []
     passing_subjects = []
+    failing_subjects = []
     
     for subject, scores in subjects.items():
         # تضمين اللغة الفرنسية فقط إذا كان هناك درجة واحدة على الأقل
@@ -613,8 +614,10 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             passing_subjects.append(subject)
         elif minimum_required > 100:
             status = f"❌ ({minimum_required:.0f})"
+            failing_subjects.append(subject)
         else:
             status = f"❌ ({minimum_required:.0f})"
+            failing_subjects.append(subject)
         
         results.append({
             "المادة": subject,
@@ -641,10 +644,14 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     st.markdown('</div>', unsafe_allow_html=True)
     
     # عرض النصائح في قسم منفصل
-    passed_subjects_str = "، ".join(passing_subjects)
+    passed_subjects_str = "، ".join(passing_subjects) if passing_subjects else "لا يوجد"
+    failed_subjects_str = "، ".join(failing_subjects) if failing_subjects else "لا يوجد"
+    
     st.markdown(f"""
         <div class="advice-section">
             المواد التي ضمنت النجاح هي: {passed_subjects_str} حتى لو حصلت على 0 في الفصل الثاني.
+            <br><br>
+            المواد التي تحتاج إلى تحسين هي: {failed_subjects_str}
         </div>
     """, unsafe_allow_html=True)
 
