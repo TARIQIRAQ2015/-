@@ -976,3 +976,86 @@ st.markdown("""
 
 print("Current working directory:", os.getcwd())
 print("Logo file exists:", os.path.exists('logo.png'))
+
+# تحديث CSS للنتائج والنصائح
+st.markdown(f"""
+    <style>
+    /* تنسيق قسم النصائح */
+    .advice-section {{
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+        direction: {direction};
+        text-align: {'right' if direction == 'rtl' else 'left'};
+    }}
+
+    .advice-item {{
+        padding: 1.2rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        background: rgba(0, 9, 42, 0.7);
+        border-right: {'4px solid transparent' if direction == 'rtl' else 'none'};
+        border-left: {'4px solid transparent' if direction == 'ltr' else 'none'};
+    }}
+
+    .advice-item.success {{
+        border-right-color: {'#00ff9d' if direction == 'rtl' else 'transparent'};
+        border-left-color: {'#00ff9d' if direction == 'ltr' else 'transparent'};
+        background: rgba(0, 255, 157, 0.1);
+    }}
+
+    .advice-item.warning {{
+        border-right-color: {'#ffc107' if direction == 'rtl' else 'transparent'};
+        border-left-color: {'#ffc107' if direction == 'ltr' else 'transparent'};
+        background: rgba(255, 193, 7, 0.1);
+    }}
+
+    .advice-item.danger {{
+        border-right-color: {'#ff4848' if direction == 'rtl' else 'transparent'};
+        border-left-color: {'#ff4848' if direction == 'ltr' else 'transparent'};
+        background: rgba(255, 72, 72, 0.1);
+    }}
+
+    /* تنسيق الجداول */
+    .dataframe {{
+        direction: {direction};
+        text-align: {'right' if direction == 'rtl' else 'left'};
+        background: rgba(0, 9, 42, 0.8) !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(0, 255, 157, 0.2) !important;
+        color: #fff !important;
+    }}
+
+    .dataframe th {{
+        text-align: {'right' if direction == 'rtl' else 'left'} !important;
+        background: rgba(0, 255, 157, 0.1) !important;
+        color: #00ff9d !important;
+        font-weight: bold !important;
+        padding: 1rem !important;
+    }}
+
+    .dataframe td {{
+        text-align: {'right' if direction == 'rtl' else 'left'} !important;
+        padding: 0.8rem !important;
+    }}
+
+    /* تنسيق التقييم النهائي */
+    .final-advice {{
+        direction: {direction};
+        text-align: {'right' if direction == 'rtl' else 'left'};
+        font-size: 1.2rem !important;
+        padding: 1.5rem !important;
+        margin-top: 1.5rem !important;
+        border-width: 2px !important;
+        background: rgba(0, 9, 42, 0.9) !important;
+    }}
+
+    .final-advice-separator {{
+        border-top: 2px solid rgba(0, 255, 157, 0.2);
+        margin: 1.5rem 0;
+    }}
+    </style>
+""", unsafe_allow_html=True)
