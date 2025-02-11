@@ -26,9 +26,9 @@ st.set_page_config(
 # إخفاء جميع العناصر الافتراضية
 hide_st_style = """
     <style>
-    #MainMenu {visibility: hidden;}
+        #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-    header {visibility: hidden;}
+        header {visibility: hidden;}
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -47,40 +47,37 @@ st.markdown("""
 # تحديث CSS للعنوان
 st.markdown("""
     <style>
-    /* تنسيق العنوان الرئيسي */
     .app-header {
         text-align: center;
-        width: 100%;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        margin: 1rem 0 2rem 0;
         padding: 1rem;
-        margin: 0;
-        z-index: 1;
+        width: 100%;
     }
     
     .app-title {
         color: #00ff9d;
         font-size: 2rem;
         font-weight: bold;
-        margin: 0 auto;
+        margin: 0;
         text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        display: inline-block;
-        white-space: nowrap;
+        text-align: center;
+        width: 100%;
+        display: block;
     }
 
     /* تحسين شكل قائمة اختيار اللغة */
     .stSelectbox {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        width: auto;
-        z-index: 2;
+        margin-bottom: 2rem;
     }
 
-    /* إضافة مسافة للمحتوى تحت العنوان */
-    .main-title {
-        margin-top: 5rem !important;
+    .stSelectbox > div > div {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* إخفاء تسمية قائمة اختيار اللغة */
+    .stSelectbox label {
+        display: none;
     }
     </style>
 """, unsafe_allow_html=True)
