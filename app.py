@@ -33,81 +33,15 @@ hide_st_style = """
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# اختيار اللغة أولاً
-language = st.selectbox("", ["العربية", "English"], key="language_selector")
+# اختيار اللغة (نقل هذا الجزء إلى بداية التطبيق)
+language = st.selectbox(
+    "",
+    ["العربية", "English"],
+    index=0
+)
+
+# تحديد اتجاه النص حسب اللغة
 direction = 'rtl' if language == "العربية" else 'ltr'
-
-# العنوان الرئيسي
-st.markdown("""
-    <div class="app-header">
-        <h1 class="app-title">المساعد لحساب الوزاري</h1>
-    </div>
-""", unsafe_allow_html=True)
-
-# تحديث CSS للعنوان
-st.markdown("""
-    <style>
-    /* تنسيق قائمة اختيار اللغة */
-    .stSelectbox {
-        width: 200px !important;
-        margin: 0 auto 1rem auto !important;
-    }
-    
-    /* تنسيق العنوان الرئيسي */
-    .app-header {
-        text-align: center;
-        width: 100%;
-        margin: 1rem 0 2rem 0;
-    }
-    
-    .app-title {
-        color: #00ff9d;
-        font-size: 2rem;
-        font-weight: bold;
-        margin: 0;
-        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
-        display: inline-block;
-        text-align: center;
-        width: 100%;
-    }
-    
-    /* إخفاء أيقونة الارتباط */
-    .stMarkdown a {
-        text-decoration: none !important;
-    }
-    
-    .stMarkdown a::after {
-        content: none !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# إضافة العنوان في بداية التطبيق
-st.markdown("""
-    <div class="main-title">
-        احسب دخولك للوزاري بدقة وسهولة
-    </div>
-""", unsafe_allow_html=True)
-
-# إضافة CSS للعنوان
-st.markdown("""
-    <style>
-    .main-title {
-        text-align: center;
-        color: #00ff9d;
-        font-size: 1.8rem;
-        font-weight: bold;
-        margin: 1rem 0 2rem 0;
-        padding: 1rem;
-        background: rgba(0, 9, 42, 0.8);
-        border-radius: 15px;
-        border: 2px solid rgba(0, 255, 157, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# تحديد اتجاه النص بناءً على اللغة
 st.markdown(f"<style>body {{ direction: {direction}; }}</style>", unsafe_allow_html=True)
 
 # تعريف النصوص حسب اللغة
@@ -549,5 +483,65 @@ st.markdown("""
     body {
         overflow-x: hidden !important;
     }
+    </style>
+""", unsafe_allow_html=True)
+
+# العنوان الرئيسي
+st.markdown("""
+    <div class="app-header">
+        <h1 class="app-title">المساعد لحساب الوزاري</h1>
+    </div>
+""", unsafe_allow_html=True)
+
+# إضافة العنوان الفرعي
+st.markdown("""
+    <div class="main-title">
+        احسب دخولك للوزاري بدقة وسهولة
+    </div>
+""", unsafe_allow_html=True)
+
+# تحديث CSS للعناوين وقائمة اختيار اللغة
+st.markdown(f"""
+    <style>
+    /* تنسيق قائمة اختيار اللغة */
+    .stSelectbox {{
+        margin-bottom: 1rem;
+    }}
+    
+    .stSelectbox > div > div {{
+        background: rgba(0, 9, 42, 0.7) !important;
+        border: 2px solid rgba(0, 255, 157, 0.2) !important;
+        border-radius: 10px !important;
+        color: #00ff9d !important;
+    }}
+    
+    /* تنسيق العنوان الرئيسي */
+    .app-header {{
+        text-align: center;
+        margin: 1rem 0;
+        padding: 1rem;
+    }}
+    
+    .app-title {{
+        color: #00ff9d;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+    }}
+    
+    /* تنسيق العنوان الفرعي */
+    .main-title {{
+        text-align: center;
+        color: #00ff9d;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 1rem 0 2rem 0;
+        padding: 1rem;
+        background: rgba(0, 9, 42, 0.8);
+        border-radius: 15px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 255, 157, 0.1);
+    }}
     </style>
 """, unsafe_allow_html=True)
