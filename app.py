@@ -484,65 +484,105 @@ language = st.selectbox("", ["العربية", "English"], index=0)
 # تحديد اتجاه النص بناءً على اللغة
 direction = "rtl" if language == "العربية" else "ltr"
 
-# تعديل العنوان الرئيسي
-st.markdown("""
-    <div class="app-header">
-        <div class="header-content">
-            <h1 class="app-title">المساعد لحساب الوزاري</h1>
-            <p class="app-subtitle">احسب دخولك للوزاري بدقة وسهولة</p>
+# تعديل العنوان الرئيسي حسب اللغة
+if language == "العربية":
+    st.markdown("""
+        <div class="app-header-ar">
+            <h1 class="app-title-ar">المساعد لحساب الوزاري</h1>
+            <p class="app-subtitle-ar">احسب دخولك للوزاري بدقة وسهولة</p>
         </div>
-    </div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+        <div class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Ministry Calculator Assistant</h1>
+                <p class="app-subtitle">Calculate your ministry entry accurately and easily</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 # تحديث CSS للعنوان
 st.markdown("""
     <style>
+    /* النمط العربي */
+    .app-header-ar {
+        margin: 2rem auto;
+        padding: 2rem;
+        background: transparent;
+        max-width: 1200px;
+    }
+    
+    .app-title-ar {
+        color: #00ff9d;
+        font-size: 3.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+        text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                     0 0 30px rgba(0, 255, 157, 0.3);
+        animation: glowAr 2s ease-in-out infinite alternate;
+    }
+    
+    .app-subtitle-ar {
+        color: #ffffff;
+        font-size: 1.8rem;
+        text-align: center;
+        margin-top: 1.5rem;
+        font-weight: normal;
+    }
+    
+    @keyframes glowAr {
+        from {
+            text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
+                         0 0 30px rgba(0, 255, 157, 0.3);
+        }
+        to {
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.7),
+                         0 0 40px rgba(0, 255, 157, 0.5);
+        }
+    }
+    
+    /* النمط الإنجليزي */
     .app-header {
         all: unset;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 2rem auto !important;
-        padding: 3rem 2rem !important;
-        background: linear-gradient(135deg, rgba(0, 9, 42, 0.95), rgba(0, 20, 80, 0.95)) !important;
-        border-radius: 25px !important;
-        border: 2px solid rgba(0, 255, 157, 0.2) !important;
-        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15) !important;
-        max-width: 900px !important;
-        position: relative;
-        overflow: hidden;
-        text-align: center !important;
+        margin: 2rem auto;
+        padding: 3rem 2rem;
+        background: linear-gradient(135deg, rgba(0, 9, 42, 0.95), rgba(0, 20, 80, 0.95));
+        border-radius: 25px;
+        border: 2px solid rgba(0, 255, 157, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 255, 157, 0.15);
+        max-width: 900px;
+        text-align: center;
     }
     
     .header-content {
         width: 100%;
-        text-align: center !important;
+        text-align: center;
     }
     
     .app-title {
-        all: unset;
-        display: block;
-        color: #00ff9d !important;
-        font-size: 3.2rem !important;
-        font-weight: 800 !important;
-        margin-bottom: 1.5rem !important;
-        text-align: center !important;
+        color: #00ff9d;
+        font-size: 3.2rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-align: center;
         text-shadow: 0 0 15px rgba(0, 255, 157, 0.5),
-                     0 0 30px rgba(0, 255, 157, 0.3) !important;
-        letter-spacing: 2px !important;
+                     0 0 30px rgba(0, 255, 157, 0.3);
+        letter-spacing: 2px;
         animation: titlePulse 3s ease-in-out infinite alternate;
     }
     
     .app-subtitle {
-        all: unset;
-        display: block;
-        color: rgba(255, 255, 255, 0.9) !important;
-        font-size: 1.6rem !important;
-        margin-top: 1rem !important;
-        font-weight: 500 !important;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
-        letter-spacing: 1px !important;
-        text-align: center !important;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.6rem;
+        margin-top: 1rem;
+        font-weight: 500;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        text-align: center;
     }
     
     @keyframes titlePulse {
