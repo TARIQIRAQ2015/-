@@ -912,10 +912,10 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
     
     # عند إنشاء DataFrame وعرض النتائج
     if language == "العربية":
-        # إعادة ترتيب الأعمدة للغة العربية
+        # إعادة ترتيب الأعمدة للغة العربية من اليمين إلى اليسار
         columns = ["المادة", "الفصل الأول", "نصف السنة", "الفصل الثاني", "الحد الأدنى المطلوب في الفصل الثاني"]
     else:
-        # ترتيب الأعمدة للغة الإنجليزية
+        # ترتيب الأعمدة للغة الإنجليزية من اليسار إلى اليمين
         columns = ["Subject", "First Term", "Mid Term", "Second Term", "Minimum Required"]
 
     df = pd.DataFrame(results)
@@ -927,27 +927,28 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
         /* تنسيق الجداول */
         .dataframe {{
             direction: {direction};
+            width: 100% !important;
             background: rgba(0, 9, 42, 0.8) !important;
             border-radius: 10px !important;
             border: 1px solid rgba(0, 255, 157, 0.2) !important;
             color: #fff !important;
-            width: 100% !important;
+            table-layout: fixed !important;
         }}
 
         /* تنسيق رؤوس الأعمدة */
         .dataframe thead tr th {{
-            text-align: {'right' if direction == 'rtl' else 'left'} !important;
             background: rgba(0, 255, 157, 0.1) !important;
             color: #00ff9d !important;
             font-weight: bold !important;
             padding: 1rem !important;
+            text-align: center !important;
             white-space: nowrap !important;
         }}
 
         /* تنسيق خلايا الجدول */
         .dataframe tbody tr td {{
-            text-align: {'right' if direction == 'rtl' else 'left'} !important;
             padding: 0.8rem !important;
+            text-align: center !important;
         }}
 
         /* تنسيق الصفوف */
@@ -960,33 +961,32 @@ if st.button(current_texts["analyze"], key="calculate_btn"):
             background: rgba(0, 255, 157, 0.05) !important;
         }}
 
-        /* تنسيق عمود الترقيم */
-        .dataframe .index {{
-            text-align: center !important;
-            background: rgba(0, 255, 157, 0.05) !important;
-            font-weight: bold !important;
-        }}
-
-        /* تعديل ترتيب العرض للغة العربية */
+        /* تنسيق خاص للغة العربية */
         [dir="rtl"] .dataframe {{
-            display: table !important;
+            direction: rtl !important;
         }}
 
-        [dir="rtl"] .dataframe thead {{
-            float: right !important;
+        [dir="rtl"] .dataframe thead tr,
+        [dir="rtl"] .dataframe tbody tr {{
+            display: flex !important;
+            flex-direction: row !important;
+        }}
+        
+        [dir="rtl"] .dataframe th,
+        [dir="rtl"] .dataframe td {{
+            flex: 1 !important;
+            min-width: 0 !important;
         }}
 
-        [dir="rtl"] .dataframe tbody {{
-            float: right !important;
+        /* تنسيق عرض الأعمدة */
+        .dataframe th:first-child,
+        .dataframe td:first-child {{
+            width: 20% !important;
         }}
 
-        [dir="rtl"] .dataframe tr {{
-            float: right !important;
-        }}
-
-        [dir="rtl"] .dataframe td,
-        [dir="rtl"] .dataframe th {{
-            float: right !important;
+        .dataframe th:not(:first-child),
+        .dataframe td:not(:first-child) {{
+            width: 20% !important;
         }}
         </style>
     """, unsafe_allow_html=True)
