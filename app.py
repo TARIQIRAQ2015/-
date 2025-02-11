@@ -390,9 +390,6 @@ for subject in subjects:
     st.markdown(f'<div class="subject-name">{current_texts["subjects"][subject]}</div>', unsafe_allow_html=True)
     cols = st.columns(3, gap="large")
     
-    if language == "العربية":
-        cols = cols[::-1]  # عكس ترتيب الأعمدة للغة العربية
-    
     with cols[0]:
         st.markdown(f'<div class="grade-label">{current_texts["first_term"]}</div>', unsafe_allow_html=True)
         subjects[subject]["الفصل الأول"] = st.number_input(
